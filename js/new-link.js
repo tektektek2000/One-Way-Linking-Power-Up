@@ -25,7 +25,8 @@ $(document).ready(function(){
                 console.log(boards);
                 _boards = boards;
                 var element = document.getElementById('boardSelectorDropdown');
-                for (const board in boards){
+                for (var it in boards){
+                    const board = boards[it];
                     console.log(board);
                     var opt = board.name;  
                     var a = document.createElement("a"); 
