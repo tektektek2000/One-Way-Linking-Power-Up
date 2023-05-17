@@ -44,7 +44,7 @@ function boardSelected(t){
                     for (var it in labels){
                         const label = labels[it];
                         var option = document.createElement("option");
-                        option.setAttribute('value', `{"name": "${label.name}","color": "${label.color}"}`);     
+                        option.setAttribute('value', label.id);     
                         var text = document.createTextNode(label.name);
                         option.appendChild(text);
                         element.appendChild(option);
@@ -182,7 +182,7 @@ $(document).ready(function(){
                         }
                         else if($('#conditionSelectorDropdown')[0].value === "Label"){
                             _condtype = "label";
-                            _condTarget = JSON.parse($('#labelConditionSelectorDropdown')[0].value);
+                            _condTarget = $('#labelConditionSelectorDropdown')[0].value;
                         }
                         t.set(id, 'shared', 'onewaylink', {
                             linktype: type,
