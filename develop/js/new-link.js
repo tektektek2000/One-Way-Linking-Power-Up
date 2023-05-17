@@ -23,7 +23,7 @@ $(document).ready(function(){
             api.getBoardsFromMember(context.member, api.key, token)
             .then(boards => {
                 _boards = boards;
-                var element = $('#boardSelectorDropdown').get();
+                var element = document.getElementById('boardSelectorDropdown');
                 for (const board in boards){
                     var opt = board.name;  
                     var a = document.createElement("a"); 
