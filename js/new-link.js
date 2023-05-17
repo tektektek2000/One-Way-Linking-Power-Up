@@ -44,7 +44,7 @@ function boardSelected(t){
                     for (var it in labels){
                         const label = labels[it];
                         var option = document.createElement("option");
-                        option.setAttribute('value', `{name:${label.name},color:${label.color}}`);     
+                        option.setAttribute('value', `{"name": "${label.name}","color": "${label.color}"}`);     
                         var text = document.createTextNode(label.name);
                         option.appendChild(text);
                         element.appendChild(option);
@@ -119,7 +119,7 @@ $(document).ready(function(){
                     for (var it in lists){
                         const list = lists[it];
                         var option = document.createElement("option");
-                        option.setAttribute('value', `{name:${list.name},id:${list.id}}`);     
+                        option.setAttribute('value', `{"name": "${list.name}","id":"${list.id}"}`);     
                         var text = document.createTextNode(list.name);
                         option.appendChild(text);
                         element.appendChild(option);
