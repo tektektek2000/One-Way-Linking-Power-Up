@@ -4,6 +4,7 @@
 <head>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
 
     <script src="https://p.trellocdn.com/power-up.min.js"></script>
@@ -19,8 +20,13 @@
                 <input type="text" class="form-control" id="linkName" placeholder="Type meeting name" required/>
             </div>
             <div class="col-md-12">
-                <ul id="boardSelectorDropdown" class="dropdown-menu" role="menu" aria-labelledby="Select Board">
-                </ul>
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      Select Board
+                    </button>
+                    <div id="boardSelectorDropdown" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    </div>
+                </div>
             </div>
             <div class="col-md-2">
                 <button class="btn btn-primary" type="submit" id="createmeeting">Create link</button>

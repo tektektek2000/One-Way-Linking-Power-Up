@@ -23,13 +23,11 @@ $(document).ready(function(){
                 var element = $('#boardSelectorDropdown');
                 for (const board in boards){
                     var opt = board.name;  
-                    var li = document.createElement("li");
-                    var link = document.createElement("a");             
+                    var a = document.createElement("a"); 
+                    api.classname = "dropdown-item";           
                     var text = document.createTextNode(opt);
-                    link.appendChild(text);
-                    link.href = "#";
-                    li.appendChild(link);
-                    element.appendChild(li);
+                    a.appendChild(text);
+                    element.appendChild(a);
                 }
             })
         }
