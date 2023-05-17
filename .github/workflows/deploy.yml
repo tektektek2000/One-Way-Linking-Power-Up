@@ -31,8 +31,8 @@ jobs:
           git config --global user.email 'laszlo.norbi2000@gmail.com'
           rm -r develop;
           rm -r main;
-          git clone --branch main https://github.com/tektektek2000/TrelloPowerUp.git main
-          git clone --branch develop https://github.com/tektektek2000/TrelloPowerUp.git develop
+          git clone --branch main https://github.com/tektektek2000/One-Way-Linking-Power-Up.git main
+          git clone --branch develop https://github.com/tektektek2000/One-Way-Linking-Power-Up.git develop
           rm -r main/.git
           rm -r develop/.git
           rm -r main/.github
