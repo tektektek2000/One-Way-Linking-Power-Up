@@ -7,6 +7,54 @@ function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+function boardSelected(){
+    var boardID =  $("#boardSelectorDropdown")[0].value;
+    t.getRestApi()
+    .getToken()
+    .then(token => {
+        api.getListsFromBoard(boardID, api.key, token)
+        .then(lists => {
+            _lists = lists;
+            var element = $('#listSelectorDropdown')[0];
+            element.innerHTML = '';
+            for (var it in lists){
+                const list = lists[it];
+                var option = document.createElement("option");
+                option.setAttribute('value', it);     
+                var text = document.createTextNode(list.name);
+                option.appendChild(text);
+                element.appendChild(option);
+            }
+            api.getMembersFromBoard(boardID, api.key, token)
+            .then(members => {
+                var element = $('#memberConditionSelectorDropdown')[0];
+                element.innerHTML = '';
+                for (var it in members){
+                    const member = members[it];
+                    var option = document.createElement("option");
+                    option.setAttribute('value', member.id);     
+                    var text = document.createTextNode(member.name);
+                    option.appendChild(text);
+                    element.appendChild(option);
+                }
+                api.getLabelsFromBoard(boardID, api.key, token)
+                .then(labels => {
+                    var element = $('#labelConditionSelectorDropdown')[0];
+                    element.innerHTML = '';
+                    for (var it in labels){
+                        const label = labels[it];
+                        var option = document.createElement("option");
+                        option.setAttribute('value', `name:${label.name},color:${label.color}`);     
+                        var text = document.createTextNode(label.name);
+                        option.appendChild(text);
+                        element.appendChild(option);
+                    }
+                })
+            })
+        })
+    })
+}
+
 $(document).ready(function(){
     var t = window.TrelloPowerUp.iframe({
         appKey: api.key,
@@ -44,25 +92,7 @@ $(document).ready(function(){
         }
     })
     $('#boardSelectorDropdown').change(function(){
-        var boardID =  $("#boardSelectorDropdown")[0].value;
-        t.getRestApi()
-        .getToken()
-        .then(token => {
-            api.getListsFromBoard(boardID, api.key, token)
-            .then(lists => {
-                _lists = lists;
-                var element = $('#listSelectorDropdown')[0];
-                element.innerHTML = '';
-                for (var it in lists){
-                    const list = lists[it];
-                    var option = document.createElement("option");
-                    option.setAttribute('value', it);     
-                    var text = document.createTextNode(list.name);
-                    option.appendChild(text);
-                    element.appendChild(option);
-                }
-            })
-        })
+        boardSelected();
     })
     t.getRestApi()
     .getToken()
@@ -82,6 +112,20 @@ $(document).ready(function(){
                     option.appendChild(text);
                     element.appendChild(option);
                 }
+                api.getListsFromBoard(context.board, api.key, token)
+                .then(lists => {
+                    var element = $('#targetListSelectorDropdown')[0];
+                    element.innerHTML = '';
+                    for (var it in lists){
+                        const list = lists[it];
+                        var option = document.createElement("option");
+                        option.setAttribute('value', `name:${list.name},id:${list.id}`);     
+                        var text = document.createTextNode(list.name);
+                        option.appendChild(text);
+                        element.appendChild(option);
+                    }
+                    boardSelected();
+                })
             })
         }  
     })
