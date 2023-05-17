@@ -1,6 +1,7 @@
 import * as api from "./api.js"
 
 var Promise = TrelloPowerUp.Promise;
+var _lists;
 
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -12,6 +13,36 @@ $(document).ready(function(){
         appName: 'Test'
     });
     var context = t.getContext();
+    $('#targetSelectorDropdown').change(function(){
+        if($('#targetSelectorDropdown')[0].value === "Board"){
+            $('#listSelectDiv').hide();
+        }
+        else if($('#targetSelectorDropdown')[0].value === "List"){
+            $('#listSelectDiv').show();
+        }
+    })
+    $('#conditionSelectorDropdown').change(function(){
+        if($('#conditionSelectorDropdown')[0].value === "None"){
+            $('#memberConditionSelectDiv').hide();
+            $('#labelConditionSelectDiv').hide();
+        }
+        else if($('#conditionSelectorDropdown')[0].value === "Member"){
+            $('#memberConditionSelectDiv').show();
+            $('#labelConditionSelectDiv').hide();
+        }
+        else if($('#conditionSelectorDropdown')[0].value === "Label"){
+            $('#labelConditionSelectDiv').show();
+            $('#memberConditionSelectDiv').hide();
+        }
+    })
+    $('#newListCheck').change(function(){
+        if($('#newListCheck')[0].checked){
+            $('#targetListSelectDiv').hide();
+        }
+        else {
+            $('#targetListSelectDiv').show();
+        }
+    })
     $('#boardSelectorDropdown').change(function(){
         var boardID =  $("#boardSelectorDropdown")[0].value;
         t.getRestApi()
@@ -19,12 +50,13 @@ $(document).ready(function(){
         .then(token => {
             api.getListsFromBoard(boardID, api.key, token)
             .then(lists => {
+                _lists = lists;
                 var element = $('#listSelectorDropdown')[0];
                 element.innerHTML = '';
                 for (var it in lists){
                     const list = lists[it];
                     var option = document.createElement("option");
-                    option.setAttribute('value',list.id);     
+                    option.setAttribute('value', it);     
                     var text = document.createTextNode(list.name);
                     option.appendChild(text);
                     element.appendChild(option);
@@ -50,20 +82,6 @@ $(document).ready(function(){
                     option.appendChild(text);
                     element.appendChild(option);
                 }
-                var boardID =  $("#boardSelectorDropdown")[0].value;
-                api.getListsFromBoard(boardID, api.key, token)
-                .then(lists => {
-                    var element = $('#listSelectorDropdown')[0];
-                    element.innerHTML = '';
-                    for (var it in lists){
-                        const list = lists[it];
-                        var option = document.createElement("option");
-                        option.setAttribute('value',list.id);     
-                        var text = document.createTextNode(list.name);
-                        option.appendChild(text);
-                        element.appendChild(option);
-                    }
-                })
             })
         }  
     })
