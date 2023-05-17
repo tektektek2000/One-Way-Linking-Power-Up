@@ -8,8 +8,9 @@
     <button type=button>Click to authorize</button>
     <script src="https://p.trellocdn.com/power-up.min.js"></script>
     <script>
+      import * as api from "./api.js"
       var t = window.TrelloPowerUp.iframe({
-        appKey: '2905a45608f989a24bf26e3d92edcf80',
+        appKey: api.key,
         appName: 'Test'
       });
       t.render(function() {
