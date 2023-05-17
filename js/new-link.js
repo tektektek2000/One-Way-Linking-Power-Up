@@ -29,10 +29,10 @@ $(document).ready(function(){
                     const board = boards[it];
                     console.log(board);
                     var opt = board.name;  
-                    var select = document.createElement("select");        
+                    var option = document.createElement("option");        
                     var text = document.createTextNode(opt);
-                    select.appendChild(text);
-                    element.appendChild(select);
+                    option.appendChild(text);
+                    element.appendChild(option);
                 }
             })
         }
