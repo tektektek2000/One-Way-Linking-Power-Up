@@ -33,7 +33,7 @@ function boardSelected(t){
                     const member = members[it];
                     var option = document.createElement("option");
                     option.setAttribute('value', member.id);     
-                    var text = document.createTextNode(member.name);
+                    var text = document.createTextNode(member.username);
                     option.appendChild(text);
                     element.appendChild(option);
                 }
