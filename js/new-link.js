@@ -1,4 +1,4 @@
-import * as api from "../../TrelloPowerUpNewMeeting/js/api.js"
+import * as api from "./api.js"
 
 var Promise = TrelloPowerUp.Promise;
 const key = "6f2af19073479657e48933387208eecd"
