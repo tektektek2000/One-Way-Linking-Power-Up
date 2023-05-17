@@ -14,17 +14,21 @@ $(document).ready(function(){
     var context = t.getContext();
     $('#boardSelectorDropdown').change(function(){
         var boardID =  $("#boardSelectorDropdown")[0].value;
-        api.getListsFromBoard(boardID, api.key, token)
-        .then(lists => {
-            var element = $('#listSelectorDropdown')[0];
-            for (var it in lists){
-                const lists = lists[it];
-                var option = document.createElement("option");
-                option.setAttribute('value',lists.id);     
-                var text = document.createTextNode(lists.name);
-                option.appendChild(text);
-                element.appendChild(option);
-            }
+        t.getRestApi()
+        .getToken()
+        .then(token => {
+            api.getListsFromBoard(boardID, api.key, token)
+            .then(lists => {
+                var element = $('#listSelectorDropdown')[0];
+                for (var it in lists){
+                    const lists = lists[it];
+                    var option = document.createElement("option");
+                    option.setAttribute('value',lists.id);     
+                    var text = document.createTextNode(lists.name);
+                    option.appendChild(text);
+                    element.appendChild(option);
+                }
+            })
         })
     })
     t.getRestApi()
@@ -45,8 +49,21 @@ $(document).ready(function(){
                     option.appendChild(text);
                     element.appendChild(option);
                 }
+                var boardID =  $("#boardSelectorDropdown")[0].value;
+                api.getListsFromBoard(boardID, api.key, token)
+                .then(lists => {
+                    var element = $('#listSelectorDropdown')[0];
+                    for (var it in lists){
+                        const lists = lists[it];
+                        var option = document.createElement("option");
+                        option.setAttribute('value',lists.id);     
+                        var text = document.createTextNode(lists.name);
+                        option.appendChild(text);
+                        element.appendChild(option);
+                    }
+                })
             })
-        }
+        }  
     })
     $('#meetingForm').submit(function(event){
         event.preventDefault();   
