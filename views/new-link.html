@@ -17,15 +17,47 @@
         <form class="row g-3" id="meetingForm">
             <div class="col-md-12">
                 <label for="linkName" class="form-label">Link name</label>
-                <input type="text" class="form-control" id="linkName" placeholder="Type meeting name" required/>
+                <input type="text" class="form-control" id="linkName" placeholder="Type link name" required/>
             </div>
             <div class="col-md-12">
+                <label for="listSelectorDropdown" class="form-label">Target Type</label>
+                <select class="form-control" id="targetSelectorDropdown"  placeholder="Target type">
+                    <option>Board</option>
+                    <option>List</option>
+                </select>
                 <label for="boardSelectorDropdown" class="form-label">Select Board</label>
-                <select class="form-control" id="boardSelectorDropdown"  placeholder="Select Board">
+                <select class="form-control" id="boardSelectorDropdown"  placeholder="Select Board" required>
                 </select>
-                <label for="listSelectorDropdown" class="form-label">Select List</label>
-                <select class="form-control" id="listSelectorDropdown"  placeholder="Select Board">
+                <div id="listSelectDiv" style="display: none">
+                    <label for="listSelectorDropdown" class="form-label">Select List</label>
+                    <select class="form-control" id="listSelectorDropdown"  placeholder="Select Board">
+                    </select>
+                </div>
+                <label for="listSelectorDropdown" class="form-label">Condition type</label>
+                <select class="form-control" id="conditionSelectorDropdown"  placeholder="Condition type">
+                    <option>None</option>
+                    <option>Member</option>
+                    <option>Label</option>
                 </select>
+                <div id="memberConditionSelectDiv" style="display: none">
+                    <label for="memberConditionSelectorDropdown" class="form-label">Select Member</label>
+                    <select class="form-control" id="memberConditionSelectorDropdown"  placeholder="Select Member">
+                    </select>
+                </div>
+                <div id="labelConditionSelectDiv" style="display: none">
+                    <label for="labelConditionSelectorDropdown" class="form-label">Select Label</label>
+                    <select class="form-control" id="labelConditionSelectorDropdown"  placeholder="Select Label">
+                    </select>
+                </div>
+                <div style="margin-left: 20px;">
+                    <input type="checkbox" class="form-check-input" id="newListCheck">
+                    <label class="form-check-label" for="newListCheck">Create New List</label>
+                </div>
+                <div id="targetListSelectDiv">
+                    <label for="targetListSelectorDropdown" class="form-label">Select Target List</label>
+                    <select class="form-control" id="targetListSelectorDropdown"  placeholder="Select Label">
+                    </select>
+                </div>
             </div>
             <div class="col-md-2">
                 <button class="btn btn-primary" type="submit" id="createmeeting">Create link</button>
