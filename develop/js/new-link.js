@@ -22,12 +22,14 @@ $(document).ready(function(){
         else{
             api.getBoardsFromMember(context.member, api.key, token)
             .then(boards => {
+                console.log(boards);
                 _boards = boards;
                 var element = document.getElementById('boardSelectorDropdown');
                 for (const board in boards){
+                    console.log(board);
                     var opt = board.name;  
                     var a = document.createElement("a"); 
-                    a.classname = "dropdown-item";           
+                    a.classList.add('dropdown-item');           
                     var text = document.createTextNode(opt);
                     a.appendChild(text);
                     element.appendChild(a);
