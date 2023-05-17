@@ -169,7 +169,7 @@ $(document).ready(function(){
                     })
                     .then(id => { 
                         var type = "list";
-                        var _linkTargetID = $('#listSelectorDropdown')[0].value;
+                        var _linkTargetID = _lists[$('#listSelectorDropdown')[0].value];
                         if($('#targetSelectorDropdown')[0].value === "Board"){
                             type = "board";
                             _linkTargetID = $('#boardSelectorDropdown')[0].value;
