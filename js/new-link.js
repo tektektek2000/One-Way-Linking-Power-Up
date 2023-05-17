@@ -21,10 +21,10 @@ $(document).ready(function(){
             .then(lists => {
                 var element = $('#listSelectorDropdown')[0];
                 for (var it in lists){
-                    const lists = lists[it];
+                    const list = lists[it];
                     var option = document.createElement("option");
-                    option.setAttribute('value',lists.id);     
-                    var text = document.createTextNode(lists.name);
+                    option.setAttribute('value',list.id);     
+                    var text = document.createTextNode(list.name);
                     option.appendChild(text);
                     element.appendChild(option);
                 }
@@ -54,10 +54,10 @@ $(document).ready(function(){
                 .then(lists => {
                     var element = $('#listSelectorDropdown')[0];
                     for (var it in lists){
-                        const lists = lists[it];
+                        const list = lists[it];
                         var option = document.createElement("option");
-                        option.setAttribute('value',lists.id);     
-                        var text = document.createTextNode(lists.name);
+                        option.setAttribute('value',list.id);     
+                        var text = document.createTextNode(list.name);
                         option.appendChild(text);
                         element.appendChild(option);
                     }
