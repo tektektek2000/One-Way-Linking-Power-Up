@@ -46,4 +46,4 @@ function getCardsFromList(listID, apiKey, token){
     });
 }
 
-export {addList,addCard,getCardsFromList}
+export {addList,addCard,getCardsFromList,getBoardsFromMember}
