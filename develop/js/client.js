@@ -35,7 +35,7 @@ TrelloPowerUp.initialize({
             .then(function (isAuthorized) {
                 if (isAuthorized) {
                     return [{
-                        text: 'New Meeting',
+                        text: 'New Link',
                         condition: "edit",
                         callback: showNewLinkMenu
                     }];
