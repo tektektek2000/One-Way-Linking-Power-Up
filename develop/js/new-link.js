@@ -21,7 +21,7 @@ $(document).ready(function(){
             console.log("No token")
         }
         else{
-            getBoardsFromMember(context.member, key, token)
+            api.getBoardsFromMember(context.member, key, token)
             .then(boards => {
                 _boards = boards;
                 var element = $('#boardSelectorDropdown');
