@@ -7,7 +7,7 @@ function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-function boardSelected(){
+function boardSelected(t){
     var boardID =  $("#boardSelectorDropdown")[0].value;
     t.getRestApi()
     .getToken()
@@ -92,7 +92,7 @@ $(document).ready(function(){
         }
     })
     $('#boardSelectorDropdown').change(function(){
-        boardSelected();
+        boardSelected(t);
     })
     t.getRestApi()
     .getToken()
@@ -124,7 +124,7 @@ $(document).ready(function(){
                         option.appendChild(text);
                         element.appendChild(option);
                     }
-                    boardSelected();
+                    boardSelected(t);
                 })
             })
         }  
