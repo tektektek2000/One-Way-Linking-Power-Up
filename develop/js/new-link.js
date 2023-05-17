@@ -152,8 +152,7 @@ $(document).ready(function(){
                 }
                 else{
                     promise = new Promise((resolve, reject) => {
-                        var targetList = JSON.parse($("#targetListSelectorDropdown")[0].value);
-                        resolve(targetList.id);
+                        resolve(JSON.parse($("#targetListSelectorDropdown")[0].value.id));
                     });
                 }
                 promise.then(id => {            
