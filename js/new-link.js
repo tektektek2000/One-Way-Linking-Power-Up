@@ -27,7 +27,7 @@ $(document).ready(function(){
                 for (const board in boards){
                     var opt = board.name;  
                     var a = document.createElement("a"); 
-                    api.classname = "dropdown-item";           
+                    a.classname = "dropdown-item";           
                     var text = document.createTextNode(opt);
                     a.appendChild(text);
                     element.appendChild(a);
