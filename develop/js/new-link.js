@@ -119,7 +119,7 @@ $(document).ready(function(){
                     for (var it in lists){
                         const list = lists[it];
                         var option = document.createElement("option");
-                        option.setAttribute('value', `{"name": "${list.name}","id":"${list.id}"}`);     
+                        option.setAttribute('value', `{"name": "${list.name}","id": "${list.id}"}`);     
                         var text = document.createTextNode(list.name);
                         option.appendChild(text);
                         element.appendChild(option);
@@ -175,20 +175,20 @@ $(document).ready(function(){
                             _linkTargetID = $('#boardSelectorDropdown')[0].value;
                         }
                         var _condtype = "none";
-                        var _condTargetID = "";
+                        var _condTarget = "";
                         if($('#conditionSelectorDropdown')[0].value === "Member"){
                             _condtype = "member";
-                            _condTargetID = $('#memberConditionSelectorDropdown')[0].value;
+                            _condTarget = $('#memberConditionSelectorDropdown')[0].value;
                         }
                         else if($('#conditionSelectorDropdown')[0].value === "Label"){
                             _condtype = "label";
-                            _condTargetID = $('#labelConditionSelectorDropdown')[0].value;
+                            _condTarget = $('#labelConditionSelectorDropdown')[0].value;
                         }
                         t.set(id, 'shared', 'onewaylink', {
                             linktype: type,
                             linkTargetID: _linkTargetID,
                             condtype: _condtype,
-                            condTargetID: _condTargetID,
+                            condTarget: _condTarget,
                             targetID: id
                         })
                         .then(idk => {
