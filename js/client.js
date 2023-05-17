@@ -13,6 +13,14 @@ function showAuth(t) {
     });
 }
 
+function showNewLinkMenu(t) {
+    return t.modal({
+        title: 'New Link',
+        url: t.signUrl('views/new-link.html'),
+        fullscreen: false
+    });
+}
+
 TrelloPowerUp.initialize({
     "card-badges": function (t, opts) {
         return t
@@ -25,7 +33,19 @@ TrelloPowerUp.initialize({
         return t.getRestApi()
             .isAuthorized()
             .then(function (isAuthorized) {
-                return {}
+                if (isAuthorized) {
+                    return [{
+                        text: 'New Meeting',
+                        condition: "edit",
+                        callback: showNewLinkMenu
+                    }];
+                } else {
+                    return [{
+                        text: 'Authorize',
+                        condition: "edit",
+                        callback: showAuth
+                    }];
+                }
             })
     },
     'card-back-section': function (t, options) {
@@ -43,6 +63,6 @@ TrelloPowerUp.initialize({
             })
       }
 }, {
-    appKey: '2905a45608f989a24bf26e3d92edcf80',
+    appKey: '6f2af19073479657e48933387208eecd',
     appName: 'Test'
 });

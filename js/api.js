@@ -13,6 +13,23 @@ function addCard(cardName, cardDesc, listID, apiKey, token){
     })
 }
 
+function getBoardsFromMember(memberID, apiKey, token){
+    return fetch(`https://api.trello.com/1/members/${memberID}/boards?key=${apiKey}&token=${token}`, {
+        method: 'GET',
+        headers: {
+        'Accept': 'application/json'
+        }
+    })
+    .then(response => {
+        return response.text();
+    })
+    .then(text => {
+        var boards = JSON.parse(text);
+        return boards;
+    });
+}
+
+
 function getCardsFromList(listID, apiKey, token){
     return fetch(`https://api.trello.com/1/lists/${listID}/cards?key=${apiKey}&token=${token}`, {
         method: 'GET',
