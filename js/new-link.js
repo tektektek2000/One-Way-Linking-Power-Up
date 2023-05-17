@@ -12,7 +12,21 @@ $(document).ready(function(){
         appName: 'Test'
     });
     var context = t.getContext();
-    var _boards;
+    $('#boardSelectorDropdown').change(function(){
+        var boardID =  $("#boardSelectorDropdown")[0].value;
+        api.getListsFromBoard(boardID, api.key, token)
+        .then(lists => {
+            var element = $('#listSelectorDropdown')[0];
+            for (var it in lists){
+                const lists = lists[it];
+                var option = document.createElement("option");
+                option.setAttribute('value',lists.id);     
+                var text = document.createTextNode(lists.name);
+                option.appendChild(text);
+                element.appendChild(option);
+            }
+        })
+    })
     t.getRestApi()
     .getToken()
     .then(token => {
@@ -22,8 +36,7 @@ $(document).ready(function(){
         else{
             api.getBoardsFromMember(context.member, api.key, token)
             .then(boards => {
-                _boards = boards;
-                var element = document.getElementById('boardSelectorDropdown');
+                var element = $('#boardSelectorDropdown')[0];
                 for (var it in boards){
                     const board = boards[it];
                     var option = document.createElement("option");

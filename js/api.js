@@ -29,6 +29,22 @@ function getBoardsFromMember(memberID, apiKey, token){
     });
 }
 
+function getListsFromBoard(boardID, apiKey, token){
+    return fetch(`https://api.trello.com/1/boards/${boardID}/lists?key=${apiKey}&token=${token}`, {
+        method: 'GET',
+        headers: {
+        'Accept': 'application/json'
+        }
+    })
+    .then(response => {
+        return response.text();
+    })
+    .then(text => {
+        var boards = JSON.parse(text);
+        return boards;
+    });
+}
+
 
 function getCardsFromList(listID, apiKey, token){
     return fetch(`https://api.trello.com/1/lists/${listID}/cards?key=${apiKey}&token=${token}`, {
@@ -48,4 +64,4 @@ function getCardsFromList(listID, apiKey, token){
 
 const key = "6f2af19073479657e48933387208eecd"
 
-export {key,addList,addCard,getBoardsFromMember,getCardsFromList}
+export {key,addList,addCard,getBoardsFromMember,getListsFromBoard,getCardsFromList}
