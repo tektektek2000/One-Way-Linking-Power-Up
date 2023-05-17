@@ -20,6 +20,7 @@ $(document).ready(function(){
             api.getListsFromBoard(boardID, api.key, token)
             .then(lists => {
                 var element = $('#listSelectorDropdown')[0];
+                element.innerHTML = '';
                 for (var it in lists){
                     const list = lists[it];
                     var option = document.createElement("option");
@@ -53,6 +54,7 @@ $(document).ready(function(){
                 api.getListsFromBoard(boardID, api.key, token)
                 .then(lists => {
                     var element = $('#listSelectorDropdown')[0];
+                    element.innerHTML = '';
                     for (var it in lists){
                         const list = lists[it];
                         var option = document.createElement("option");
