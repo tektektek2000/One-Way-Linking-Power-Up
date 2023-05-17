@@ -139,15 +139,24 @@ $(document).ready(function(){
                 console.log("No token")
             }
             else{
-                api.addList(linkname, context.board, api.key, token)
-                .then(response => {
-                    return response.text();
-                })
-                .then(text => {
-                    const id = text.match(/"id":"([\da-z]*)"/i)[1]
-                    var promise;
-                    if($('#newListCheck')[0].checked){
-                        promise = api.addCard(linkname,"This is an automatically generated card.",id,api.key,token)
+                var promise;
+                if($('#newListCheck')[0].checked){
+                    promise = api.addList(linkname, context.board, api.key, token)
+                        .then(response => {
+                            return response.text();
+                        })
+                        .then(text => {
+                            const id = text.match(/"id":"([\da-z]*)"/i)[1];
+                            return id;
+                        })
+                }
+                else{
+                    promise = new Promise((resolve, reject) => {
+                        resolve($("#targetListSelectorDropdown")[0].value);
+                    });
+                }
+                promise.then(id => {            
+                    api.addCard(linkname,"This is an automatically generated card.",id,api.key,token)
                         .then(response => {
                             return response.text();
                         })
@@ -158,35 +167,29 @@ $(document).ready(function(){
                                 return id;
                             })
                         })
-                    }
-                    else{
-                        promise = new Promise((resolve, reject) => {
-                            resolve($("#targetListSelectorDropdown")[0].value);
-                        });
-                    }
-                    promise.then(id => { 
-                        var type = "list";
-                        var _linkTargetID = $('#listSelectorDropdown')[0].value;
-                        if($('#targetSelectorDropdown')[0].value === "Board"){
-                            type = "board";
-                            _linkTargetID = $('#boardSelectorDropdown')[0].value;
-                        }
-                        var _condtype = "none";
-                        var _condTargetID = "";
-                        if($('#conditionSelectorDropdown')[0].value === "Member"){
-                            _condtype = "member";
-                            _condTargetID = $('#memberConditionSelectorDropdown')[0].value;
-                        }
-                        else if($('#conditionSelectorDropdown')[0].value === "Label"){
-                            _condtype = "label";
-                            _condTargetID = $('#labelConditionSelectorDropdown')[0].value;
-                        }
-                        t.set(id, 'shared', 'onewaylink', {
-                            linktype: type,
-                            linkTargetID: _linkTargetID,
-                            condtype: _condtype,
-                            condTargetID: _condTargetID,
-                            targetID: id
+                        .then(id => { 
+                            var type = "list";
+                            var _linkTargetID = $('#listSelectorDropdown')[0].value;
+                            if($('#targetSelectorDropdown')[0].value === "Board"){
+                                type = "board";
+                                _linkTargetID = $('#boardSelectorDropdown')[0].value;
+                            }
+                            var _condtype = "none";
+                            var _condTargetID = "";
+                            if($('#conditionSelectorDropdown')[0].value === "Member"){
+                                _condtype = "member";
+                                _condTargetID = $('#memberConditionSelectorDropdown')[0].value;
+                            }
+                            else if($('#conditionSelectorDropdown')[0].value === "Label"){
+                                _condtype = "label";
+                                _condTargetID = $('#labelConditionSelectorDropdown')[0].value;
+                            }
+                            t.set(id, 'shared', 'onewaylink', {
+                                linktype: type,
+                                linkTargetID: _linkTargetID,
+                                condtype: _condtype,
+                                condTargetID: _condTargetID,
+                                targetID: id
                         })
                         .then(idk => {
                             t.closeModal();
