@@ -154,7 +154,7 @@ $(document).ready(function(){
                         .then(text => {
                             return sleep(200) //The Api is slow and i need to wait otherwise i get no card with this id error.
                             .then(() => {
-                                const id = cardJson.match(/"id":"([\da-z]*)"/i)[1];
+                                const id = text.match(/"id":"([\da-z]*)"/i)[1];
                                 return id;
                             })
                         })
@@ -164,8 +164,7 @@ $(document).ready(function(){
                             resolve($("#targetListSelectorDropdown")[0].value);
                         });
                     }
-                    promise.then(id => {
-                        var cardJson = text;   
+                    promise.then(id => { 
                         var type = "list";
                         var _linkTargetID = $('#listSelectorDropdown')[0].value;
                         if($('#targetSelectorDropdown')[0].value === "Board"){
