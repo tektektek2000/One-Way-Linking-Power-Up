@@ -8,6 +8,10 @@ function sleep(ms) {
 }
 
 $(document).ready(function(){
+    var t = window.TrelloPowerUp.iframe({
+        appKey: key,
+        appName: 'Test'
+    });
     var context = t.getContext();
     var _boards;
     t.getRestApi()
