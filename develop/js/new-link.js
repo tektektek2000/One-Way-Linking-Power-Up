@@ -29,11 +29,10 @@ $(document).ready(function(){
                     const board = boards[it];
                     console.log(board);
                     var opt = board.name;  
-                    var a = document.createElement("a"); 
-                    a.classList.add('dropdown-item');           
+                    var select = document.createElement("select");        
                     var text = document.createTextNode(opt);
-                    a.appendChild(text);
-                    element.appendChild(a);
+                    select.appendChild(text);
+                    element.appendChild(select);
                 }
             })
         }
