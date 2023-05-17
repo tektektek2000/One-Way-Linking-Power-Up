@@ -1,7 +1,6 @@
 import * as api from "./api.js"
 
 var Promise = TrelloPowerUp.Promise;
-const key = "6f2af19073479657e48933387208eecd"
 
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -9,7 +8,7 @@ function sleep(ms) {
 
 $(document).ready(function(){
     var t = window.TrelloPowerUp.iframe({
-        appKey: key,
+        appKey: api.key,
         appName: 'Test'
     });
     var context = t.getContext();
@@ -21,7 +20,7 @@ $(document).ready(function(){
             console.log("No token")
         }
         else{
-            api.getBoardsFromMember(context.member, key, token)
+            api.getBoardsFromMember(context.member, api.key, token)
             .then(boards => {
                 _boards = boards;
                 var element = $('#boardSelectorDropdown');
@@ -46,13 +45,13 @@ $(document).ready(function(){
                 console.log("No token")
             }
             else{
-                api.addList(linkname, context.board, key, token)
+                api.addList(linkname, context.board, api.key, token)
                 .then(response => {
                     return response.text();
                 })
                 .then(text => {
                     const id = text.match(/"id":"([\da-z]*)"/i)[1]
-                    api.addCard(linkname,"This is an automatically generated card.",id,key,token)
+                    api.addCard(linkname,"This is an automatically generated card.",id,api.key,token)
                     .then(response => {
                         return response.text();
                     })
