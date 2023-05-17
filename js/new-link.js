@@ -145,25 +145,56 @@ $(document).ready(function(){
                 })
                 .then(text => {
                     const id = text.match(/"id":"([\da-z]*)"/i)[1]
-                    api.addCard(linkname,"This is an automatically generated card.",id,api.key,token)
-                    .then(response => {
-                        return response.text();
-                    })
-                    .then(text => {
-                        var cardJson = text;
-                        sleep(200) //The Api is slow and i need to wait otherwise i get no card with this id error.
-                        .then(() => {
-                            const id = cardJson.match(/"id":"([\da-z]*)"/i)[1];
-                            t.set(id, 'shared', 'onewaylink', {
-                                linktype: "list"
+                    var promise;
+                    if($('#newListCheck')[0].checked){
+                        promise = api.addCard(linkname,"This is an automatically generated card.",id,api.key,token)
+                        .then(response => {
+                            return response.text();
+                        })
+                        .then(text => {
+                            return sleep(200) //The Api is slow and i need to wait otherwise i get no card with this id error.
+                            .then(() => {
+                                const id = cardJson.match(/"id":"([\da-z]*)"/i)[1];
+                                return id;
                             })
-                            .then(idk => {
-                                t.closeModal();
-                            })
-                            .catch(err => {
-                                console.error(err)
-                                t.closeModal();
-                            });
+                        })
+                    }
+                    else{
+                        promise = new Promise((resolve, reject) => {
+                            resolve($("#targetListSelectorDropdown")[0].value);
+                        });
+                    }
+                    promise.then(id => {
+                        var cardJson = text;   
+                        var type = "list";
+                        var _linkTargetID = $('#listSelectorDropdown')[0].value;
+                        if($('#targetSelectorDropdown')[0].value === "Board"){
+                            type = "board";
+                            _linkTargetID = $('#boardSelectorDropdown')[0].value;
+                        }
+                        var _condtype = "none";
+                        var _condTargetID = "";
+                        if($('#conditionSelectorDropdown')[0].value === "Member"){
+                            condtype = "member";
+                            _condTargetID = $('#memberConditionSelectorDropdown')[0].value;
+                        }
+                        else if($('#conditionSelectorDropdown')[0].value === "Label"){
+                            condtype = "label";
+                            _condTargetID = $('#labelConditionSelectorDropdown')[0].value;
+                        }
+                        t.set(id, 'shared', 'onewaylink', {
+                            linktype: type,
+                            linkTargetID: _linkTargetID,
+                            condtype: _condtype,
+                            condTargetID: _condTargetID,
+                            targetID: id
+                        })
+                        .then(idk => {
+                            t.closeModal();
+                        })
+                        .catch(err => {
+                            console.error(err)
+                            t.closeModal();
                         });
                     })
                     .catch(err => {
