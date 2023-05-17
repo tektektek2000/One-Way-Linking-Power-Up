@@ -174,11 +174,11 @@ $(document).ready(function(){
                         var _condtype = "none";
                         var _condTargetID = "";
                         if($('#conditionSelectorDropdown')[0].value === "Member"){
-                            condtype = "member";
+                            _condtype = "member";
                             _condTargetID = $('#memberConditionSelectorDropdown')[0].value;
                         }
                         else if($('#conditionSelectorDropdown')[0].value === "Label"){
-                            condtype = "label";
+                            _condtype = "label";
                             _condTargetID = $('#labelConditionSelectorDropdown')[0].value;
                         }
                         t.set(id, 'shared', 'onewaylink', {
