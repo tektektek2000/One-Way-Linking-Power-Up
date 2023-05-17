@@ -182,7 +182,7 @@ $(document).ready(function(){
                         }
                         else if($('#conditionSelectorDropdown')[0].value === "Label"){
                             _condtype = "label";
-                            _condTarget = $('#labelConditionSelectorDropdown')[0].value;
+                            _condTarget = JSON.parse($('#labelConditionSelectorDropdown')[0].value);
                         }
                         t.set(id, 'shared', 'onewaylink', {
                             linktype: type,
