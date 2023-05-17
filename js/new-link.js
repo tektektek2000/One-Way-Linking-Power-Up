@@ -152,44 +152,44 @@ $(document).ready(function(){
                 }
                 else{
                     promise = new Promise((resolve, reject) => {
-                        resolve(JSON.parse($("#targetListSelectorDropdown")[0].value.id));
+                        resolve(JSON.parse($("#targetListSelectorDropdown")[0].value).id);
                     });
                 }
                 promise.then(id => {            
                     api.addCard(linkname,"This is an automatically generated card.",id,api.key,token)
-                        .then(response => {
-                            return response.text();
+                    .then(response => {
+                        return response.text();
+                    })
+                    .then(text => {
+                        return sleep(200) //The Api is slow and i need to wait otherwise i get no card with this id error.
+                        .then(() => {
+                            const id = text.match(/"id":"([\da-z]*)"/i)[1];
+                            return id;
                         })
-                        .then(text => {
-                            return sleep(200) //The Api is slow and i need to wait otherwise i get no card with this id error.
-                            .then(() => {
-                                const id = text.match(/"id":"([\da-z]*)"/i)[1];
-                                return id;
-                            })
-                        })
-                        .then(id => { 
-                            var type = "list";
-                            var _linkTargetID = $('#listSelectorDropdown')[0].value;
-                            if($('#targetSelectorDropdown')[0].value === "Board"){
-                                type = "board";
-                                _linkTargetID = $('#boardSelectorDropdown')[0].value;
-                            }
-                            var _condtype = "none";
-                            var _condTargetID = "";
-                            if($('#conditionSelectorDropdown')[0].value === "Member"){
-                                _condtype = "member";
-                                _condTargetID = $('#memberConditionSelectorDropdown')[0].value;
-                            }
-                            else if($('#conditionSelectorDropdown')[0].value === "Label"){
-                                _condtype = "label";
-                                _condTargetID = $('#labelConditionSelectorDropdown')[0].value;
-                            }
-                            t.set(id, 'shared', 'onewaylink', {
-                                linktype: type,
-                                linkTargetID: _linkTargetID,
-                                condtype: _condtype,
-                                condTargetID: _condTargetID,
-                                targetID: id
+                    })
+                    .then(id => { 
+                        var type = "list";
+                        var _linkTargetID = $('#listSelectorDropdown')[0].value;
+                        if($('#targetSelectorDropdown')[0].value === "Board"){
+                            type = "board";
+                            _linkTargetID = $('#boardSelectorDropdown')[0].value;
+                        }
+                        var _condtype = "none";
+                        var _condTargetID = "";
+                        if($('#conditionSelectorDropdown')[0].value === "Member"){
+                            _condtype = "member";
+                            _condTargetID = $('#memberConditionSelectorDropdown')[0].value;
+                        }
+                        else if($('#conditionSelectorDropdown')[0].value === "Label"){
+                            _condtype = "label";
+                            _condTargetID = $('#labelConditionSelectorDropdown')[0].value;
+                        }
+                        t.set(id, 'shared', 'onewaylink', {
+                            linktype: type,
+                            linkTargetID: _linkTargetID,
+                            condtype: _condtype,
+                            condTargetID: _condTargetID,
+                            targetID: id
                         })
                         .then(idk => {
                             t.closeModal();
