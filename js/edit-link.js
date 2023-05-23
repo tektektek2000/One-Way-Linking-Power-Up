@@ -60,7 +60,6 @@ function boardSelected(t){
 }
 
 function saveCurrent(t){
-    var linkname = $("#linkName")[0].value;
     t.getRestApi()
     .getToken()
     .then(token => {
