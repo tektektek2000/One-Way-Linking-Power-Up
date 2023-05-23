@@ -203,14 +203,14 @@ $(document).ready(function(){
                     console.log(link);
                     var promise;
                     if(link.type === "list"){
-                        promise = api.getList(link.targetID, api.key, token)
+                        promise = api.getList(link.linkTargetID, api.key, token)
                                     .then(list => {
                                         return list.idBoard;
                                     })
                     }
                     else if(link.type === "board"){
                         promise = new Promise((resolve, reject) => {
-                            resolve(link.targetID);
+                            resolve(link.linkTargetID);
                         });
                     }
                     promise.then(boardID => {
@@ -245,7 +245,7 @@ $(document).ready(function(){
                                 }
                                 if(link.type === "board"){
                                     for (var it in targetlists){
-                                        if (targetlists[it].id === boardID){
+                                        if (targetlists[it].id === link.linkTargetID){
                                             $('#listSelectorDropdown')[0].selectedIndex = it;
                                         }
                                     }
