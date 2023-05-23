@@ -183,23 +183,29 @@ $(document).ready(function(){
                             }
                         }
                         api.getListsFromBoard(context.board, api.key, token)
-                        .then(lists => {
+                        .then(targetlists => {
                             var element = $('#targetListSelectorDropdown')[0];
                             element.innerHTML = '';
-                            for (var it in lists){
-                                const list = lists[it];
+                            for (var it in targetlists){
+                                const list = targetlists[it];
                                 var option = document.createElement("option");
                                 option.setAttribute('value', `{"name": "${list.name}","id": "${list.id}"}`);     
                                 var text = document.createTextNode(list.name);
                                 option.appendChild(text);
                                 element.appendChild(option);
                             }
+                            for (var it in targetlists){
+                                if (targetlists[it].id === link.linkTarget.targetID){
+                                    $('#targetListSelectorDropdown')[0].selectedIndex = it;
+                                }
+                            }
                             api.getListsFromBoard(boardID, api.key, token)
-                            .then(targetlists => {
+                            .then(lists => {
+                                _lists = lists;
                                 var element = $('#listSelectorDropdown')[0];
                                 element.innerHTML = '';
-                                for (var it in targetlists){
-                                    const list = targetlists[it];
+                                for (var it in lists){
+                                    const list = lists[it];
                                     var option = document.createElement("option");
                                     option.setAttribute('value', it);     
                                     var text = document.createTextNode(list.name);
@@ -207,8 +213,8 @@ $(document).ready(function(){
                                     element.appendChild(option);
                                 }
                                 if(link.type === "list"){
-                                    for (var it in targetlists){
-                                        if (targetlists[it].id === link.linkTarget.id){
+                                    for (var it in lists){
+                                        if (lists[it].id === link.linkTarget.id){
                                             $('#listSelectorDropdown')[0].selectedIndex = it;
                                         }
                                     }
