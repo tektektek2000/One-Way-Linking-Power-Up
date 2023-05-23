@@ -184,8 +184,8 @@ $(document).ready(function(){
                             _condtype = "label";
                             _condTarget = $('#labelConditionSelectorDropdown')[0].value;
                         }
-                        t.set(id, 'shared', 'onewaylink', {
-                            linktype: type,
+                        t.set(id, 'shared', 'link', {
+                            type: type,
                             linkTargetID: _linkTargetID,
                             condtype: _condtype,
                             condTarget: _condTarget,
