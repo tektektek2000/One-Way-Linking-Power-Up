@@ -21,6 +21,26 @@ function showNewLinkMenu(t) {
     });
 }
 
+function testInterval(){
+    var t = window.TrelloPowerUp.iframe({
+        appKey: api.key,
+        appName: 'Test'
+    });
+    t.getRestApi()
+    .getToken()
+    .then(token => {
+        if (!token) {
+            console.log("No token")
+        }
+        else{
+            console.log("Test successfull token")
+        }
+    })
+}
+
+const test = setInterval(testInterval, 10000);
+
+
 TrelloPowerUp.initialize({
     "card-badges": function (t, opts) {
         return t
