@@ -222,6 +222,8 @@ $(document).ready(function(){
                                     }
                                     console.log($('#listSelectorDropdown')[0].value);
                                     $('#listSelectDiv').show();
+                                    $('#targetSelectorDropdown')[0].selectedIndex = 1;
+
                                 }
                                 api.getMembersFromBoard(boardID, api.key, token)
                                 .then(members => {
@@ -237,12 +239,13 @@ $(document).ready(function(){
                                         element.appendChild(option);
                                     }
                                     if(link.condtype === "member"){
-                                        $('#memberConditionSelectDiv').show();
                                         for (var it in members){
                                             if (members[it].id === link.condTarget.id){
                                                 $('#memberConditionSelectorDropdown')[0].selectedIndex = it;
                                             }
                                         }
+                                        $('#conditionSelectorDropdown')[0].selectedIndex = 1;
+                                        $('#memberConditionSelectDiv').show();
                                         console.log($('#memberConditionSelectorDropdown')[0].value);
                                     }
                                     api.getLabelsFromBoard(boardID, api.key, token)
@@ -259,14 +262,17 @@ $(document).ready(function(){
                                             element.appendChild(option);
                                         }
                                         if(link.condtype === "label"){
-                                            $('#labelConditionSelectDiv').show();
                                             for (var it in members){
                                                 if (labels[it].id === link.condTarget.id){
                                                     $('#labelConditionSelectorDropdown')[0].selectedIndex = it;
                                                 }
                                             }
+                                            $('#conditionSelectorDropdown')[0].selectedIndex = 2;
+                                            $('#labelConditionSelectDiv').show();
                                             console.log($('#labelConditionSelectorDropdown')[0].value);
                                         }
+                                        $('#mainDiv').show();
+                                        $('#loadingDiv').hide();
                                     })
                                 })
                             })
