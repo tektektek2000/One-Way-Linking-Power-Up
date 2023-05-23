@@ -159,8 +159,8 @@ $(document).ready(function(){
                         resolve(JSON.parse($("#targetListSelectorDropdown")[0].value).id);
                     });
                 }
-                promise.then(id => {            
-                    api.addCard(linkname,"This is an automatically generated card.",id,api.key,token)
+                promise.then(listTargetId => {            
+                    api.addCard(linkname,"This is an automatically generated card.",listTargetId,api.key,token)
                     .then(response => {
                         return response.text();
                     })
@@ -193,7 +193,7 @@ $(document).ready(function(){
                             linkTarget: _linkTarget,
                             condtype: _condtype,
                             condTarget: _condTarget,
-                            targetID: id
+                            targetID: listTargetId
                         })
                         .then(idk => {
                             t.closeModal();

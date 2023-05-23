@@ -60,7 +60,7 @@ TrelloPowerUp.initialize({
                             content: {
                                 type: 'iframe',
                                 url: t.signUrl(TrelloPowerUp.util.relativeUrl('./views/edit-link.html')),
-                                height: 200,
+                                height: 500,
                             },
                             action: {
                                 text: 'Remove Link',
