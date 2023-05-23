@@ -2,8 +2,7 @@ import * as api from "./api.js"
 
 var Promise = TrelloPowerUp.Promise;
 var _lists;
-var _members;
-var _labels;
+var _lists;
 
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -29,26 +28,24 @@ function boardSelected(t){
             }
             api.getMembersFromBoard(boardID, api.key, token)
             .then(members => {
-                _members = members;
                 var element = $('#memberConditionSelectorDropdown')[0];
                 element.innerHTML = '';
                 for (var it in members){
                     const member = members[it];
                     var option = document.createElement("option");
-                    option.setAttribute('value', it);     
+                    option.setAttribute('value', member.id);     
                     var text = document.createTextNode(member.username);
                     option.appendChild(text);
                     element.appendChild(option);
                 }
                 api.getLabelsFromBoard(boardID, api.key, token)
                 .then(labels => {
-                    _labels = labels
                     var element = $('#labelConditionSelectorDropdown')[0];
                     element.innerHTML = '';
                     for (var it in labels){
                         const label = labels[it];
                         var option = document.createElement("option");
-                        option.setAttribute('value', it);     
+                        option.setAttribute('value', label.id);     
                         var text = document.createTextNode(label.name);
                         option.appendChild(text);
                         element.appendChild(option);
@@ -182,11 +179,11 @@ $(document).ready(function(){
                         var _condTarget = "";
                         if($('#conditionSelectorDropdown')[0].value === "Member"){
                             _condtype = "member";
-                            _condTarget = _members[$('#memberConditionSelectorDropdown')[0].value];
+                            _condTarget = $('#memberConditionSelectorDropdown')[0].value;
                         }
                         else if($('#conditionSelectorDropdown')[0].value === "Label"){
                             _condtype = "label";
-                            _condTarget = _labels[$('#labelConditionSelectorDropdown')[0].value];
+                            _condTarget = $('#labelConditionSelectorDropdown')[0].value;
                         }
                         t.set(id, 'shared', 'link', {
                             type: type,
