@@ -200,6 +200,7 @@ $(document).ready(function(){
                 }
                 t.get('card', 'shared', 'link')
                 .then(link => {
+                    console.log(link);
                     var promise;
                     if(link.type === "list"){
                         promise = api.getList(link.targetID, api.key, token)
