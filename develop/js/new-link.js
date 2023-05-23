@@ -53,7 +53,6 @@ function boardSelected(t){
                         option.appendChild(text);
                         element.appendChild(option);
                     }
-                    console.log("Board selected");
                 })
             })
         })
@@ -144,7 +143,6 @@ $(document).ready(function(){
                 console.log("No token")
             }
             else{
-                console.log("Submit started");
                 var promise;
                 if($('#newListCheck')[0].checked){
                     promise = api.addList(linkname, context.board, api.key, token)
@@ -161,9 +159,7 @@ $(document).ready(function(){
                         resolve(JSON.parse($("#targetListSelectorDropdown")[0].value).id);
                     });
                 }
-                promise.then(id => {
-                    console.log("List selected:");
-                    console.log(id);   
+                promise.then(id => {            
                     api.addCard(linkname,"This is an automatically generated card.",id,api.key,token)
                     .then(response => {
                         return response.text();
@@ -176,7 +172,6 @@ $(document).ready(function(){
                         })
                     })
                     .then(id => { 
-                        console.log("Card added");
                         var type = "list";
                         var _linkTarget = _lists[$('#listSelectorDropdown')[0].value];
                         if($('#targetSelectorDropdown')[0].value === "Board"){
@@ -193,7 +188,6 @@ $(document).ready(function(){
                             _condtype = "label";
                             _condTarget = _labels[$('#labelConditionSelectorDropdown')[0].value];
                         }
-                        console.log("Setting link");
                         t.set(id, 'shared', 'link', {
                             type: type,
                             linkTarget: _linkTarget,
@@ -202,7 +196,6 @@ $(document).ready(function(){
                             targetID: id
                         })
                         .then(idk => {
-                            console.log("Closing modal");
                             t.closeModal();
                         })
                         .catch(err => {
