@@ -196,6 +196,8 @@ $(document).ready(function(){
                                 element.appendChild(option);
                             }
                             for (var it in targetlists){
+                                console.log(targetlists[it].id);
+                                console.log(link.linkTarget.targetID);
                                 if (targetlists[it].id === link.linkTarget.targetID){
                                     $('#targetListSelectorDropdown')[0].selectedIndex = it;
                                 }
