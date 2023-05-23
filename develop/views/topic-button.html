@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+ 
+<head>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
+    <script src="https://p.trellocdn.com/power-up.min.js"></script>
+    <script src="https://trello.com/1/client.js?key=2905a45608f989a24bf26e3d92edcf80"></script>
+    <script type="module" src="../js/topic-button.js"></script>
+</head>
+ 
+<body>
+    <div class="container" style="margin:0px">
+        <form class="row" id="topicForm">  
+            <label for="lengthgroup">Topic:</label>
+            <div class="input-group mb-12" id="lengthgroup">
+                <input class="form-control col-md-2"
+                    type="number" id="topichours" value="0" min="0" max="24" required/>
+                <span class="input-group-text">h</span>
+                <input class="form-control col-md-2"
+                    type="number" id="topicminutes" value="0" max="59" required/>
+                <span class="input-group-text">m</span>
+            </div>
+            <div class="col-md-2">
+                <button class="btn btn-primary" type="submit" id="createmeeting">Make card a topic</button>
+            </div>
+        </form>
+    </div>
+</body>
+ 
+</html>
