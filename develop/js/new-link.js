@@ -188,7 +188,6 @@ $(document).ready(function(){
                             _condtype = "label";
                             _condTarget = _labels[$('#labelConditionSelectorDropdown')[0].value];
                         }
-                        console.log(`type: ${type}, linkTarget: ${_linkTarget}, condtype: ${_condtype}, condTarget: ${_condTarget}, targetID: ${targetID}`)
                         t.set(id, 'shared', 'link', {
                             type: type,
                             linkTarget: _linkTarget,
@@ -211,10 +210,6 @@ $(document).ready(function(){
                 })
                 .catch(err => console.error(err));
             }
-        })
-        .catch(err => {
-            console.error(err)
-            t.closeModal();
-        });;
+        });
     })
 });
