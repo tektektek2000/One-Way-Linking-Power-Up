@@ -1,8 +1,6 @@
 import * as api from "./api.js"
 
 var Promise = TrelloPowerUp.Promise;
-var _lists;
-var _lists;
 
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
