@@ -13,6 +13,87 @@ function addCard(cardName, cardDesc, listID, apiKey, token){
     })
 }
 
+function getBoardsFromMember(memberID, apiKey, token){
+    return fetch(`https://api.trello.com/1/members/${memberID}/boards?key=${apiKey}&token=${token}`, {
+        method: 'GET',
+        headers: {
+        'Accept': 'application/json'
+        }
+    })
+    .then(response => {
+        return response.text();
+    })
+    .then(text => {
+        var boards = JSON.parse(text);
+        return boards;
+    });
+}
+
+function getListsFromBoard(boardID, apiKey, token){
+    return fetch(`https://api.trello.com/1/boards/${boardID}/lists?key=${apiKey}&token=${token}`, {
+        method: 'GET',
+        headers: {
+        'Accept': 'application/json'
+        }
+    })
+    .then(response => {
+        return response.text();
+    })
+    .then(text => {
+        var boards = JSON.parse(text);
+        return boards;
+    });
+}
+
+function getMembersFromBoard(boardID, apiKey, token){
+    return fetch(`https://api.trello.com/1/boards/${boardID}/members?key=${apiKey}&token=${token}`, {
+        method: 'GET',
+        headers: {
+        'Accept': 'application/json'
+        }
+    })
+    .then(response => {
+        return response.text();
+    })
+    .then(text => {
+        var boards = JSON.parse(text);
+        return boards;
+    });
+}
+
+function getLabelsFromBoard(boardID, apiKey, token){
+    return fetch(`https://api.trello.com/1/boards/${boardID}/labels?key=${apiKey}&token=${token}`, {
+        method: 'GET',
+        headers: {
+        'Accept': 'application/json'
+        }
+    })
+    .then(response => {
+        return response.text();
+    })
+    .then(text => {
+        var boards = JSON.parse(text);
+        return boards;
+    });
+}
+
+function getList(listID, apiKey, token){
+    return fetch(`https://api.trello.com/1/lists/${listID}?key=${apiKey}&token=${token}`, {
+        method: 'GET',
+        headers: {
+        'Accept': 'application/json'
+        }
+    })
+    .then(response => {
+        return response.text();
+    })
+    .then(text => {
+        var list = JSON.parse(text);
+        return list;
+    });
+}
+
+
 function getCardsFromList(listID, apiKey, token){
     return fetch(`https://api.trello.com/1/lists/${listID}/cards?key=${apiKey}&token=${token}`, {
         method: 'GET',
@@ -29,4 +110,6 @@ function getCardsFromList(listID, apiKey, token){
     });
 }
 
-export {addList,addCard,getCardsFromList}
+const key = "6f2af19073479657e48933387208eecd"
+
+export {key,addList,addCard,getBoardsFromMember,getListsFromBoard,getMembersFromBoard,getLabelsFromBoard,getList,getCardsFromList}
