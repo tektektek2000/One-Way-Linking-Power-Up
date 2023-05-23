@@ -98,10 +98,10 @@ function saveCurrent(t){
                 })
                 .then(id => { 
                     var type = "list";
-                    var _linkTargetID = _lists[$('#listSelectorDropdown')[0].value];
+                    var _linkTarget = _lists[$('#listSelectorDropdown')[0].value];
                     if($('#targetSelectorDropdown')[0].value === "Board"){
                         type = "board";
-                        _linkTargetID = $('#boardSelectorDropdown')[0].value;
+                        _linkTarget = $('#boardSelectorDropdown')[0].value;
                     }
                     var _condtype = "none";
                     var _condTarget = "";
@@ -115,7 +115,7 @@ function saveCurrent(t){
                     }
                     t.set(id, 'shared', 'link', {
                         linktype: type,
-                        linkTargetID: _linkTargetID,
+                        linkTarget: _linkTarget,
                         condtype: _condtype,
                         condTarget: _condTarget,
                         targetID: id
@@ -177,10 +177,10 @@ $(document).ready(function(){
     $('#targetListSelectorDropdown').change(function(){
         saveCurrent(t);
     })
-    $('#memberConditionSelectDiv').change(function(){
+    $('#memberConditionSelectorDropdown').change(function(){
         saveCurrent(t);
     })
-    $('#labelConditionSelectDiv').change(function(){
+    $('#labelConditionSelectorDropdown').change(function(){
         saveCurrent(t);
     })
     t.getRestApi()
@@ -207,12 +207,12 @@ $(document).ready(function(){
                     var promise;
                     if(link.type === "list"){
                         promise = new Promise((resolve, reject) => {
-                            resolve(link.linkTargetID.idBoard);
+                            resolve(link.linkTarget.idBoard);
                         });
                     }
                     else if(link.type === "board"){
                         promise = new Promise((resolve, reject) => {
-                            resolve(link.linkTargetID);
+                            resolve(link.linkTarget);
                         });
                     }
                     promise.then(boardID => {
@@ -245,36 +245,55 @@ $(document).ready(function(){
                                     option.appendChild(text);
                                     element.appendChild(option);
                                 }
-                                if(link.type === "board"){
+                                if(link.type === "list"){
                                     for (var it in targetlists){
-                                        if (targetlists[it].id === link.linkTargetID){
+                                        if (targetlists[it].id === link.linkTarget.id){
                                             $('#listSelectorDropdown')[0].selectedIndex = it;
                                         }
                                     }
+                                    $('#listSelectDiv').show();
                                 }
                                 api.getMembersFromBoard(boardID, api.key, token)
                                 .then(members => {
+                                    _members = members;
                                     var element = $('#memberConditionSelectorDropdown')[0];
                                     element.innerHTML = '';
                                     for (var it in members){
                                         const member = members[it];
                                         var option = document.createElement("option");
-                                        option.setAttribute('value', member.id);     
+                                        option.setAttribute('value', it);     
                                         var text = document.createTextNode(member.username);
                                         option.appendChild(text);
                                         element.appendChild(option);
                                     }
+                                    if(link.condtype === "member"){
+                                        $('#memberConditionSelectDiv').show();
+                                        for (var it in members){
+                                            if (members[it].id === link.condTarget.id){
+                                                $('#memberConditionSelectorDropdown')[0].selectedIndex = it;
+                                            }
+                                        }
+                                    }
                                     api.getLabelsFromBoard(boardID, api.key, token)
                                     .then(labels => {
+                                        _labels = labels;
                                         var element = $('#labelConditionSelectorDropdown')[0];
                                         element.innerHTML = '';
                                         for (var it in labels){
                                             const label = labels[it];
                                             var option = document.createElement("option");
-                                            option.setAttribute('value', label.id);     
+                                            option.setAttribute('value', it);     
                                             var text = document.createTextNode(label.name);
                                             option.appendChild(text);
                                             element.appendChild(option);
+                                        }
+                                        if(link.condtype === "label"){
+                                            $('#labelConditionSelectDiv').show();
+                                            for (var it in members){
+                                                if (labels[it].id === link.condTarget.id){
+                                                    $('#labelConditionSelectorDropdown')[0].selectedIndex = it;
+                                                }
+                                            }
                                         }
                                     })
                                 })

@@ -173,10 +173,10 @@ $(document).ready(function(){
                     })
                     .then(id => { 
                         var type = "list";
-                        var _linkTargetID = _lists[$('#listSelectorDropdown')[0].value];
+                        var _linkTarget = _lists[$('#listSelectorDropdown')[0].value];
                         if($('#targetSelectorDropdown')[0].value === "Board"){
                             type = "board";
-                            _linkTargetID = $('#boardSelectorDropdown')[0].value;
+                            _linkTarget = $('#boardSelectorDropdown')[0].value;
                         }
                         var _condtype = "none";
                         var _condTarget = "";
@@ -190,7 +190,7 @@ $(document).ready(function(){
                         }
                         t.set(id, 'shared', 'link', {
                             type: type,
-                            linkTargetID: _linkTargetID,
+                            linkTarget: _linkTarget,
                             condtype: _condtype,
                             condTarget: _condTarget,
                             targetID: id
