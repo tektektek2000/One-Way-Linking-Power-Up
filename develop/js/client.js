@@ -43,7 +43,7 @@ TrelloPowerUp.initialize({
                 else{
                     console.log("Test successfull token")
                 }
-            })}, 10000);
+            })}, 60000);
         return t.getRestApi()
             .isAuthorized()
             .then(function (isAuthorized) {
