@@ -67,22 +67,9 @@ function saveCurrent(t){
             console.log("No token")
         }
         else{
-            var promise;
-            if($('#newListCheck')[0].checked){
-                promise = api.addList(linkname, context.board, api.key, token)
-                    .then(response => {
-                        return response.text();
-                    })
-                    .then(text => {
-                        const id = text.match(/"id":"([\da-z]*)"/i)[1];
-                        return id;
-                    })
-            }
-            else{
-                promise = new Promise((resolve, reject) => {
-                    resolve(JSON.parse($("#targetListSelectorDropdown")[0].value).id);
-                });
-            }
+            promise = new Promise((resolve, reject) => {
+                resolve(JSON.parse($("#targetListSelectorDropdown")[0].value).id);
+            });
             promise.then(id => {            
                 api.addCard(linkname,"This is an automatically generated card.",id,api.key,token)
                 .then(response => {
