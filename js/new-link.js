@@ -1,6 +1,9 @@
 import * as api from "./api.js"
 
 var Promise = TrelloPowerUp.Promise;
+var _lists;
+var _members;
+var _labels;
 
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -26,28 +29,31 @@ function boardSelected(t){
             }
             api.getMembersFromBoard(boardID, api.key, token)
             .then(members => {
+                _members = members;
                 var element = $('#memberConditionSelectorDropdown')[0];
                 element.innerHTML = '';
                 for (var it in members){
                     const member = members[it];
                     var option = document.createElement("option");
-                    option.setAttribute('value', member.id);     
+                    option.setAttribute('value', it);     
                     var text = document.createTextNode(member.username);
                     option.appendChild(text);
                     element.appendChild(option);
                 }
                 api.getLabelsFromBoard(boardID, api.key, token)
                 .then(labels => {
+                    _labels = labels
                     var element = $('#labelConditionSelectorDropdown')[0];
                     element.innerHTML = '';
                     for (var it in labels){
                         const label = labels[it];
                         var option = document.createElement("option");
-                        option.setAttribute('value', label.id);     
+                        option.setAttribute('value', it);     
                         var text = document.createTextNode(label.name);
                         option.appendChild(text);
                         element.appendChild(option);
                     }
+                    console.log("Board selected");
                 })
             })
         })
@@ -138,6 +144,7 @@ $(document).ready(function(){
                 console.log("No token")
             }
             else{
+                console.log("Submit started");
                 var promise;
                 if($('#newListCheck')[0].checked){
                     promise = api.addList(linkname, context.board, api.key, token)
@@ -154,7 +161,9 @@ $(document).ready(function(){
                         resolve(JSON.parse($("#targetListSelectorDropdown")[0].value).id);
                     });
                 }
-                promise.then(id => {            
+                promise.then(id => {
+                    console.log("List selected:");
+                    console.log(id);   
                     api.addCard(linkname,"This is an automatically generated card.",id,api.key,token)
                     .then(response => {
                         return response.text();
@@ -167,30 +176,33 @@ $(document).ready(function(){
                         })
                     })
                     .then(id => { 
+                        console.log("Card added");
                         var type = "list";
-                        var _linkTargetID = _lists[$('#listSelectorDropdown')[0].value];
+                        var _linkTarget = _lists[$('#listSelectorDropdown')[0].value];
                         if($('#targetSelectorDropdown')[0].value === "Board"){
                             type = "board";
-                            _linkTargetID = $('#boardSelectorDropdown')[0].value;
+                            _linkTarget = $('#boardSelectorDropdown')[0].value;
                         }
                         var _condtype = "none";
                         var _condTarget = "";
                         if($('#conditionSelectorDropdown')[0].value === "Member"){
                             _condtype = "member";
-                            _condTarget = $('#memberConditionSelectorDropdown')[0].value;
+                            _condTarget = _members[$('#memberConditionSelectorDropdown')[0].value];
                         }
                         else if($('#conditionSelectorDropdown')[0].value === "Label"){
                             _condtype = "label";
-                            _condTarget = $('#labelConditionSelectorDropdown')[0].value;
+                            _condTarget = _labels[$('#labelConditionSelectorDropdown')[0].value];
                         }
+                        console.log("Setting link");
                         t.set(id, 'shared', 'link', {
                             type: type,
-                            linkTargetID: _linkTargetID,
+                            linkTarget: _linkTarget,
                             condtype: _condtype,
                             condTarget: _condTarget,
                             targetID: id
                         })
                         .then(idk => {
+                            console.log("Closing modal");
                             t.closeModal();
                         })
                         .catch(err => {
