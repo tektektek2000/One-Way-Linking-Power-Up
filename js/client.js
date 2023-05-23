@@ -52,7 +52,22 @@ TrelloPowerUp.initialize({
         return t
             .card("all")
             .then(function (card) {
-                return {}
+                return t.get(card.id, 'shared', 'link')
+                    .then(cardRole => {
+                        return {
+                            title: 'Link',
+                            icon: t.signUrl(TrelloPowerUp.util.relativeUrl("./icons/summary.png")),
+                            content: {
+                                type: 'iframe',
+                                url: t.signUrl(TrelloPowerUp.util.relativeUrl('./views/edit-link.html')),
+                                height: 200,
+                            },
+                            action: {
+                                text: 'Remove Link',
+                                callback: (t) => {t.remove('card', 'shared', 'link');},
+                            }
+                        }
+                    })
             })
     },
     'card-buttons': function (t, opts) {
