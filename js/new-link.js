@@ -211,6 +211,10 @@ $(document).ready(function(){
                 })
                 .catch(err => console.error(err));
             }
-        });
+        })
+        .catch(err => {
+            console.error(err)
+            t.closeModal();
+        });;
     })
 });
