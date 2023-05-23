@@ -21,25 +21,8 @@ function showNewLinkMenu(t) {
     });
 }
 
-function testInterval(){
-    var t = window.TrelloPowerUp.iframe({
-        appKey: api.key,
-        appName: 'Test'
-    });
-    t.getRestApi()
-    .getToken()
-    .then(token => {
-        if (!token) {
-            console.log("No token")
-        }
-        else{
-            console.log("Test successfull token")
-        }
-    })
-}
 
-const test = setInterval(testInterval, 10000);
-
+var test;
 
 TrelloPowerUp.initialize({
     "card-badges": function (t, opts) {
@@ -50,6 +33,17 @@ TrelloPowerUp.initialize({
             });
     },
     'board-buttons': function (t, opts) {
+        test = setInterval(function(){
+            t.getRestApi()
+            .getToken()
+            .then(token => {
+                if (!token) {
+                    console.log("No token")
+                }
+                else{
+                    console.log("Test successfull token")
+                }
+            })}, 10000);
         return t.getRestApi()
             .isAuthorized()
             .then(function (isAuthorized) {
