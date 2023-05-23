@@ -85,7 +85,7 @@ function saveCurrent(t){
                 _condTarget = _labels[$('#labelConditionSelectorDropdown')[0].value];
             }
             t.set('card', 'shared', 'link', {
-                linktype: type,
+                type: type,
                 linkTarget: _linkTarget,
                 condtype: _condtype,
                 condTarget: _condTarget,
@@ -182,6 +182,7 @@ $(document).ready(function(){
                                 $('#boardSelectorDropdown')[0].selectedIndex = it;
                             }
                         }
+                        console.log($('#boardSelectorDropdown')[0].value);
                         api.getListsFromBoard(context.board, api.key, token)
                         .then(targetlists => {
                             var element = $('#targetListSelectorDropdown')[0];
@@ -199,6 +200,7 @@ $(document).ready(function(){
                                     $('#targetListSelectorDropdown')[0].selectedIndex = it;
                                 }
                             }
+                            console.log($('#targetListSelectorDropdown')[0].value);
                             api.getListsFromBoard(boardID, api.key, token)
                             .then(lists => {
                                 _lists = lists;
@@ -218,6 +220,7 @@ $(document).ready(function(){
                                             $('#listSelectorDropdown')[0].selectedIndex = it;
                                         }
                                     }
+                                    console.log($('#listSelectorDropdown')[0].value);
                                     $('#listSelectDiv').show();
                                 }
                                 api.getMembersFromBoard(boardID, api.key, token)
@@ -240,6 +243,7 @@ $(document).ready(function(){
                                                 $('#memberConditionSelectorDropdown')[0].selectedIndex = it;
                                             }
                                         }
+                                        console.log($('#memberConditionSelectorDropdown')[0].value);
                                     }
                                     api.getLabelsFromBoard(boardID, api.key, token)
                                     .then(labels => {
@@ -261,6 +265,7 @@ $(document).ready(function(){
                                                     $('#labelConditionSelectorDropdown')[0].selectedIndex = it;
                                                 }
                                             }
+                                            console.log($('#labelConditionSelectorDropdown')[0].value);
                                         }
                                     })
                                 })
