@@ -164,7 +164,6 @@ $(document).ready(function(){
                 }
                 t.get('card', 'shared', 'link')
                 .then(link => {
-                    console.log(link);
                     var promise;
                     if(link.type === "list"){
                         promise = new Promise((resolve, reject) => {
@@ -196,13 +195,10 @@ $(document).ready(function(){
                                 element.appendChild(option);
                             }
                             for (var it in targetlists){
-                                console.log(targetlists[it].id);
-                                console.log(link.linkTarget.targetID);
-                                if (targetlists[it].id === link.linkTarget.targetID){
+                                if (targetlists[it].id === link.targetID){
                                     $('#targetListSelectorDropdown')[0].selectedIndex = it;
                                 }
                             }
-                            console.log($('#targetListSelectorDropdown')[0].value);
                             api.getListsFromBoard(boardID, api.key, token)
                             .then(lists => {
                                 _lists = lists;
@@ -222,7 +218,6 @@ $(document).ready(function(){
                                             $('#listSelectorDropdown')[0].selectedIndex = it;
                                         }
                                     }
-                                    console.log($('#listSelectorDropdown')[0].value);
                                     $('#listSelectDiv').show();
                                     $('#targetSelectorDropdown')[0].selectedIndex = 1;
 
@@ -248,7 +243,6 @@ $(document).ready(function(){
                                         }
                                         $('#conditionSelectorDropdown')[0].selectedIndex = 1;
                                         $('#memberConditionSelectDiv').show();
-                                        console.log($('#memberConditionSelectorDropdown')[0].value);
                                     }
                                     api.getLabelsFromBoard(boardID, api.key, token)
                                     .then(labels => {
@@ -271,7 +265,6 @@ $(document).ready(function(){
                                             }
                                             $('#conditionSelectorDropdown')[0].selectedIndex = 2;
                                             $('#labelConditionSelectDiv').show();
-                                            console.log($('#labelConditionSelectorDropdown')[0].value);
                                         }
                                         $('#mainDiv').show();
                                         $('#loadingDiv').hide();
