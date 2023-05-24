@@ -55,9 +55,18 @@ function updateCycle(t,links,token){
             console.log(linkedCards);
             var linkPromises = []
             for(let link of links){
-                //TODO implement board as well
                 if(link.type === "list"){
                     linkPromises.push(api.getCardsFromList(link.linkTarget.id,api.key,token).then(cards => {
+                        return {
+                            link: link,
+                            cards: cards
+                        }
+                    }))
+                }
+            }
+            for(let link of links){
+                if(link.type === "board"){
+                    linkPromises.push(api.getCardsFromBoard(link.linkTarget,api.key,token).then(cards => {
                         return {
                             link: link,
                             cards: cards
@@ -89,6 +98,11 @@ function updateCycle(t,links,token){
                         }
                         for(let linkedCard of linkedCards){
                             if(linkedCard.link.sourceID === card.id){
+                                shouldAdd = false;
+                            }
+                        }
+                        for(let alreadyAdded of cardsToAdd){
+                            if(alreadyAdded.card.id === card.id){
                                 shouldAdd = false;
                             }
                         }
