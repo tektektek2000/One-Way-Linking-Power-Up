@@ -261,16 +261,18 @@ function PopulateLinks(t){
         }
         for (var it in _links){
             $(`button.btn-danger[link-index="${it}"]`).on("click", () => {
-                console.log(`Delete at index: ${it}`)
-                _links.splice(it,1);
+                var index = it;
+                console.log(`Delete at index: ${index}`)
+                _links.splice(index,1);
                 t.set('board', 'shared', 'link', _links)
                 .then(idk =>{
                     PopulateLinks(t);
                 })
             })
             $(`button.btn-primary[link-index="${it}"]`).on("click", () => {
-                console.log(`Select at index: ${it}`)
-                selectedIndex = it;
+                var index = it;
+                console.log(`Select at index: ${index}`)
+                selectedIndex = index;
                 linkSelected(t);
                 $('#linkSelectDiv').hide();
                 $('#loadingDiv').show();
