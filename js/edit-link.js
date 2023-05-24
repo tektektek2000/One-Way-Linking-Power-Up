@@ -91,7 +91,7 @@ function saveCurrent(t){
             _links[selectedIndex].linkTarget = _linkTarget;
             _links[selectedIndex].condtype = _condtype;
             _links[selectedIndex].condTarget = _condTarget;
-            _links[selectedIndex].targetID = listTargetId;
+            _links[selectedIndex].targetID = JSON.parse($("#targetListSelectorDropdown")[0].value).id;
             t.set('board', 'shared', 'link', _links)
             .catch(err => {
                 console.error(err)
@@ -329,9 +329,8 @@ $(document).ready(function(){
         saveCurrent(t)
     });
     $(`#backButton`).on("click", () => {
-        PopulateLinks(t);
         $('#mainDiv').hide();
-        $('#loadingDiv').show();
+        PopulateLinks(t);
     })
     PopulateLinks(t);
 });
