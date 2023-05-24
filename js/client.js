@@ -63,7 +63,7 @@ TrelloPowerUp.initialize({
                     }]
                     return t.get('board', 'shared', 'link')
                     .then(links =>{
-                        if(links){
+                        if(links && links.length > 0){
                             ret.push({
                                 text: 'Edit Links',
                                 condition: "edit",

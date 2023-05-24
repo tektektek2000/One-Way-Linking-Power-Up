@@ -243,7 +243,7 @@ function PopulateLinks(t){
         if(links){
             _links = links;
         }
-        else{
+        else if(!links || links.length === 0){
             t.closeModal();
             return;
         }
@@ -252,7 +252,7 @@ function PopulateLinks(t){
             $('#linkSelectDiv')[0].innerHTML += 
             `<div class="row border justify-content-center align-self-center p-1 m-1">
                 <div class="col-md-8 align-self-center">
-                    <span>${_links[it]}</span>
+                    <span>${_links[it].name}</span>
                 </div>
                 <div class="col-md-4 text-right align-self-center">
                     <button type="button" class="btn btn-primary" link-index="${it}"><i class="fa fa-edit"></i></button>
