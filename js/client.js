@@ -122,15 +122,18 @@ TrelloPowerUp.initialize({
         return t
             .card("all")
             .then(function (card) {
-                t.get('card', 'shared', 'link')
+                return t.get('card', 'shared', 'link')
                 .then(link =>{
                     if(link){
-                        return t.getRestApi()
+                        return t
+                        .getRestApi()
                         .getToken()
                         .then(token => {
-                            return api.getCard(link.sourceID,api.key,token)
+                            return api
+                            .getCard(link.sourceID,api.key,token)
                             .then(card => {
-                                return api.getBoard(card.idBoard,api.key,token)
+                                return api
+                                .getBoard(card.idBoard,api.key,token)
                                 .then(board => {
                                     return [
                                         {
