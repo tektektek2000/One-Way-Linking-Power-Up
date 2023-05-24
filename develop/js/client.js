@@ -56,16 +56,22 @@ TrelloPowerUp.initialize({
             .isAuthorized()
             .then(function (isAuthorized) {
                 if (isAuthorized) {
-                    return [{
+                    var ret = [{
                         text: 'New Link',
                         condition: "edit",
                         callback: showNewLinkMenu
-                    },
-                    {
-                        text: 'Edit Links',
-                        condition: "edit",
-                        callback: showEditLinkMenu
-                    }];
+                    }]
+                    return t.get('board', 'shared', 'link')
+                    .then(links =>{
+                        if(links){
+                            ret.push({
+                                text: 'Edit Links',
+                                condition: "edit",
+                                callback: showEditLinkMenu
+                            })
+                        }
+                        return ret;
+                    });
                 } else {
                     return [{
                         text: 'Authorize',

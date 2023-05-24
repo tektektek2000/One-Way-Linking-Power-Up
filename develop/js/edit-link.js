@@ -282,7 +282,7 @@ $(document).ready(function(){
     $('#labelConditionSelectorDropdown').change(function(){
         saveCurrent(t);
     })
-    .get('board', 'shared', 'link')
+    t.get('board', 'shared', 'link')
     .then(links =>{
         if(links){
             _links = links;
@@ -299,5 +299,6 @@ $(document).ready(function(){
                 </div>
             </div>`
         }
+        $('#linkSelectDiv').show();
     })
 });
