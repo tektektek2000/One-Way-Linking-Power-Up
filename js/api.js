@@ -11,10 +11,49 @@ function addCard(cardName, cardDesc, listID, apiKey, token){
             'Accept': 'application/json'
         }
     })
+    .then(response => {
+        return response.text();
+    })
+    .then(text => {
+        var card = JSON.parse(text);
+        return card;
+    });
+}
+
+function copyCard(listID, copyFromId, apiKey, token){
+    return fetch(`https://api.trello.com/1/cards?idList=${listID}&idCardSource=${copyFromId}&key=${apiKey}&token=${token}`, {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json'
+        }
+    })
+    .then(response => {
+        return response.text();
+    })
+    .then(text => {
+        var card = JSON.parse(text);
+        return card;
+    });
 }
 
 function getBoardsFromMember(memberID, apiKey, token){
     return fetch(`https://api.trello.com/1/members/${memberID}/boards?key=${apiKey}&token=${token}`, {
+        method: 'GET',
+        headers: {
+        'Accept': 'application/json'
+        }
+    })
+    .then(response => {
+        return response.text();
+    })
+    .then(text => {
+        var boards = JSON.parse(text);
+        return boards;
+    });
+}
+
+function getCardsFromBoard(boardID, apiKey, token){
+    return fetch(`https://api.trello.com/1/boards/${boardID}/cards?key=${apiKey}&token=${token}`, {
         method: 'GET',
         headers: {
         'Accept': 'application/json'
@@ -112,4 +151,4 @@ function getCardsFromList(listID, apiKey, token){
 
 const key = "6f2af19073479657e48933387208eecd"
 
-export {key,addList,addCard,getBoardsFromMember,getListsFromBoard,getMembersFromBoard,getLabelsFromBoard,getList,getCardsFromList}
+export {key,addList,addCard,copyCard,getBoardsFromMember,getCardsFromBoard,getListsFromBoard,getMembersFromBoard,getLabelsFromBoard,getList,getCardsFromList}
