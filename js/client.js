@@ -122,7 +122,30 @@ TrelloPowerUp.initialize({
         return t
             .card("all")
             .then(function (card) {
-                return {};
+                t.get('card', 'shared', 'link')
+                .then(link =>{
+                    if(link){
+                        return t.getRestApi()
+                        .getToken()
+                        .then(token => {
+                            return api.getCard(link.sourceID,api.key,token)
+                            .then(card => {
+                                return api.getBoard(card.idBoard,api.key,token)
+                                .then(board => {
+                                    return [
+                                        {
+                                            text: `Link From: ${board.name}`,
+                                            color: "light-gray"
+                                        }
+                                    ];
+                                })
+                            })
+                        })
+                    }
+                    else{
+                        return {};
+                    }
+                });
             });
     },
     'board-buttons': function (t, opts) {
