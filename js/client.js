@@ -1,6 +1,7 @@
 import * as api from "./api.js"
 
 var Promise = TrelloPowerUp.Promise;
+var interval;
 
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -116,8 +117,6 @@ function updateCycle(t,links,token){
     })
 }
 
-var test;
-
 TrelloPowerUp.initialize({
     "card-badges": function (t, opts) {
         return t
@@ -127,23 +126,22 @@ TrelloPowerUp.initialize({
             });
     },
     'board-buttons': function (t, opts) {
-        if(test){
-            clearInterval(test);
-        }
-        test = setInterval(function(){
-            t.getRestApi()
-            .getToken()
-            .then(token => {
-                if (!token) {
-                    console.log("No token")
-                }
-                t.get('board', 'shared', 'link')
-                .then(links =>{
-                    if(links && links.length > 0){
-                        updateCycle(t,links,token);
+        if(!interval){
+            interval = setInterval(function(){
+                t.getRestApi()
+                .getToken()
+                .then(token => {
+                    if (!token) {
+                        console.log("No token")
                     }
-                })
-            })}, 30000);
+                    t.get('board', 'shared', 'link')
+                    .then(links =>{
+                        if(links && links.length > 0){
+                            updateCycle(t,links,token);
+                        }
+                    })
+                })}, 30000);
+        }
         return t.getRestApi()
             .isAuthorized()
             .then(function (isAuthorized) {
