@@ -120,7 +120,9 @@ function updateCycle(t,links,token){
                             sleep(200)
                             .then(() => {
                                 t.set(card.id, 'shared', 'link', {
-                                    sourceID: it.card.id
+                                    sourceID: it.card.id,
+                                    listCoupled: it.link.type === 'list',
+                                    lastAcceptedValue: it.card
                                 })
                             })
                         });
