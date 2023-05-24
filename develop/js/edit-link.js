@@ -4,6 +4,8 @@ var Promise = TrelloPowerUp.Promise;
 var _lists;
 var _members;
 var _labels;
+var _links = [];
+var selectedId = 0;
 
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -99,51 +101,7 @@ function saveCurrent(t){
     });
 }
 
-$(document).ready(function(){
-    var t = window.TrelloPowerUp.iframe({
-        appKey: api.key,
-        appName: 'Test'
-    });
-    var context = t.getContext();
-    $('#targetSelectorDropdown').change(function(){
-        if($('#targetSelectorDropdown')[0].value === "Board"){
-            $('#listSelectDiv').hide();
-        }
-        else if($('#targetSelectorDropdown')[0].value === "List"){
-            $('#listSelectDiv').show();
-        }
-        saveCurrent(t);
-    })
-    $('#conditionSelectorDropdown').change(function(){
-        if($('#conditionSelectorDropdown')[0].value === "None"){
-            $('#memberConditionSelectDiv').hide();
-            $('#labelConditionSelectDiv').hide();
-        }
-        else if($('#conditionSelectorDropdown')[0].value === "Member"){
-            $('#memberConditionSelectDiv').show();
-            $('#labelConditionSelectDiv').hide();
-        }
-        else if($('#conditionSelectorDropdown')[0].value === "Label"){
-            $('#labelConditionSelectDiv').show();
-            $('#memberConditionSelectDiv').hide();
-        }
-        saveCurrent(t);
-    })
-    $('#boardSelectorDropdown').change(function(){
-        boardSelected(t);
-    })
-    $('#listSelectorDropdown').change(function(){
-        saveCurrent(t);
-    })
-    $('#targetListSelectorDropdown').change(function(){
-        saveCurrent(t);
-    })
-    $('#memberConditionSelectorDropdown').change(function(){
-        saveCurrent(t);
-    })
-    $('#labelConditionSelectorDropdown').change(function(){
-        saveCurrent(t);
-    })
+function linkSelected(t){
     t.getRestApi()
     .getToken()
     .then(token => {
@@ -276,5 +234,70 @@ $(document).ready(function(){
                 })
             })
         }  
+    })
+}
+
+$(document).ready(function(){
+    var t = window.TrelloPowerUp.iframe({
+        appKey: api.key,
+        appName: 'Test'
+    });
+    var context = t.getContext();
+    $('#targetSelectorDropdown').change(function(){
+        if($('#targetSelectorDropdown')[0].value === "Board"){
+            $('#listSelectDiv').hide();
+        }
+        else if($('#targetSelectorDropdown')[0].value === "List"){
+            $('#listSelectDiv').show();
+        }
+        saveCurrent(t);
+    })
+    $('#conditionSelectorDropdown').change(function(){
+        if($('#conditionSelectorDropdown')[0].value === "None"){
+            $('#memberConditionSelectDiv').hide();
+            $('#labelConditionSelectDiv').hide();
+        }
+        else if($('#conditionSelectorDropdown')[0].value === "Member"){
+            $('#memberConditionSelectDiv').show();
+            $('#labelConditionSelectDiv').hide();
+        }
+        else if($('#conditionSelectorDropdown')[0].value === "Label"){
+            $('#labelConditionSelectDiv').show();
+            $('#memberConditionSelectDiv').hide();
+        }
+        saveCurrent(t);
+    })
+    $('#boardSelectorDropdown').change(function(){
+        boardSelected(t);
+    })
+    $('#listSelectorDropdown').change(function(){
+        saveCurrent(t);
+    })
+    $('#targetListSelectorDropdown').change(function(){
+        saveCurrent(t);
+    })
+    $('#memberConditionSelectorDropdown').change(function(){
+        saveCurrent(t);
+    })
+    $('#labelConditionSelectorDropdown').change(function(){
+        saveCurrent(t);
+    })
+    .get('board', 'shared', 'link')
+    .then(links =>{
+        if(links){
+            _links = links;
+        }
+        for (var it in links){
+            $('#linkSelectDiv')[0].innerHTML += 
+            `<div class="row border justify-content-center align-self-center p-1 m-1">
+                <div class="col-md-8 align-self-center">
+                    <span>${links[it]}</span>
+                </div>
+                <div class="col-md-4 text-right align-self-center">
+                    <button type="button" class="btn btn-primary" link-index="${it}"><i class="fa fa-edit"></i></button>
+                    <button type="button" class="btn btn-danger" link-index="${it}"><i class="fa fa-trash"></i></button>
+                </div>
+            </div>`
+        }
     })
 });

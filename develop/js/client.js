@@ -21,6 +21,14 @@ function showNewLinkMenu(t) {
     });
 }
 
+function showEditLinkMenu(t) {
+    return t.modal({
+        title: 'Edit Links',
+        url: t.signUrl('views/edit-link.html'),
+        fullscreen: false
+    });
+}
+
 
 var test;
 
@@ -52,6 +60,11 @@ TrelloPowerUp.initialize({
                         text: 'New Link',
                         condition: "edit",
                         callback: showNewLinkMenu
+                    },
+                    {
+                        text: 'Edit Links',
+                        condition: "edit",
+                        callback: showEditLinkMenu
                     }];
                 } else {
                     return [{
@@ -66,22 +79,7 @@ TrelloPowerUp.initialize({
         return t
             .card("all")
             .then(function (card) {
-                return t.get(card.id, 'shared', 'link')
-                    .then(cardRole => {
-                        return {
-                            title: 'Link',
-                            icon: t.signUrl(TrelloPowerUp.util.relativeUrl("./icons/summary.png")),
-                            content: {
-                                type: 'iframe',
-                                url: t.signUrl(TrelloPowerUp.util.relativeUrl('./views/edit-link.html')),
-                                height: 500,
-                            },
-                            action: {
-                                text: 'Remove Link',
-                                callback: (t) => {t.remove('card', 'shared', 'link');},
-                            }
-                        }
-                    })
+                
             })
     },
     'card-buttons': function (t, opts) {
