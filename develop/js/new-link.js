@@ -4,6 +4,7 @@ var Promise = TrelloPowerUp.Promise;
 var _lists;
 var _members;
 var _labels;
+var _links = [];
 
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -98,40 +99,46 @@ $(document).ready(function(){
     $('#boardSelectorDropdown').change(function(){
         boardSelected(t);
     })
-    t.getRestApi()
-    .getToken()
-    .then(token => {
-        if (!token) {
-            console.log("No token")
+    t.get('board', 'shared', 'link')
+    .then(links =>{
+        if(links){
+            _links = links;
         }
-        else{
-            api.getBoardsFromMember(context.member, api.key, token)
-            .then(boards => {
-                var element = $('#boardSelectorDropdown')[0];
-                for (var it in boards){
-                    const board = boards[it];
-                    var option = document.createElement("option");
-                    option.setAttribute('value',board.id);     
-                    var text = document.createTextNode(board.name);
-                    option.appendChild(text);
-                    element.appendChild(option);
-                }
-                api.getListsFromBoard(context.board, api.key, token)
-                .then(lists => {
-                    var element = $('#targetListSelectorDropdown')[0];
-                    element.innerHTML = '';
-                    for (var it in lists){
-                        const list = lists[it];
+        t.getRestApi()
+        .getToken()
+        .then(token => {
+            if (!token) {
+                console.log("No token")
+            }
+            else{
+                api.getBoardsFromMember(context.member, api.key, token)
+                .then(boards => {
+                    var element = $('#boardSelectorDropdown')[0];
+                    for (var it in boards){
+                        const board = boards[it];
                         var option = document.createElement("option");
-                        option.setAttribute('value', `{"name": "${list.name}","id": "${list.id}"}`);     
-                        var text = document.createTextNode(list.name);
+                        option.setAttribute('value',board.id);     
+                        var text = document.createTextNode(board.name);
                         option.appendChild(text);
                         element.appendChild(option);
                     }
-                    boardSelected(t);
+                    api.getListsFromBoard(context.board, api.key, token)
+                    .then(lists => {
+                        var element = $('#targetListSelectorDropdown')[0];
+                        element.innerHTML = '';
+                        for (var it in lists){
+                            const list = lists[it];
+                            var option = document.createElement("option");
+                            option.setAttribute('value', `{"name": "${list.name}","id": "${list.id}"}`);     
+                            var text = document.createTextNode(list.name);
+                            option.appendChild(text);
+                            element.appendChild(option);
+                        }
+                        boardSelected(t);
+                    })
                 })
-            })
-        }  
+            }  
+        })
     })
     $('#meetingForm').submit(function(event){
         event.preventDefault();   
@@ -188,13 +195,14 @@ $(document).ready(function(){
                             _condtype = "label";
                             _condTarget = _labels[$('#labelConditionSelectorDropdown')[0].value];
                         }
-                        t.set(id, 'shared', 'link', {
+                        _links.push({
                             type: type,
                             linkTarget: _linkTarget,
                             condtype: _condtype,
                             condTarget: _condTarget,
                             targetID: listTargetId
                         })
+                        t.set('board', 'shared', 'link', _links)
                         .then(idk => {
                             t.closeModal();
                         })
