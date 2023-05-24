@@ -237,6 +237,42 @@ function linkSelected(t){
     })
 }
 
+function PopulateLinks(t){
+    t.get('board', 'shared', 'link')
+    .then(links =>{
+        if(links){
+            _links = links;
+        }
+        else{
+            t.closeModal()
+        }
+        $('#linkSelectDiv')[0].innerHTML = "";
+        for (var it in _links){
+            $('#linkSelectDiv')[0].innerHTML += 
+            `<div class="row border justify-content-center align-self-center p-1 m-1">
+                <div class="col-md-8 align-self-center">
+                    <span>${_links[it]}</span>
+                </div>
+                <div class="col-md-4 text-right align-self-center">
+                    <button type="button" class="btn btn-primary" link-index="${it}"><i class="fa fa-edit"></i></button>
+                    <button type="button" class="btn btn-danger" link-index="${it}"><i class="fa fa-trash"></i></button>
+                </div>
+            </div>`
+        }
+        for (var it in _links){
+            $(`button .btn-danger [link-index=${it}]`).on("click", () => {
+                _links.splice(it,1);
+                t.set('board', 'shared', 'link', _links)
+                .then(idk =>{
+                    PopulateLinks(t);
+                })
+            })
+        }
+        $('#loadingDiv').hide();
+        $('#linkSelectDiv').show();
+    })
+}
+
 $(document).ready(function(){
     var t = window.TrelloPowerUp.iframe({
         appKey: api.key,
@@ -282,23 +318,5 @@ $(document).ready(function(){
     $('#labelConditionSelectorDropdown').change(function(){
         saveCurrent(t);
     })
-    t.get('board', 'shared', 'link')
-    .then(links =>{
-        if(links){
-            _links = links;
-        }
-        for (var it in links){
-            $('#linkSelectDiv')[0].innerHTML += 
-            `<div class="row border justify-content-center align-self-center p-1 m-1">
-                <div class="col-md-8 align-self-center">
-                    <span>${links[it]}</span>
-                </div>
-                <div class="col-md-4 text-right align-self-center">
-                    <button type="button" class="btn btn-primary" link-index="${it}"><i class="fa fa-edit"></i></button>
-                    <button type="button" class="btn btn-danger" link-index="${it}"><i class="fa fa-trash"></i></button>
-                </div>
-            </div>`
-        }
-        $('#linkSelectDiv').show();
-    })
+    PopulateLinks(t);
 });
