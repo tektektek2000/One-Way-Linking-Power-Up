@@ -88,8 +88,6 @@ function saveCurrent(t){
             }
             _links[selectedIndex].name = $("#linkName")[0].value;
             _links[selectedIndex].type = type;
-            _links[selectedIndex].name = linkname;
-            _links[selectedIndex].type = type;
             _links[selectedIndex].linkTarget = _linkTarget;
             _links[selectedIndex].condtype = _condtype;
             _links[selectedIndex].condTarget = _condTarget;
@@ -274,6 +272,8 @@ function PopulateLinks(t){
                 console.log(`Select at index: ${it}`)
                 selectedIndex = it;
                 linkSelected(t);
+                $('#linkSelectDiv').hide();
+                $('#loadingDiv').show();
             })
         }
         $('#linkSelectDiv').show();
@@ -328,5 +328,10 @@ $(document).ready(function(){
     $('#linkName')[0].addEventListener("input", e => {
         saveCurrent(t)
     });
+    $(`#backButton`).on("click", () => {
+        PopulateLinks(t);
+        $('#mainDiv').hide();
+        $('#loadingDiv').show();
+    })
     PopulateLinks(t);
 });
