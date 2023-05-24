@@ -260,7 +260,7 @@ function PopulateLinks(t){
             </div>`
         }
         for (var it in _links){
-            console.log($(`button .btn-danger [link-index=${it}]`));
+            console.log($(`button.btn-danger[link-index="${it}"]`));
             $(`button .btn-danger [link-index=${it}]`).on("click", () => {
                 console.log(`Delete at index: ${it}`)
                 _links.splice(it,1);
