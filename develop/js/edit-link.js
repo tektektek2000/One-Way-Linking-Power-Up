@@ -124,11 +124,13 @@ function linkSelected(t){
                 $("#linkName")[0].value = link.name;
                 var promise;
                 if(link.type === "list"){
+                    $('#listSelectDiv').show();
                     promise = new Promise((resolve, reject) => {
                         resolve(link.linkTarget.idBoard);
                     });
                 }
                 else if(link.type === "board"){
+                    $('#listSelectDiv').hide();
                     promise = new Promise((resolve, reject) => {
                         resolve(link.linkTarget);
                     });
@@ -201,6 +203,7 @@ function linkSelected(t){
                                     }
                                     $('#conditionSelectorDropdown')[0].selectedIndex = 1;
                                     $('#memberConditionSelectDiv').show();
+                                    $('#labelConditionSelectDiv').hide();
                                 }
                                 api.getLabelsFromBoard(boardID, api.key, token)
                                 .then(labels => {
@@ -223,6 +226,11 @@ function linkSelected(t){
                                         }
                                         $('#conditionSelectorDropdown')[0].selectedIndex = 2;
                                         $('#labelConditionSelectDiv').show();
+                                        $('#memberConditionSelectDiv').hide();
+                                    }
+                                    if(link.condtype === "none"){
+                                        $('#labelConditionSelectDiv').hide();
+                                        $('#memberConditionSelectDiv').hide();
                                     }
                                     $('#mainDiv').show();
                                     $('#loadingDiv').hide();
