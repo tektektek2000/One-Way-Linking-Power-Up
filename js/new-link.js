@@ -167,49 +167,33 @@ $(document).ready(function(){
                     });
                 }
                 promise.then(listTargetId => {            
-                    api.addCard(linkname,"This is an automatically generated card.",listTargetId,api.key,token)
-                    .then(response => {
-                        return response.text();
+                    var type = "list";
+                    var _linkTarget = _lists[$('#listSelectorDropdown')[0].value];
+                    if($('#targetSelectorDropdown')[0].value === "Board"){
+                        type = "board";
+                        _linkTarget = $('#boardSelectorDropdown')[0].value;
+                    }
+                    var _condtype = "none";
+                    var _condTarget = "";
+                    if($('#conditionSelectorDropdown')[0].value === "Member"){
+                        _condtype = "member";
+                        _condTarget = _members[$('#memberConditionSelectorDropdown')[0].value];
+                    }
+                    else if($('#conditionSelectorDropdown')[0].value === "Label"){
+                        _condtype = "label";
+                        _condTarget = _labels[$('#labelConditionSelectorDropdown')[0].value];
+                    }
+                    _links.push({
+                        name: linkname,
+                        type: type,
+                        linkTarget: _linkTarget,
+                        condtype: _condtype,
+                        condTarget: _condTarget,
+                        targetID: listTargetId
                     })
-                    .then(text => {
-                        return sleep(200) //The Api is slow and i need to wait otherwise i get no card with this id error.
-                        .then(() => {
-                            const id = text.match(/"id":"([\da-z]*)"/i)[1];
-                            return id;
-                        })
-                    })
-                    .then(id => { 
-                        var type = "list";
-                        var _linkTarget = _lists[$('#listSelectorDropdown')[0].value];
-                        if($('#targetSelectorDropdown')[0].value === "Board"){
-                            type = "board";
-                            _linkTarget = $('#boardSelectorDropdown')[0].value;
-                        }
-                        var _condtype = "none";
-                        var _condTarget = "";
-                        if($('#conditionSelectorDropdown')[0].value === "Member"){
-                            _condtype = "member";
-                            _condTarget = _members[$('#memberConditionSelectorDropdown')[0].value];
-                        }
-                        else if($('#conditionSelectorDropdown')[0].value === "Label"){
-                            _condtype = "label";
-                            _condTarget = _labels[$('#labelConditionSelectorDropdown')[0].value];
-                        }
-                        _links.push({
-                            type: type,
-                            linkTarget: _linkTarget,
-                            condtype: _condtype,
-                            condTarget: _condTarget,
-                            targetID: listTargetId
-                        })
-                        t.set('board', 'shared', 'link', _links)
-                        .then(idk => {
-                            t.closeModal();
-                        })
-                        .catch(err => {
-                            console.error(err)
-                            t.closeModal();
-                        });
+                    t.set('board', 'shared', 'link', _links)
+                    .then(idk => {
+                        t.closeModal();
                     })
                     .catch(err => {
                         console.error(err)
