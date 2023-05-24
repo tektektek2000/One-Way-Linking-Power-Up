@@ -86,22 +86,24 @@ function saveCurrent(t){
                 _condtype = "label";
                 _condTarget = _labels[$('#labelConditionSelectorDropdown')[0].value];
             }
-            t.set('card', 'shared', 'link', {
-                type: type,
-                linkTarget: _linkTarget,
-                condtype: _condtype,
-                condTarget: _condTarget,
-                targetID: id
-            })
+            _links[selectedIndex].name = $("#linkName")[0].value;
+            _links[selectedIndex].type = type;
+            _links[selectedIndex].name = linkname;
+            _links[selectedIndex].type = type;
+            _links[selectedIndex].linkTarget = _linkTarget;
+            _links[selectedIndex].condtype = _condtype;
+            _links[selectedIndex].condTarget = _condTarget;
+            _links[selectedIndex].targetID = listTargetId;
+            t.set('board', 'shared', 'link', _links)
             .catch(err => {
                 console.error(err)
-                t.closeModal();
             });
         }
     });
 }
 
 function linkSelected(t){
+    var context = t.getContext();
     t.getRestApi()
     .getToken()
     .then(token => {
@@ -121,6 +123,7 @@ function linkSelected(t){
                     element.appendChild(option);
                 }
                 var link = _links[selectedIndex];
+                $("#linkName")[0].value = link.name;
                 var promise;
                 if(link.type === "list"){
                     promise = new Promise((resolve, reject) => {
@@ -283,7 +286,6 @@ $(document).ready(function(){
         appKey: api.key,
         appName: 'Test'
     });
-    var context = t.getContext();
     $('#targetSelectorDropdown').change(function(){
         if($('#targetSelectorDropdown')[0].value === "Board"){
             $('#listSelectDiv').hide();
@@ -323,5 +325,8 @@ $(document).ready(function(){
     $('#labelConditionSelectorDropdown').change(function(){
         saveCurrent(t);
     })
+    $('#linkName')[0].addEventListener("input", e => {
+        saveCurrent(t)
+    });
     PopulateLinks(t);
 });
