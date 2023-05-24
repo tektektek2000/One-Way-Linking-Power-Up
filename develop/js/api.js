@@ -181,6 +181,22 @@ function getCardsFromList(listID, apiKey, token){
     });
 }
 
+function getChecklist(checkListId, apiKey, token){
+    return fetch(`https://api.trello.com/1/checklists/${checkListId}?key=${apiKey}&token=${token}`, {
+        method: 'GET',
+        headers: {
+        'Accept': 'application/json'
+        }
+    })
+    .then(response => {
+        return response.text();
+    })
+    .then(text => {
+        var checklist = JSON.parse(text);
+        return checklist;
+    });
+}
+
 const key = "6f2af19073479657e48933387208eecd"
 
-export {key,addList,addCard,copyCard,getBoardsFromMember,getCardsFromBoard,getListsFromBoard,getMembersFromBoard,getLabelsFromBoard,getList,getCard,getBoard,getCardsFromList}
+export {key,addList,addCard,copyCard,getBoardsFromMember,getCardsFromBoard,getListsFromBoard,getMembersFromBoard,getLabelsFromBoard,getList,getCard,getBoard,getCardsFromList,getChecklist}
