@@ -124,7 +124,7 @@ function copyNewCards(t,links,token){
                                 for(let checklist of card.idChecklists){
                                     checklistPromises.push(api.getChecklist(checklist,api.key,token))
                                 }
-                                return Promise.all(linkPromises).then(values => {
+                                return Promise.all(checklistPromises).then(values => {
                                     it.card.checklists = values;
                                     return t.set(card.id, 'shared', 'link', {
                                         sourceID: it.card.id,
