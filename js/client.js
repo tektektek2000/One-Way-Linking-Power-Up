@@ -31,9 +31,9 @@ function showEditLinkMenu(t) {
 }
 
 
-function updateCycle(t,links,token){
+function copyNewCards(t,links,token){
     var context = t.getContext();
-    api.getCardsFromBoard(context.board, api.key, token)
+    return api.getCardsFromBoard(context.board, api.key, token)
     .then(allCards => {
         var promises = [];
         for(let _card of allCards){
@@ -45,7 +45,7 @@ function updateCycle(t,links,token){
                 };
             }));
         }
-        Promise.all(promises).then(values => {
+        return Promise.all(promises).then(values => {
             var linkedCards = []
             for(let it of values){
                 if(it.link){
@@ -74,7 +74,7 @@ function updateCycle(t,links,token){
                     }))
                 }
             }
-            Promise.all(linkPromises).then(values => {
+            return Promise.all(linkPromises).then(values => {
                 var cardsToAdd = [];
                 for(let it of values){
                     for(let card of it.cards){
@@ -115,19 +115,29 @@ function updateCycle(t,links,token){
                     }
                 }
                 if(cardsToAdd.length > 0){
+                    var cardAddPromises = []
                     for(let it of cardsToAdd){
-                        api.copyCard(it.link.targetID,it.card.id,api.key,token).then( card => {
-                            sleep(200)
+                        cardAddPromises.push(api.copyCard(it.link.targetID,it.card.id,api.key,token).then( card => {
+                            sleep(300)
                             .then(() => {
-                                t.set(card.id, 'shared', 'link', {
-                                    sourceID: it.card.id,
-                                    listCoupled: it.link.type === 'list',
-                                    lastAcceptedValue: it.card
-                                })
+                                var checklistPromises = [];
+                                for(let checklist of card.idChecklists){
+                                    checklistPromises.push(api.getChecklist(checklist,api.key,token))
+                                }
+                                return Promise.all(linkPromises).then(values => {
+                                    it.card.checklists = values;
+                                    return t.set(card.id, 'shared', 'link', {
+                                        sourceID: it.card.id,
+                                        listCoupled: it.link.type === 'list',
+                                        lastAcceptedValue: it.card
+                                    })
+                                });
                             })
-                        });
+                        }));
                     }
+                    return Promise.all(cardAddPromises)
                 }
+                return undefined;
             })
         });
     })
@@ -153,7 +163,7 @@ TrelloPowerUp.initialize({
                                 .then(board => {
                                     return [
                                         {
-                                            text: `Link From: ${board.name}`,
+                                            text: `Link from: ${board.name}`,
                                             color: "light-gray"
                                         }
                                     ];
@@ -179,7 +189,7 @@ TrelloPowerUp.initialize({
                     t.get('board', 'shared', 'link')
                     .then(links =>{
                         if(links && links.length > 0){
-                            updateCycle(t,links,token);
+                            copyNewCards(t,links,token);
                         }
                     })
                 })}, 30000);
