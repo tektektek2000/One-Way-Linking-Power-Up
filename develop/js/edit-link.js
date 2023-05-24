@@ -244,7 +244,8 @@ function PopulateLinks(t){
             _links = links;
         }
         else{
-            t.closeModal()
+            t.closeModal();
+            return;
         }
         $('#linkSelectDiv')[0].innerHTML = "";
         for (var it in _links){
@@ -260,8 +261,7 @@ function PopulateLinks(t){
             </div>`
         }
         for (var it in _links){
-            console.log($(`button.btn-danger[link-index="${it}"]`));
-            $(`button .btn-danger [link-index=${it}]`).on("click", () => {
+            $(`button.btn-danger[link-index="${it}"]`).on("click", () => {
                 console.log(`Delete at index: ${it}`)
                 _links.splice(it,1);
                 t.set('board', 'shared', 'link', _links)
