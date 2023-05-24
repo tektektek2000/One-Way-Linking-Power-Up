@@ -127,6 +127,9 @@ TrelloPowerUp.initialize({
             });
     },
     'board-buttons': function (t, opts) {
+        if(test){
+            clearInterval(test);
+        }
         test = setInterval(function(){
             t.getRestApi()
             .getToken()
@@ -140,7 +143,7 @@ TrelloPowerUp.initialize({
                         updateCycle(t,links,token);
                     }
                 })
-            })}, 60000);
+            })}, 30000);
         return t.getRestApi()
             .isAuthorized()
             .then(function (isAuthorized) {
