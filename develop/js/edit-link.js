@@ -5,7 +5,7 @@ var _lists;
 var _members;
 var _labels;
 var _links = [];
-var selectedId = 0;
+var selectedIndex = 0;
 
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -120,113 +120,111 @@ function linkSelected(t){
                     option.appendChild(text);
                     element.appendChild(option);
                 }
-                t.get('card', 'shared', 'link')
-                .then(link => {
-                    var promise;
-                    if(link.type === "list"){
-                        promise = new Promise((resolve, reject) => {
-                            resolve(link.linkTarget.idBoard);
-                        });
+                var link = _links[selectedIndex];
+                var promise;
+                if(link.type === "list"){
+                    promise = new Promise((resolve, reject) => {
+                        resolve(link.linkTarget.idBoard);
+                    });
+                }
+                else if(link.type === "board"){
+                    promise = new Promise((resolve, reject) => {
+                        resolve(link.linkTarget);
+                    });
+                }
+                promise.then(boardID => {
+                    for (var it in boards){
+                        if (boards[it].id === boardID){
+                            $('#boardSelectorDropdown')[0].selectedIndex = it;
+                        }
                     }
-                    else if(link.type === "board"){
-                        promise = new Promise((resolve, reject) => {
-                            resolve(link.linkTarget);
-                        });
-                    }
-                    promise.then(boardID => {
-                        for (var it in boards){
-                            if (boards[it].id === boardID){
-                                $('#boardSelectorDropdown')[0].selectedIndex = it;
+                    console.log($('#boardSelectorDropdown')[0].value);
+                    api.getListsFromBoard(context.board, api.key, token)
+                    .then(targetlists => {
+                        var element = $('#targetListSelectorDropdown')[0];
+                        element.innerHTML = '';
+                        for (var it in targetlists){
+                            const list = targetlists[it];
+                            var option = document.createElement("option");
+                            option.setAttribute('value', `{"name": "${list.name}","id": "${list.id}"}`);     
+                            var text = document.createTextNode(list.name);
+                            option.appendChild(text);
+                            element.appendChild(option);
+                        }
+                        for (var it in targetlists){
+                            if (targetlists[it].id === link.targetID){
+                                $('#targetListSelectorDropdown')[0].selectedIndex = it;
                             }
                         }
-                        console.log($('#boardSelectorDropdown')[0].value);
-                        api.getListsFromBoard(context.board, api.key, token)
-                        .then(targetlists => {
-                            var element = $('#targetListSelectorDropdown')[0];
+                        api.getListsFromBoard(boardID, api.key, token)
+                        .then(lists => {
+                            _lists = lists;
+                            var element = $('#listSelectorDropdown')[0];
                             element.innerHTML = '';
-                            for (var it in targetlists){
-                                const list = targetlists[it];
+                            for (var it in lists){
+                                const list = lists[it];
                                 var option = document.createElement("option");
-                                option.setAttribute('value', `{"name": "${list.name}","id": "${list.id}"}`);     
+                                option.setAttribute('value', it);     
                                 var text = document.createTextNode(list.name);
                                 option.appendChild(text);
                                 element.appendChild(option);
                             }
-                            for (var it in targetlists){
-                                if (targetlists[it].id === link.targetID){
-                                    $('#targetListSelectorDropdown')[0].selectedIndex = it;
-                                }
-                            }
-                            api.getListsFromBoard(boardID, api.key, token)
-                            .then(lists => {
-                                _lists = lists;
-                                var element = $('#listSelectorDropdown')[0];
-                                element.innerHTML = '';
+                            if(link.type === "list"){
                                 for (var it in lists){
-                                    const list = lists[it];
+                                    if (lists[it].id === link.linkTarget.id){
+                                        $('#listSelectorDropdown')[0].selectedIndex = it;
+                                    }
+                                }
+                                $('#listSelectDiv').show();
+                                $('#targetSelectorDropdown')[0].selectedIndex = 1;
+
+                            }
+                            api.getMembersFromBoard(boardID, api.key, token)
+                            .then(members => {
+                                _members = members;
+                                var element = $('#memberConditionSelectorDropdown')[0];
+                                element.innerHTML = '';
+                                for (var it in members){
+                                    const member = members[it];
                                     var option = document.createElement("option");
                                     option.setAttribute('value', it);     
-                                    var text = document.createTextNode(list.name);
+                                    var text = document.createTextNode(member.username);
                                     option.appendChild(text);
                                     element.appendChild(option);
                                 }
-                                if(link.type === "list"){
-                                    for (var it in lists){
-                                        if (lists[it].id === link.linkTarget.id){
-                                            $('#listSelectorDropdown')[0].selectedIndex = it;
+                                if(link.condtype === "member"){
+                                    for (var it in members){
+                                        if (members[it].id === link.condTarget.id){
+                                            $('#memberConditionSelectorDropdown')[0].selectedIndex = it;
                                         }
                                     }
-                                    $('#listSelectDiv').show();
-                                    $('#targetSelectorDropdown')[0].selectedIndex = 1;
-
+                                    $('#conditionSelectorDropdown')[0].selectedIndex = 1;
+                                    $('#memberConditionSelectDiv').show();
                                 }
-                                api.getMembersFromBoard(boardID, api.key, token)
-                                .then(members => {
-                                    _members = members;
-                                    var element = $('#memberConditionSelectorDropdown')[0];
+                                api.getLabelsFromBoard(boardID, api.key, token)
+                                .then(labels => {
+                                    _labels = labels;
+                                    var element = $('#labelConditionSelectorDropdown')[0];
                                     element.innerHTML = '';
-                                    for (var it in members){
-                                        const member = members[it];
+                                    for (var it in labels){
+                                        const label = labels[it];
                                         var option = document.createElement("option");
                                         option.setAttribute('value', it);     
-                                        var text = document.createTextNode(member.username);
+                                        var text = document.createTextNode(label.name);
                                         option.appendChild(text);
                                         element.appendChild(option);
                                     }
-                                    if(link.condtype === "member"){
+                                    if(link.condtype === "label"){
                                         for (var it in members){
-                                            if (members[it].id === link.condTarget.id){
-                                                $('#memberConditionSelectorDropdown')[0].selectedIndex = it;
+                                            if (labels[it].id === link.condTarget.id){
+                                                $('#labelConditionSelectorDropdown')[0].selectedIndex = it;
                                             }
                                         }
-                                        $('#conditionSelectorDropdown')[0].selectedIndex = 1;
-                                        $('#memberConditionSelectDiv').show();
+                                        $('#conditionSelectorDropdown')[0].selectedIndex = 2;
+                                        $('#labelConditionSelectDiv').show();
                                     }
-                                    api.getLabelsFromBoard(boardID, api.key, token)
-                                    .then(labels => {
-                                        _labels = labels;
-                                        var element = $('#labelConditionSelectorDropdown')[0];
-                                        element.innerHTML = '';
-                                        for (var it in labels){
-                                            const label = labels[it];
-                                            var option = document.createElement("option");
-                                            option.setAttribute('value', it);     
-                                            var text = document.createTextNode(label.name);
-                                            option.appendChild(text);
-                                            element.appendChild(option);
-                                        }
-                                        if(link.condtype === "label"){
-                                            for (var it in members){
-                                                if (labels[it].id === link.condTarget.id){
-                                                    $('#labelConditionSelectorDropdown')[0].selectedIndex = it;
-                                                }
-                                            }
-                                            $('#conditionSelectorDropdown')[0].selectedIndex = 2;
-                                            $('#labelConditionSelectDiv').show();
-                                        }
-                                        $('#mainDiv').show();
-                                        $('#loadingDiv').hide();
-                                    })
+                                    $('#mainDiv').show();
+                                    $('#loadingDiv').hide();
                                 })
                             })
                         })
@@ -269,9 +267,14 @@ function PopulateLinks(t){
                     PopulateLinks(t);
                 })
             })
+            $(`button.btn-primary[link-index="${it}"]`).on("click", () => {
+                console.log(`Select at index: ${it}`)
+                selectedIndex = it;
+                linkSelected(t);
+            })
         }
-        $('#loadingDiv').hide();
         $('#linkSelectDiv').show();
+        $('#loadingDiv').hide();
     })
 }
 
