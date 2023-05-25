@@ -70,6 +70,9 @@ function modifyWithNewActions(modified, modifyWith, lastAcceptedValue){
         newAcceptedValue.checklists.splice(newAcceptedValue.checklists.length-1,1);
         checklistStateChanged = true;
     }
+    console.log(newAcceptedValue);
+    console.log(lastAcceptedValue);
+    console.log(modifyWith);
     for(var i in newAcceptedValue.checklists){
         var examine = newAcceptedValue;
         if(i < lastAcceptedValue.checklists.length){examine = lastAcceptedValue;}
