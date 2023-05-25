@@ -37,13 +37,15 @@ function copyNewCards(t,links,token){
     .then(allCards => {
         var promises = [];
         for(let _card of allCards){
-            promises.push(t.get(_card.id, 'shared', 'link')
-            .then(cardLink => {
-                return {
-                    card: _card,
-                    link: cardLink
-                };
-            }));
+            promises.push(waitForApiCapacity()
+            .then(() => {return t.get(_card.id, 'shared', 'link')
+                .then(cardLink => {
+                    return {
+                        card: _card,
+                        link: cardLink
+                    };
+                })
+            }))
         }
         return Promise.all(promises).then(values => {
             var linkedCards = []
@@ -157,34 +159,36 @@ TrelloPowerUp.initialize({
         return t
             .card("all")
             .then(function (card) {
-                return t.get('card', 'shared', 'link')
-                .then(link =>{
-                    if(link){
-                        return t
-                        .getRestApi()
-                        .getToken()
-                        .then(token => {
-                            return api
-                            .getCard(link.sourceID,api.key,token)
-                            .then(card => {
+                return waitForApiCapacity()
+                .then(() => {return t.get('card', 'shared', 'link')
+                    .then(link =>{
+                        if(link){
+                            return t
+                            .getRestApi()
+                            .getToken()
+                            .then(token => {
                                 return api
-                                .getBoard(card.idBoard,api.key,token)
-                                .then(board => {
-                                    return [
-                                        {
-                                            text: `Link from: ${board.name}`,
-                                            color: "light-gray"
-                                        }
-                                    ];
+                                .getCard(link.sourceID,api.key,token)
+                                .then(card => {
+                                    return api
+                                    .getBoard(card.idBoard,api.key,token)
+                                    .then(board => {
+                                        return [
+                                            {
+                                                text: `Link from: ${board.name}`,
+                                                color: "light-gray"
+                                            }
+                                        ];
+                                    })
                                 })
                             })
-                        })
-                    }
-                    else{
-                        return {};
-                    }
+                        }
+                        else{
+                            return {};
+                        }
+                    });
                 });
-            });
+            })
     },
     'board-buttons': function (t, opts) {
         if(!interval){
@@ -195,11 +199,14 @@ TrelloPowerUp.initialize({
                     if (!token) {
                         console.log("No token")
                     }
-                    t.get('board', 'shared', 'link')
-                    .then(links =>{
-                        if(links && links.length > 0){
-                            copyNewCards(t,links,token);
-                        }
+                    waitForApiCapacity()
+                    .then(() => {
+                        t.get('board', 'shared', 'link')
+                        .then(links =>{
+                            if(links && links.length > 0){
+                                copyNewCards(t,links,token);
+                            }
+                        })
                     })
                 })}, 60000);
         }
@@ -212,17 +219,19 @@ TrelloPowerUp.initialize({
                         condition: "edit",
                         callback: showNewLinkMenu
                     }]
-                    return t.get('board', 'shared', 'link')
-                    .then(links =>{
-                        if(links && links.length > 0){
-                            ret.push({
-                                text: 'Edit Links',
-                                condition: "edit",
-                                callback: showEditLinkMenu
-                            })
-                        }
-                        return ret;
-                    });
+                    return waitForApiCapacity()
+                    .then(() => {return t.get('board', 'shared', 'link')
+                        .then(links =>{
+                            if(links && links.length > 0){
+                                ret.push({
+                                    text: 'Edit Links',
+                                    condition: "edit",
+                                    callback: showEditLinkMenu
+                                })
+                            }
+                            return ret;
+                        });
+                    })
                 } else {
                     return [{
                         text: 'Authorize',

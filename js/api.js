@@ -15,7 +15,7 @@ function waitForApiCapacity(){
     if(numberOfCalls < 95){
         numberOfCalls++;
         console.log(`Number of calls: ${numberOfCalls}`);
-        return Promise.resolve(numberOfCalls);
+        return sleep(100);
     }
     else{
         return sleep(500).then(() => {return waitForApiCapacity()})
@@ -247,4 +247,4 @@ function getChecklist(checkListId, apiKey, token){
 
 const key = "6f2af19073479657e48933387208eecd"
 
-export {key,addList,addCard,copyCard,getBoardsFromMember,getCardsFromBoard,getListsFromBoard,getMembersFromBoard,getLabelsFromBoard,getList,getCard,getBoard,getCardsFromList,getChecklist}
+export {key,waitForApiCapacity,addList,addCard,copyCard,getBoardsFromMember,getCardsFromBoard,getListsFromBoard,getMembersFromBoard,getLabelsFromBoard,getList,getCard,getBoard,getCardsFromList,getChecklist}
