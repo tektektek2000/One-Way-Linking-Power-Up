@@ -20,7 +20,7 @@ function addCard(cardName, cardDesc, listID, apiKey, token){
     })
     .then(text => {
         var card = JSON.parse(text);
-        return sleep(300)
+        return sleep(800)
         .then(() => {
             return card;
         })
@@ -39,7 +39,7 @@ function copyCard(listID, copyFromId, apiKey, token){
     })
     .then(text => {
         var card = JSON.parse(text);
-        return sleep(300)
+        return sleep(800)
         .then(() => {
             return card;
         })
@@ -58,7 +58,7 @@ function getBoardsFromMember(memberID, apiKey, token){
     })
     .then(text => {
         var boards = JSON.parse(text);
-        return sleep(300)
+        return sleep(800)
         .then(() => {
             return boards;
         })
@@ -77,7 +77,7 @@ function getCardsFromBoard(boardID, apiKey, token){
     })
     .then(text => {
         var cards = JSON.parse(text);
-        return sleep(300)
+        return sleep(800)
         .then(() => {
             return cards;
         })
@@ -96,7 +96,7 @@ function getListsFromBoard(boardID, apiKey, token){
     })
     .then(text => {
         var lists = JSON.parse(text);
-        return sleep(300)
+        return sleep(800)
         .then(() => {
             return lists;
         })
@@ -115,7 +115,7 @@ function getMembersFromBoard(boardID, apiKey, token){
     })
     .then(text => {
         var members = JSON.parse(text);
-        return sleep(300)
+        return sleep(800)
         .then(() => {
             return members;
         })
@@ -134,7 +134,7 @@ function getLabelsFromBoard(boardID, apiKey, token){
     })
     .then(text => {
         var labels = JSON.parse(text);
-        return sleep(300)
+        return sleep(800)
         .then(() => {
             return labels;
         })
@@ -153,7 +153,7 @@ function getList(listID, apiKey, token){
     })
     .then(text => {
         var list = JSON.parse(text);
-        return sleep(300)
+        return sleep(800)
         .then(() => {
             return list;
         })
@@ -172,7 +172,7 @@ function getCard(cardID, apiKey, token){
     })
     .then(text => {
         var card = JSON.parse(text);
-        return sleep(300)
+        return sleep(800)
         .then(() => {
             return card;
         })
@@ -191,7 +191,7 @@ function getBoard(boardID, apiKey, token){
     })
     .then(text => {
         var board = JSON.parse(text);
-        return sleep(300)
+        return sleep(800)
         .then(() => {
             return board;
         })
@@ -211,7 +211,7 @@ function getCardsFromList(listID, apiKey, token){
     })
     .then(text => {
         var cards = JSON.parse(text);
-        return sleep(300)
+        return sleep(800)
         .then(() => {
             return cards;
         })
@@ -230,7 +230,7 @@ function getChecklist(checkListId, apiKey, token){
     })
     .then(text => {
         var checklist = JSON.parse(text);
-        return sleep(300)
+        return sleep(800)
         .then(() => {
             return checklist;
         })
