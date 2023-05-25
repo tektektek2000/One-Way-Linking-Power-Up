@@ -139,6 +139,8 @@ function syncChanges(t,links,token,linkedCard){
     if(newAcceptedState.changed){
         saveChangesToCard(first, newAcceptedState.state, token)
     }
+    linkedCard.link.lastAcceptedValue = newAcceptedState;
+    t.set(linkedCard.card.id, 'shared', 'link', linkedCard.link);
 }
 
 function refreshCards(t,links,token){
@@ -369,7 +371,7 @@ TrelloPowerUp.initialize({
                             });
                         }
                     })
-                })}, 60000);
+                })}, 30000);
             t.getRestApi()
             .getToken()
             .then(token => {
