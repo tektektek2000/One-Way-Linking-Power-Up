@@ -1,5 +1,23 @@
+var numberOfCalls = 0;
+var resetCalls;
+
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+function waitForApiCapacity(){
+    if(!resetCalls){
+        resetCalls = setInterval(function(){
+                numberOfCalls = 0;
+            }, 100);
+    }
+    if(numberOfCalls < 95){
+        numberOfCalls++;
+        return;
+    }
+    else{
+        return sleep(50).then(() => {return waitForApiCapacity()})
+    }
 }
 
 function addList(listName, boardID, apiKey, token){
@@ -9,7 +27,7 @@ function addList(listName, boardID, apiKey, token){
 }
 
 function addCard(cardName, cardDesc, listID, apiKey, token){
-    return sleep(300).then(() => {
+    return waitForApiCapacity().then(() => {
         return fetch(`https://api.trello.com/1/cards?idList=${listID}&name=${cardName}&desc=${cardDesc}&key=${apiKey}&token=${token}`, {
             method: 'POST',
             headers: {
@@ -27,7 +45,7 @@ function addCard(cardName, cardDesc, listID, apiKey, token){
 }
 
 function copyCard(listID, copyFromId, apiKey, token){
-    return sleep(300).then(() => {
+    return waitForApiCapacity().then(() => {
         return fetch(`https://api.trello.com/1/cards?idList=${listID}&idCardSource=${copyFromId}&key=${apiKey}&token=${token}`, {
             method: 'POST',
             headers: {
@@ -45,7 +63,7 @@ function copyCard(listID, copyFromId, apiKey, token){
 }
 
 function getBoardsFromMember(memberID, apiKey, token){
-    return sleep(300).then(() => {
+    return waitForApiCapacity().then(() => {
         return fetch(`https://api.trello.com/1/members/${memberID}/boards?key=${apiKey}&token=${token}`, {
             method: 'GET',
             headers: {
@@ -63,7 +81,7 @@ function getBoardsFromMember(memberID, apiKey, token){
 }
 
 function getCardsFromBoard(boardID, apiKey, token){
-    return sleep(300).then(() => {
+    return waitForApiCapacity().then(() => {
         return fetch(`https://api.trello.com/1/boards/${boardID}/cards?key=${apiKey}&token=${token}`, {
             method: 'GET',
             headers: {
@@ -81,7 +99,7 @@ function getCardsFromBoard(boardID, apiKey, token){
 }
 
 function getListsFromBoard(boardID, apiKey, token){
-    return sleep(300).then(() => {
+    return waitForApiCapacity().then(() => {
         return fetch(`https://api.trello.com/1/boards/${boardID}/lists?key=${apiKey}&token=${token}`, {
             method: 'GET',
             headers: {
@@ -99,7 +117,7 @@ function getListsFromBoard(boardID, apiKey, token){
 }
 
 function getMembersFromBoard(boardID, apiKey, token){
-    return sleep(300).then(() => {
+    return waitForApiCapacity().then(() => {
         return fetch(`https://api.trello.com/1/boards/${boardID}/members?key=${apiKey}&token=${token}`, {
             method: 'GET',
             headers: {
@@ -117,7 +135,7 @@ function getMembersFromBoard(boardID, apiKey, token){
 }
 
 function getLabelsFromBoard(boardID, apiKey, token){
-    return sleep(300).then(() => {
+    return waitForApiCapacity().then(() => {
         return fetch(`https://api.trello.com/1/boards/${boardID}/labels?key=${apiKey}&token=${token}`, {
             method: 'GET',
             headers: {
@@ -135,7 +153,7 @@ function getLabelsFromBoard(boardID, apiKey, token){
 }
 
 function getList(listID, apiKey, token){
-    return sleep(300).then(() => {
+    return waitForApiCapacity().then(() => {
         return fetch(`https://api.trello.com/1/lists/${listID}?key=${apiKey}&token=${token}`, {
             method: 'GET',
             headers: {
@@ -153,7 +171,7 @@ function getList(listID, apiKey, token){
 }
 
 function getCard(cardID, apiKey, token){
-    return sleep(300).then(() => {
+    return waitForApiCapacity().then(() => {
         return fetch(`https://api.trello.com/1/cards/${cardID}?key=${apiKey}&token=${token}`, {
             method: 'GET',
             headers: {
@@ -171,7 +189,7 @@ function getCard(cardID, apiKey, token){
 }
 
 function getBoard(boardID, apiKey, token){
-    return sleep(300).then(() => {
+    return waitForApiCapacity().then(() => {
         return fetch(`https://api.trello.com/1/boards/${boardID}?key=${apiKey}&token=${token}`, {
             method: 'GET',
             headers: {
@@ -190,7 +208,7 @@ function getBoard(boardID, apiKey, token){
 
 
 function getCardsFromList(listID, apiKey, token){
-    return sleep(300).then(() => {
+    return waitForApiCapacity().then(() => {
         return fetch(`https://api.trello.com/1/lists/${listID}/cards?key=${apiKey}&token=${token}`, {
             method: 'GET',
             headers: {
@@ -208,7 +226,7 @@ function getCardsFromList(listID, apiKey, token){
 }
 
 function getChecklist(checkListId, apiKey, token){
-    return sleep(300).then(() => {
+    return waitForApiCapacity().then(() => {
         return fetch(`https://api.trello.com/1/checklists/${checkListId}?key=${apiKey}&token=${token}`, {
             method: 'GET',
             headers: {
