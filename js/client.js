@@ -120,18 +120,27 @@ function copyNewCards(t,links,token){
                         cardAddPromises.push(api.copyCard(it.link.targetID,it.card.id,api.key,token).then( card => {
                             sleep(300)
                             .then(() => {
-                                var checklistPromises = [];
-                                for(let checklist of card.idChecklists){
-                                    checklistPromises.push(api.getChecklist(checklist,api.key,token))
+                                if(card.idChecklists){
+                                    var checklistPromises = [];
+                                    for(let checklist of card.idChecklists){
+                                        checklistPromises.push(api.getChecklist(checklist,api.key,token))
+                                    }
+                                    return Promise.all(checklistPromises).then(values => {
+                                        it.card.checklists = values;
+                                        return t.set(card.id, 'shared', 'link', {
+                                            sourceID: it.card.id,
+                                            listCoupled: it.link.type === 'list',
+                                            lastAcceptedValue: it.card
+                                        })
+                                    });
                                 }
-                                return Promise.all(checklistPromises).then(values => {
-                                    it.card.checklists = values;
+                                else{
                                     return t.set(card.id, 'shared', 'link', {
                                         sourceID: it.card.id,
                                         listCoupled: it.link.type === 'list',
                                         lastAcceptedValue: it.card
-                                    })
-                                });
+                                    });
+                                }
                             })
                         }));
                     }
