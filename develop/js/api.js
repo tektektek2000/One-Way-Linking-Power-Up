@@ -5,6 +5,24 @@ function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+function getChecklist(checkListId, apiKey, token){
+    return fetchButApiSafe(`https://api.trello.com/1/checklists/${checkListId}?key=${apiKey}&token=${token}`, {
+        method: 'GET',
+        headers: {
+        'Accept': 'application/json'
+        }
+    })
+    .then(response => {
+        if(response.status == 404){return undefined;}
+        return response.text();
+    })
+    .then(text => {
+        if(!text){return text}
+        var checklist = JSON.parse(text);
+        return checklist;
+    });
+}
+
 function waitForApiCapacity(){
     if(!resetCalls){
         resetCalls = setInterval(function(){
@@ -271,24 +289,6 @@ function getCardsFromList(listID, apiKey, token){
         if(!text){return text}
         var cards = JSON.parse(text);
         return cards;
-    });
-}
-
-function getChecklist(checkListId, apiKey, token){
-    return fetchButApiSafe(`https://api.trello.com/1/checklists/${checkListId}?key=${apiKey}&token=${token}`, {
-        method: 'GET',
-        headers: {
-        'Accept': 'application/json'
-        }
-    })
-    .then(response => {
-        if(response.status == 404){return undefined;}
-        return response.text();
-    })
-    .then(text => {
-        if(!text){return text}
-        var checklist = JSON.parse(text);
-        return checklist;
     });
 }
 
