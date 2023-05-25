@@ -8,13 +8,11 @@ function sleep(ms) {
 function waitForApiCapacity(){
     if(!resetCalls){
         resetCalls = setInterval(function(){
-                console.log(`Reset number of calls`);
                 numberOfCalls = 0;
             }, 10000);
     }
     if(numberOfCalls < 95){
         numberOfCalls++;
-        console.log(`Number of calls: ${numberOfCalls}`);
         return Promise.resolve(numberOfCalls);
     }
     else{
