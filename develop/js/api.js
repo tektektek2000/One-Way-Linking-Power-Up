@@ -13,7 +13,7 @@ function waitForApiCapacity(){
     }
     if(numberOfCalls < 95){
         numberOfCalls++;
-        return;
+        return Promise.resolve(numberOfCalls);
     }
     else{
         return sleep(50).then(() => {return waitForApiCapacity()})
