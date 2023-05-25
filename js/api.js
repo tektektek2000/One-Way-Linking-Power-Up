@@ -113,7 +113,7 @@ function getBoardsFromMember(memberID, apiKey, token){
     });
 }
 
-function getCardsFromBoard(boardID, apiKey, token, getChecklist = false){
+function getCardsFromBoard(boardID, apiKey, token, fetchChecklist = false){
     return fetchButApiSafe(`https://api.trello.com/1/boards/${boardID}/cards?key=${apiKey}&token=${token}`, {
         method: 'GET',
         headers: {
@@ -130,7 +130,7 @@ function getCardsFromBoard(boardID, apiKey, token, getChecklist = false){
         return cards;
     })
     .then(cards => {
-        if(getChecklist){
+        if(fetchChecklist){
             var promises = []
             for(let card of cards){
                 if(card.idChecklists){
@@ -224,7 +224,7 @@ function getList(listID, apiKey, token){
     });
 }
 
-function getCard(cardID, apiKey, token, getChecklist = false){
+function getCard(cardID, apiKey, token, fetchChecklist = false){
     return fetchButApiSafe(`https://api.trello.com/1/cards/${cardID}?key=${apiKey}&token=${token}`, {
         method: 'GET',
         headers: {
@@ -241,7 +241,7 @@ function getCard(cardID, apiKey, token, getChecklist = false){
         return card;
     })
     .then(card => {
-        if(card.idChecklists && getChecklist){
+        if(card.idChecklists && fetchChecklist){
             var checklistPromises = [];
             for(let checklist of card.idChecklists){
                 checklistPromises.push(getChecklist(checklist,key,token))
