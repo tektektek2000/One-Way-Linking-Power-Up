@@ -28,7 +28,7 @@ function fetchButApiSafe(link, headers){
         return fetch(link, headers)
         .then(response => {
             if(response.status == 429){
-                return sleep(500).then(() => {return fetchButApiSafeButApiSafe(link, headers)});
+                return sleep(500).then(() => {return fetchButApiSafe(link, headers)});
             }
             return response;
         })
