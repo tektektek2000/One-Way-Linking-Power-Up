@@ -201,7 +201,7 @@ TrelloPowerUp.initialize({
                             copyNewCards(t,links,token);
                         }
                     })
-                })}, 30000);
+                })}, 60000);
         }
         return t.getRestApi()
             .isAuthorized()
