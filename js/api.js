@@ -37,6 +37,13 @@ function addList(listName, boardID, apiKey, token){
     return fetchButApiSafe(`https://api.trello.com/1/lists?name=${listName}&idBoard=${boardID}&key=${apiKey}&token=${token}`, {
         method: 'POST'
     })
+    .then(response => {
+        return response.text();
+    })
+    .then(text => {
+        var card = JSON.parse(text);
+        return card;
+    });
 }
 
 function addCard(cardName, cardDesc, listID, apiKey, token){
@@ -79,6 +86,7 @@ function getBoardsFromMember(memberID, apiKey, token){
         }
     })
     .then(response => {
+        if(response.status == 404){return undefined;}
         return response.text();
     })
     .then(text => {
@@ -95,6 +103,7 @@ function getCardsFromBoard(boardID, apiKey, token){
         }
     })
     .then(response => {
+        if(response.status == 404){return undefined;}
         return response.text();
     })
     .then(text => {
@@ -111,6 +120,7 @@ function getListsFromBoard(boardID, apiKey, token){
         }
     })
     .then(response => {
+        if(response.status == 404){return undefined;}
         return response.text();
     })
     .then(text => {
@@ -127,6 +137,7 @@ function getMembersFromBoard(boardID, apiKey, token){
         }
     })
     .then(response => {
+        if(response.status == 404){return undefined;}
         return response.text();
     })
     .then(text => {
@@ -143,6 +154,7 @@ function getLabelsFromBoard(boardID, apiKey, token){
         }
     })
     .then(response => {
+        if(response.status == 404){return undefined;}
         return response.text();
     })
     .then(text => {
@@ -159,6 +171,7 @@ function getList(listID, apiKey, token){
         }
     })
     .then(response => {
+        if(response.status == 404){return undefined;}
         return response.text();
     })
     .then(text => {
@@ -175,6 +188,7 @@ function getCard(cardID, apiKey, token){
         }
     })
     .then(response => {
+        if(response.status == 404){return undefined;}
         return response.text();
     })
     .then(text => {
@@ -191,6 +205,7 @@ function getBoard(boardID, apiKey, token){
         }
     })
     .then(response => {
+        if(response.status == 404){return undefined;}
         return response.text();
     })
     .then(text => {
@@ -208,6 +223,7 @@ function getCardsFromList(listID, apiKey, token){
         }
     })
     .then(response => {
+        if(response.status == 404){return undefined;}
         return response.text();
     })
     .then(text => {
@@ -224,6 +240,7 @@ function getChecklist(checkListId, apiKey, token){
         }
     })
     .then(response => {
+        if(response.status == 404){return undefined;}
         return response.text();
     })
     .then(text => {
