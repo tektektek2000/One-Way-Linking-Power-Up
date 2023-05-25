@@ -1,3 +1,7 @@
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 function addList(listName, boardID, apiKey, token){
     return fetch(`https://api.trello.com/1/lists?name=${listName}&idBoard=${boardID}&key=${apiKey}&token=${token}`, {
         method: 'POST'
@@ -16,7 +20,10 @@ function addCard(cardName, cardDesc, listID, apiKey, token){
     })
     .then(text => {
         var card = JSON.parse(text);
-        return card;
+        return sleep(300)
+        .then(() => {
+            return card;
+        })
     });
 }
 
@@ -32,7 +39,10 @@ function copyCard(listID, copyFromId, apiKey, token){
     })
     .then(text => {
         var card = JSON.parse(text);
-        return card;
+        return sleep(300)
+        .then(() => {
+            return card;
+        })
     });
 }
 
@@ -48,7 +58,10 @@ function getBoardsFromMember(memberID, apiKey, token){
     })
     .then(text => {
         var boards = JSON.parse(text);
-        return boards;
+        return sleep(300)
+        .then(() => {
+            return boards;
+        })
     });
 }
 
@@ -63,8 +76,11 @@ function getCardsFromBoard(boardID, apiKey, token){
         return response.text();
     })
     .then(text => {
-        var boards = JSON.parse(text);
-        return boards;
+        var cards = JSON.parse(text);
+        return sleep(300)
+        .then(() => {
+            return cards;
+        })
     });
 }
 
@@ -79,8 +95,11 @@ function getListsFromBoard(boardID, apiKey, token){
         return response.text();
     })
     .then(text => {
-        var boards = JSON.parse(text);
-        return boards;
+        var lists = JSON.parse(text);
+        return sleep(300)
+        .then(() => {
+            return lists;
+        })
     });
 }
 
@@ -95,8 +114,11 @@ function getMembersFromBoard(boardID, apiKey, token){
         return response.text();
     })
     .then(text => {
-        var boards = JSON.parse(text);
-        return boards;
+        var members = JSON.parse(text);
+        return sleep(300)
+        .then(() => {
+            return members;
+        })
     });
 }
 
@@ -111,8 +133,11 @@ function getLabelsFromBoard(boardID, apiKey, token){
         return response.text();
     })
     .then(text => {
-        var boards = JSON.parse(text);
-        return boards;
+        var labels = JSON.parse(text);
+        return sleep(300)
+        .then(() => {
+            return labels;
+        })
     });
 }
 
@@ -128,7 +153,10 @@ function getList(listID, apiKey, token){
     })
     .then(text => {
         var list = JSON.parse(text);
-        return list;
+        return sleep(300)
+        .then(() => {
+            return list;
+        })
     });
 }
 
@@ -144,7 +172,10 @@ function getCard(cardID, apiKey, token){
     })
     .then(text => {
         var card = JSON.parse(text);
-        return card;
+        return sleep(300)
+        .then(() => {
+            return card;
+        })
     });
 }
 
@@ -160,7 +191,10 @@ function getBoard(boardID, apiKey, token){
     })
     .then(text => {
         var board = JSON.parse(text);
-        return board;
+        return sleep(300)
+        .then(() => {
+            return board;
+        })
     });
 }
 
@@ -177,7 +211,10 @@ function getCardsFromList(listID, apiKey, token){
     })
     .then(text => {
         var cards = JSON.parse(text);
-        return cards;
+        return sleep(300)
+        .then(() => {
+            return cards;
+        })
     });
 }
 
@@ -193,7 +230,10 @@ function getChecklist(checkListId, apiKey, token){
     })
     .then(text => {
         var checklist = JSON.parse(text);
-        return checklist;
+        return sleep(300)
+        .then(() => {
+            return checklist;
+        })
     });
 }
 
