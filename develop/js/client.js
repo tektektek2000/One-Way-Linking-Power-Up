@@ -60,6 +60,15 @@ function modifyWithNewActions(modified, modifyWith, lastAcceptedValue){
             newAcceptedValue.idMembers.splice(newAcceptedValue.idMembers.indexOf(member),1);
         }
     }
+    if(!lastAcceptedValue.checklists){
+        lastAcceptedValue.checklists = [];
+    }
+    if(!modifyWith.checklists){
+        modifyWith.checklists = []
+    }
+    if(!newAcceptedValue.checklists){
+        newAcceptedValue.checklists = []
+    }
     //Checking if checklist was added
     while(lastAcceptedValue.checklists.length < modifyWith.checklists.length && newAcceptedValue.checklists.length < modifyWith.checklists.length){
         newAcceptedValue.checklists.push(JSON.parse(JSON.stringify(modifyWith.checklists[modifyWith.checklists.length-1])));
@@ -128,6 +137,7 @@ function syncChanges(t,links,token,linkedCard){
     var newAcceptedState = modifyWithNewActions(linkedCard.link.lastAcceptedValue,first,linkedCard.link.lastAcceptedValue);
     var firstHasChanges = newAcceptedState.changed;
     newAcceptedState = modifyWithNewActions(newAcceptedState.state,second,linkedCard.link.lastAcceptedValue);
+    console.log(newAcceptedState);
     if(firstHasChanges){
         saveChangesToCard(second, newAcceptedState.state)
     }
@@ -172,6 +182,7 @@ function refreshCards(t,links,token){
                     }
                 }
             }
+            console.log(linkedCards);
             for(var it of linkedCards){
                 syncChanges(t,links,token,it);
             }
