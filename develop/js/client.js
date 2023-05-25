@@ -37,7 +37,7 @@ function copyNewCards(t,links,token){
     .then(allCards => {
         var promises = [];
         for(let _card of allCards){
-            promises.push(waitForApiCapacity()
+            promises.push(api.waitForApiCapacity()
             .then(() => {return t.get(_card.id, 'shared', 'link')
                 .then(cardLink => {
                     return {
@@ -159,7 +159,7 @@ TrelloPowerUp.initialize({
         return t
             .card("all")
             .then(function (card) {
-                return waitForApiCapacity()
+                return api.waitForApiCapacity()
                 .then(() => {return t.get('card', 'shared', 'link')
                     .then(link =>{
                         if(link){
@@ -199,7 +199,7 @@ TrelloPowerUp.initialize({
                     if (!token) {
                         console.log("No token")
                     }
-                    waitForApiCapacity()
+                    api.waitForApiCapacity()
                     .then(() => {
                         t.get('board', 'shared', 'link')
                         .then(links =>{
@@ -219,7 +219,7 @@ TrelloPowerUp.initialize({
                         condition: "edit",
                         callback: showNewLinkMenu
                     }]
-                    return waitForApiCapacity()
+                    return api.waitForApiCapacity()
                     .then(() => {return t.get('board', 'shared', 'link')
                         .then(links =>{
                             if(links && links.length > 0){
