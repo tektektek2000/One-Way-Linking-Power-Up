@@ -12,7 +12,7 @@ function waitForApiCapacity(){
                 numberOfCalls = 0;
             }, 10000);
     }
-    if(numberOfCalls < 95){
+    if(numberOfCalls < 25){
         numberOfCalls++;
         console.log(`Number of calls: ${numberOfCalls}`);
         return sleep(100);
