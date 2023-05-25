@@ -32,14 +32,14 @@ function showEditLinkMenu(t) {
 
 function refreshCards(t,links,token){
     var context = t.getContext();
-    return api.getCardsFromBoard(context.board, api.key, token)
+    return api.getCardsFromBoard(context.board, api.key, token, true)
     .then(allCards => {
         var promises = [];
         for(let _card of allCards){
             promises.push(t.get(_card.id, 'shared', 'link')
             .then(cardLink => {
                 if(cardLink){
-                    return api.getCard(cardLink.sourceID,api.key,token)
+                    return api.getCard(cardLink.sourceID,api.key,token,true)
                     .then(_originalCard => {
                         return {
                             card: _card,
@@ -159,9 +159,9 @@ function copyNewCards(t,links,token){
                         cardAddPromises.push(api.copyCard(it.link.targetID,it.card.id,api.key,token).then( card => {
                             sleep(300)
                             .then(() => {
-                                if(card.idChecklists){
+                                if(it.card.idChecklists){
                                     var checklistPromises = [];
-                                    for(let checklist of card.idChecklists){
+                                    for(let checklist of it.card.idChecklists){
                                         checklistPromises.push(api.getChecklist(checklist,api.key,token))
                                     }
                                     return Promise.all(checklistPromises).then(values => {

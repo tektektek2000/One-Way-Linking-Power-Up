@@ -95,7 +95,7 @@ function getBoardsFromMember(memberID, apiKey, token){
     });
 }
 
-function getCardsFromBoard(boardID, apiKey, token){
+function getCardsFromBoard(boardID, apiKey, token, getChecklist = false){
     return fetchButApiSafe(`https://api.trello.com/1/boards/${boardID}/cards?key=${apiKey}&token=${token}`, {
         method: 'GET',
         headers: {
@@ -108,8 +108,29 @@ function getCardsFromBoard(boardID, apiKey, token){
     })
     .then(text => {
         if(!text){return text}
-        var boards = JSON.parse(text);
-        return boards;
+        var cards = JSON.parse(text);
+        return cards;
+    })
+    .then(cards => {
+        if(getChecklist){
+            var promises = []
+            for(let card of cards){
+                if(card.idChecklists){
+                    var checklistPromises = [];
+                    for(let checklist of card.idChecklists){
+                        checklistPromises.push(api.getChecklist(checklist,api.key,token))
+                    }
+                    promises.push(Promise.all(checklistPromises).then(values => {
+                        card.checklists = values;
+                        return card;
+                    }));
+                }
+            }
+            Promise.all(checklistPromises).then(values => {
+                return values;
+            })
+        }
+        return cards;
     });
 }
 
@@ -185,7 +206,7 @@ function getList(listID, apiKey, token){
     });
 }
 
-function getCard(cardID, apiKey, token){
+function getCard(cardID, apiKey, token, getChecklist = false){
     return fetchButApiSafe(`https://api.trello.com/1/cards/${cardID}?key=${apiKey}&token=${token}`, {
         method: 'GET',
         headers: {
@@ -199,6 +220,19 @@ function getCard(cardID, apiKey, token){
     .then(text => {
         if(!text){return text}
         var card = JSON.parse(text);
+        return card;
+    })
+    .then(card => {
+        if(card.idChecklists && getChecklist){
+            var checklistPromises = [];
+            for(let checklist of card.idChecklists){
+                checklistPromises.push(api.getChecklist(checklist,api.key,token))
+            }
+            return Promise.all(checklistPromises).then(values => {
+                card.checklists = values;
+                return card;
+            });
+        }
         return card;
     });
 }
