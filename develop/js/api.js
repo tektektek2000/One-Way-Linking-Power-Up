@@ -118,7 +118,7 @@ function getCardsFromBoard(boardID, apiKey, token, getChecklist = false){
                 if(card.idChecklists){
                     var checklistPromises = [];
                     for(let checklist of card.idChecklists){
-                        checklistPromises.push(api.getChecklist(checklist,api.key,token))
+                        checklistPromises.push(getChecklist(checklist,key,token))
                     }
                     promises.push(Promise.all(checklistPromises).then(values => {
                         card.checklists = values;
@@ -226,7 +226,7 @@ function getCard(cardID, apiKey, token, getChecklist = false){
         if(card.idChecklists && getChecklist){
             var checklistPromises = [];
             for(let checklist of card.idChecklists){
-                checklistPromises.push(api.getChecklist(checklist,api.key,token))
+                checklistPromises.push(getChecklist(checklist,key,token))
             }
             return Promise.all(checklistPromises).then(values => {
                 card.checklists = values;
