@@ -37,13 +37,12 @@ function addList(listName, boardID, apiKey, token){
     return fetchButApiSafe(`https://api.trello.com/1/lists?name=${listName}&idBoard=${boardID}&key=${apiKey}&token=${token}`, {
         method: 'POST'
     })
-    .then(response => {
-        return response.text();
+}
+
+function deleteCard(cardID, apiKey, token){
+    return fetchButApiSafe(`https://api.trello.com/1/cards/${cardID}?key=${apiKey}&token=${token}`, {
+        method: 'DELETE'
     })
-    .then(text => {
-        var card = JSON.parse(text);
-        return card;
-    });
 }
 
 function addCard(cardName, cardDesc, listID, apiKey, token){
@@ -251,4 +250,4 @@ function getChecklist(checkListId, apiKey, token){
 
 const key = "6f2af19073479657e48933387208eecd"
 
-export {key,addList,addCard,copyCard,getBoardsFromMember,getCardsFromBoard,getListsFromBoard,getMembersFromBoard,getLabelsFromBoard,getList,getCard,getBoard,getCardsFromList,getChecklist}
+export {key,addList,addCard,deleteCard,copyCard,getBoardsFromMember,getCardsFromBoard,getListsFromBoard,getMembersFromBoard,getLabelsFromBoard,getList,getCard,getBoard,getCardsFromList,getChecklist}
