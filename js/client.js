@@ -51,7 +51,7 @@ function refreshCards(t,links,token){
                 promise = Promise.resolve(_card);
             }
             promises.push(promise.then(_card => {
-                t.get(_card.id, 'shared', 'link')
+                return t.get(_card.id, 'shared', 'link')
                 .then(cardLink => {
                     if(cardLink){
                         return api.getCard(cardLink.sourceID,api.key,token)
