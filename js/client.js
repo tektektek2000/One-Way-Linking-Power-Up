@@ -133,11 +133,11 @@ function syncChanges(t,links,token,linkedCard){
     var firstHasChanges = newAcceptedState.changed;
     newAcceptedState = modifyWithNewActions(newAcceptedState.state,second,linkedCard.link.lastAcceptedValue);
     console.log(newAcceptedState);
-    if(firstHasChanges && newAcceptedState.changed){
-        saveChangesToCard(second, newAcceptedState.state)
+    if(firstHasChanges){
+        saveChangesToCard(second, newAcceptedState.state, token)
     }
-    else if(newAcceptedState.changed && firstHasChanges){
-        saveChangesToCard(first, newAcceptedState.state)
+    else if(newAcceptedState.changed){
+        saveChangesToCard(first, newAcceptedState.state, token)
     }
 }
 
