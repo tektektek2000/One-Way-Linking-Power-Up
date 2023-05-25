@@ -244,10 +244,22 @@ TrelloPowerUp.initialize({
                         }
                     })
                 })}, 60000);
-            copyNewCards(t,links,token)
-            .then(() => {
-                refreshCards(t,links,token);
-            });
+            t.getRestApi()
+            .getToken()
+            .then(token => {
+                if (!token) {
+                    console.log("No token")
+                }
+                t.get('board', 'shared', 'link')
+                .then(links =>{
+                    if(links && links.length > 0){
+                        copyNewCards(t,links,token)
+                        .then(() => {
+                            refreshCards(t,links,token);
+                        });
+                    }
+                })
+            })
         }
         return t.getRestApi()
             .isAuthorized()
