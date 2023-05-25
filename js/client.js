@@ -58,7 +58,7 @@ function refreshCards(t,links,token){
             var linkedCards = []
             for(let it of values){
                 if(it.link){
-                    if(it.originalCard){
+                    if(it.originalCard && !it.originalCard.closed){
                         linkedCards.push(it);
                     }
                     else{
