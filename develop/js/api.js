@@ -30,7 +30,7 @@ function fetchButApiSafe(link, headers){
             if(response.status == 429){
                 return sleep(500).then(() => {return fetchButApiSafeButApiSafe(link, headers)});
             }
-            return response.text();
+            return response;
         })
     })
 }
