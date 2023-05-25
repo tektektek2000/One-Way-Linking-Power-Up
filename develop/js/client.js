@@ -127,14 +127,16 @@ function syncChanges(t,links,token,linkedCard){
         first = linkedCard.card;
         second = linkedCard.originalCard;
     }
+    console.log(first);
+    console.log(second);
     var newAcceptedState = modifyWithNewActions(linkedCard.link.lastAcceptedValue,first,linkedCard.link.lastAcceptedValue);
     var firstHasChanges = newAcceptedState.changed;
     newAcceptedState = modifyWithNewActions(newAcceptedState.state,second,linkedCard.link.lastAcceptedValue);
     console.log(newAcceptedState);
-    if(firstHasChanges){
+    if(firstHasChanges && newAcceptedState.changed){
         saveChangesToCard(second, newAcceptedState.state)
     }
-    else if(newAcceptedState.changed){
+    else if(newAcceptedState.changed && firstHasChanges){
         saveChangesToCard(first, newAcceptedState.state)
     }
 }
