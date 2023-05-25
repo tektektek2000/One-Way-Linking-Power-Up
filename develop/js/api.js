@@ -9,14 +9,14 @@ function waitForApiCapacity(){
     if(!resetCalls){
         resetCalls = setInterval(function(){
                 numberOfCalls = 0;
-            }, 100);
+            }, 10000);
     }
     if(numberOfCalls < 95){
         numberOfCalls++;
         return Promise.resolve(numberOfCalls);
     }
     else{
-        return sleep(50).then(() => {return waitForApiCapacity()})
+        return sleep(500).then(() => {return waitForApiCapacity()})
     }
 }
 
