@@ -89,6 +89,7 @@ function getBoardsFromMember(memberID, apiKey, token){
         return response.text();
     })
     .then(text => {
+        if(!text){return text}
         var boards = JSON.parse(text);
         return boards;
     });
@@ -106,6 +107,7 @@ function getCardsFromBoard(boardID, apiKey, token){
         return response.text();
     })
     .then(text => {
+        if(!text){return text}
         var boards = JSON.parse(text);
         return boards;
     });
@@ -123,6 +125,7 @@ function getListsFromBoard(boardID, apiKey, token){
         return response.text();
     })
     .then(text => {
+        if(!text){return text}
         var boards = JSON.parse(text);
         return boards;
     });
@@ -140,6 +143,7 @@ function getMembersFromBoard(boardID, apiKey, token){
         return response.text();
     })
     .then(text => {
+        if(!text){return text}
         var boards = JSON.parse(text);
         return boards;
     });
@@ -157,6 +161,7 @@ function getLabelsFromBoard(boardID, apiKey, token){
         return response.text();
     })
     .then(text => {
+        if(!text){return text}
         var boards = JSON.parse(text);
         return boards;
     });
@@ -174,6 +179,7 @@ function getList(listID, apiKey, token){
         return response.text();
     })
     .then(text => {
+        if(!text){return text}
         var list = JSON.parse(text);
         return list;
     });
@@ -191,6 +197,7 @@ function getCard(cardID, apiKey, token){
         return response.text();
     })
     .then(text => {
+        if(!text){return text}
         var card = JSON.parse(text);
         return card;
     });
@@ -208,6 +215,7 @@ function getBoard(boardID, apiKey, token){
         return response.text();
     })
     .then(text => {
+        if(!text){return text}
         var board = JSON.parse(text);
         return board;
     });
@@ -226,6 +234,7 @@ function getCardsFromList(listID, apiKey, token){
         return response.text();
     })
     .then(text => {
+        if(!text){return text}
         var cards = JSON.parse(text);
         return cards;
     });
@@ -243,6 +252,7 @@ function getChecklist(checkListId, apiKey, token){
         return response.text();
     })
     .then(text => {
+        if(!text){return text}
         var checklist = JSON.parse(text);
         return checklist;
     });

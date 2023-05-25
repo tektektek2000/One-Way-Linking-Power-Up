@@ -62,7 +62,7 @@ function refreshCards(t,links,token){
                         linkedCards.push(it);
                     }
                     else{
-                        api.deleteCard(it.link.sourceID,api.key,token);
+                        api.deleteCard(it.card.id,api.key,token);
                     }
                 }
             }
