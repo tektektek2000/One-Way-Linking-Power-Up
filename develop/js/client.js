@@ -30,16 +30,63 @@ function showEditLinkMenu(t) {
     });
 }
 
+function modifyWithNewActions(modified, modifyWith, lastAcceptedValue){
+    var stateChanged = false;
+    var newAcceptedValue = JSON.parse(JSON.stringify(modified));
+    if(lastAcceptedValue.name !== modifyWith.name){newAcceptedValue.name = modifyWith.name; stateChanged = true;}
+    if(lastAcceptedValue.desc !== modifyWith.desc){newAcceptedValue.desc = modifyWith.desc; stateChanged = true;}
+    if(lastAcceptedValue.closed !== modifyWith.closed){newAcceptedValue.closed = modifyWith.closed; stateChanged = true;}
+    //Checking if member was added
+    for(let member of modifyWith.idMembers){
+        if(!lastAcceptedValue.idMembers.includes(member) && !newAcceptedValue.idMembers.includes(member)){
+            newAcceptedValue.idMembers.push(member);
+        }
+    }
+    //Checking if member was removed
+    for(let member of lastAcceptedValue.idMembers){
+        if(!modifyWith.idMembers.includes(member) && newAcceptedValue.idMembers.includes(member)){
+            newAcceptedValue.idMembers.splice(newAcceptedValue.idMembers.indexOf(member),1);
+        }
+    }
+    if(lastAcceptedValue.idAttachmentCover !== modifyWith.idAttachmentCover){newAcceptedValue.idAttachmentCover = modifyWith.idAttachmentCover; stateChanged = true;}
+    //Lists are currently fucked, and will not be dealt with here
+}
+
+function syncChanges(t,links,token,linkedCard){
+    var first;
+    var second;
+    if(Date.parse(linkedCard.card.dateLastActivity) > Date.parse(linkedCard.originalCard.dateLastActivity)){
+        first = linkedCard.originalCard;
+        second = linkedCard.card;
+    }
+    else{
+        first = linkedCard.card;
+        second = linkedCard.originalCard;
+    }
+    var newAcceptedState = modifyWithNewActions(linkedCard.link.lastAcceptedValue,first,linkedCard.link.lastAcceptedValue).state;
+    newAcceptedState = modifyWithNewActions(newAcceptedState,second,linkedCard.link.lastAcceptedValue).state;
+    var context = t.getContext();
+    api.getMembersFromBoard(context.board,api.key,token)
+    .then(values => {
+        var members = [];
+        for(let it of values){
+            members.push(it.id);
+        }
+        return members;
+    })
+
+}
+
 function refreshCards(t,links,token){
     var context = t.getContext();
-    return api.getCardsFromBoard(context.board, api.key, token, true)
+    return api.getCardsFromBoard(context.board, api.key, token, true, true)
     .then(allCards => {
         var promises = [];
         for(let _card of allCards){
             promises.push(t.get(_card.id, 'shared', 'link')
             .then(cardLink => {
                 if(cardLink){
-                    return api.getCard(cardLink.sourceID,api.key,token,true)
+                    return api.getCard(cardLink.sourceID,api.key,token,true,true)
                     .then(_originalCard => {
                         return {
                             card: _card,
@@ -58,7 +105,7 @@ function refreshCards(t,links,token){
             var linkedCards = []
             for(let it of values){
                 if(it.link){
-                    if(it.originalCard && !it.originalCard.closed){
+                    if(it.originalCard){
                         linkedCards.push(it);
                     }
                     else{
@@ -159,27 +206,39 @@ function copyNewCards(t,links,token){
                         cardAddPromises.push(api.copyCard(it.link.targetID,it.card.id,api.key,token).then( card => {
                             sleep(300)
                             .then(() => {
-                                if(it.card.idChecklists){
-                                    var checklistPromises = [];
-                                    for(let checklist of it.card.idChecklists){
-                                        checklistPromises.push(api.getChecklist(checklist,api.key,token))
+                                return api.getLabelsFromBoard(it.card.idBoard,api.key,token)
+                                .then(labels => {
+                                    if(it.card.idLabels){
+                                        var cardLabels = [];
+                                        for(let l of labels){
+                                            if(it.card.idLabels.includes(l.id)){
+                                                cardLabels.push(l);
+                                            }
+                                        }
+                                        it.card.labels = cardLabels;
                                     }
-                                    return Promise.all(checklistPromises).then(values => {
-                                        it.card.checklists = values;
+                                    if(it.card.idChecklists){
+                                        var checklistPromises = [];
+                                        for(let checklist of it.card.idChecklists){
+                                            checklistPromises.push(api.getChecklist(checklist,api.key,token))
+                                        }
+                                        return Promise.all(checklistPromises).then(values => {
+                                            it.card.checklists = values;
+                                            return t.set(card.id, 'shared', 'link', {
+                                                sourceID: it.card.id,
+                                                listCoupled: it.link.type === 'list',
+                                                lastAcceptedValue: it.card
+                                            })
+                                        });
+                                    }
+                                    else{
                                         return t.set(card.id, 'shared', 'link', {
                                             sourceID: it.card.id,
                                             listCoupled: it.link.type === 'list',
                                             lastAcceptedValue: it.card
-                                        })
-                                    });
-                                }
-                                else{
-                                    return t.set(card.id, 'shared', 'link', {
-                                        sourceID: it.card.id,
-                                        listCoupled: it.link.type === 'list',
-                                        lastAcceptedValue: it.card
-                                    });
-                                }
+                                        });
+                                    }
+                                })
                             })
                         }));
                     }
