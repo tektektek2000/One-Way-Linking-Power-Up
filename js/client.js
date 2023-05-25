@@ -244,6 +244,10 @@ TrelloPowerUp.initialize({
                         }
                     })
                 })}, 60000);
+            copyNewCards(t,links,token)
+            .then(() => {
+                refreshCards(t,links,token);
+            });
         }
         return t.getRestApi()
             .isAuthorized()
