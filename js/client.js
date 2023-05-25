@@ -60,15 +60,6 @@ function modifyWithNewActions(modified, modifyWith, lastAcceptedValue){
             newAcceptedValue.idMembers.splice(newAcceptedValue.idMembers.indexOf(member),1);
         }
     }
-    if(!lastAcceptedValue.checklists){
-        lastAcceptedValue.checklists = [];
-    }
-    if(!modifyWith.checklists){
-        modifyWith.checklists = []
-    }
-    if(!newAcceptedValue.checklists){
-        newAcceptedValue.checklists = []
-    }
     //Checking if checklist was added
     while(lastAcceptedValue.checklists.length < modifyWith.checklists.length && newAcceptedValue.checklists.length < modifyWith.checklists.length){
         newAcceptedValue.checklists.push(JSON.parse(JSON.stringify(modifyWith.checklists[modifyWith.checklists.length-1])));
@@ -81,8 +72,7 @@ function modifyWithNewActions(modified, modifyWith, lastAcceptedValue){
     }
     for(var i in newAcceptedValue.checklists){
         var examine = newAcceptedValue;
-        console.log(lastAcceptedValue);
-        if(i < lastAcceptedValue.checklist.length){examine = lastAcceptedValue;}
+        if(i < lastAcceptedValue.checklists.length){examine = lastAcceptedValue;}
         if(examine.checklists[i].name !== modifyWith.checklists[i].name){newAcceptedValue.checklists[i].name = modifyWith.checklists[i].name; checklistStateChanged = true;}
         //Checking if checklist was added
         while(examine.checklists[i].checkItems.length < modifyWith.checklists[i].checkItems.length && newAcceptedValue.checklists[i].checkItems.length < modifyWith.checklists[i].checkItems.length){
@@ -96,7 +86,7 @@ function modifyWithNewActions(modified, modifyWith, lastAcceptedValue){
         }
         for(var j in newAcceptedValue.checklists[i].checkItems){
             var examine = newAcceptedValue;
-            if(j < lastAcceptedValue.checklist[i].checkItems.length){examine = lastAcceptedValue;}
+            if(j < lastAcceptedValue.checklists[i].checkItems.length){examine = lastAcceptedValue;}
             if(examine.checklists[i].checkItems[j].name !== modifyWith.checklists[i].checkItems[j].name){
                 newAcceptedValue.checklists[i].checkItems[j].name = modifyWith.checklists[i].checkItems[j].name; checklistStateChanged = true;
             }
