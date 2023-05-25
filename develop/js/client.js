@@ -81,6 +81,7 @@ function modifyWithNewActions(modified, modifyWith, lastAcceptedValue){
     }
     for(var i in newAcceptedValue.checklists){
         var examine = newAcceptedValue;
+        console.log(lastAcceptedValue);
         if(i < lastAcceptedValue.checklist.length){examine = lastAcceptedValue;}
         if(examine.checklists[i].name !== modifyWith.checklists[i].name){newAcceptedValue.checklists[i].name = modifyWith.checklists[i].name; checklistStateChanged = true;}
         //Checking if checklist was added
