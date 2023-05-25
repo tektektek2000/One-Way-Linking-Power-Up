@@ -80,7 +80,7 @@ function addCard(cardName, cardDesc, listID, apiKey, token){
 }
 
 function commaSeparatedList(strings){
-    ret = "";
+    var ret = "";
     for(let i in strings){
         ret += strings[i];
         if(i < strings.length -1){
