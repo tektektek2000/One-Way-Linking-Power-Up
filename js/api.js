@@ -79,6 +79,24 @@ function addCard(cardName, cardDesc, listID, apiKey, token){
     });
 }
 
+function updateCard(cardID, cardName, cardDesc, listID, closed, idMembers, idAttachmentCover, due, start, dueComplete, address, locationName, coordinates, cover, apiKey, token){
+    return fetchButApiSafe(`https://api.trello.com/1/cards${cardID}?idList=${listID}&name=${cardName}&desc=${cardDesc}&closed=${closed}&idMembers=${idMembers}
+    &idAttachmentCover=${idAttachmentCover}&due=${due}&start=${start}&dueComplete=${dueComplete}&address=${address}
+    &locationName=${locationName}&coordinates=${coordinates}&cover=${cover}&key=${apiKey}&token=${token}`, {
+        method: 'PUT',
+        headers: {
+            'Accept': 'application/json'
+        }
+    })
+    .then(response => {
+        return response.text();
+    })
+    .then(text => {
+        var card = JSON.parse(text);
+        return card;
+    });
+}
+
 function copyCard(listID, copyFromId, apiKey, token){
     return fetchButApiSafe(`https://api.trello.com/1/cards?idList=${listID}&idCardSource=${copyFromId}&key=${apiKey}&token=${token}`, {
         method: 'POST',
@@ -348,5 +366,5 @@ function getCardsFromList(listID, apiKey, token){
 
 const key = "6f2af19073479657e48933387208eecd"
 
-export {key,addList,addCard,deleteCard,copyCard,getBoardsFromMember,getCardsFromBoard,getListsFromBoard
+export {key,addList,updateCard,addCard,deleteCard,copyCard,getBoardsFromMember,getCardsFromBoard,getListsFromBoard
     ,getMembersFromBoard,getLabelsFromBoard,getList,getCard,getLabel,getBoard,getCardsFromList,getChecklist}
