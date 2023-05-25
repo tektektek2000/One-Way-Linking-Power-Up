@@ -30,6 +30,46 @@ function showEditLinkMenu(t) {
     });
 }
 
+function refreshCards(t,links,token){
+    var context = t.getContext();
+    return api.getCardsFromBoard(context.board, api.key, token)
+    .then(allCards => {
+        var promises = [];
+        for(let _card of allCards){
+            promises.push(t.get(_card.id, 'shared', 'link')
+            .then(cardLink => {
+                if(cardLink){
+                    return api.getCard(cardLink.sourceID,api.key,token)
+                    .then(_originalCard => {
+                        return {
+                            card: _card,
+                            link: cardLink,
+                            originalCard: _originalCard
+                        }
+                    })
+                }
+                return {
+                    card: _card,
+                    link: cardLink
+                };
+            }));
+        }
+        return Promise.all(promises).then(values => {
+            var linkedCards = []
+            for(let it of values){
+                if(it.link){
+                    if(it.originalCard){
+                        linkedCards.push(it);
+                    }
+                    else{
+                        api.deleteCard(it.link.sourceID,api.key,token);
+                    }
+                }
+            }
+            console.log(linkedCards);
+        })
+    })
+}
 
 function copyNewCards(t,links,token){
     var context = t.getContext();
@@ -52,7 +92,6 @@ function copyNewCards(t,links,token){
                     linkedCards.push(it);
                 }
             }
-            console.log(linkedCards);
             var linkPromises = []
             for(let link of links){
                 if(link.type === "list"){
@@ -198,7 +237,10 @@ TrelloPowerUp.initialize({
                     t.get('board', 'shared', 'link')
                     .then(links =>{
                         if(links && links.length > 0){
-                            copyNewCards(t,links,token);
+                            copyNewCards(t,links,token)
+                            .then(() => {
+                                refreshCards(t,links,token);
+                            });
                         }
                     })
                 })}, 60000);
