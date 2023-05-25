@@ -22,7 +22,7 @@ function waitForApiCapacity(){
     }
 }
 
-function fetchButApiSafeButApiSafe(link, headers){
+function fetchButApiSafe(link, headers){
     return waitForApiCapacity()
     .then(() => {
         return fetch(link, headers)
