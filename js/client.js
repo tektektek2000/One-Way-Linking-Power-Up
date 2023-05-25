@@ -36,57 +36,23 @@ function refreshCards(t,links,token){
     .then(allCards => {
         var promises = [];
         for(let _card of allCards){
-            promises.push(
-                t.get(_card.id, 'shared', 'link')
-                .then(cardLink => {
-                    if(cardLink){
-                        return api.getCard(cardLink.sourceID,api.key,token)
-                        .then(_originalCard => {
-                            var promise;
-                            if(_card.idChecklists){
-                                var checklistPromises = [];
-                                for(let checklist of _card.idChecklists){
-                                    checklistPromises.push(api.getChecklist(checklist,api.key,token))
-                                }
-                                promise = Promise.all(checklistPromises).then(values => {
-                                    _card.checklists = values;
-                                    return _card
-                                })
-                            }
-                            else{
-                                promise = Promise.resolve(_card);
-                            }
-                            return promise.then(_card => {
-                                var promise;
-                                if(_originalCard.idChecklists){
-                                    var checklistPromises = [];
-                                    for(let checklist of _originalCard.idChecklists){
-                                        checklistPromises.push(api.getChecklist(checklist,api.key,token))
-                                    }
-                                    promise = Promise.all(checklistPromises).then(values => {
-                                        _originalCard.checklists = values;
-                                        Promise.resolve(_originalCard);
-                                    })
-                                }
-                                else{
-                                    promise = Promise.resolve(_originalCard);
-                                }
-                                return promise.then(_originalCard => {
-                                    return {
-                                        card: _card,
-                                        link: cardLink,
-                                        originalCard: _originalCard
-                                    }
-                                })
-                            })
-                        })
-                    }
-                    return {
-                        card: _card,
-                        link: cardLink
-                    }
-                })
-            )
+            promises.push(t.get(_card.id, 'shared', 'link')
+            .then(cardLink => {
+                if(cardLink){
+                    return api.getCard(cardLink.sourceID,api.key,token)
+                    .then(_originalCard => {
+                        return {
+                            card: _card,
+                            link: cardLink,
+                            originalCard: _originalCard
+                        }
+                    })
+                }
+                return {
+                    card: _card,
+                    link: cardLink
+                };
+            }));
         }
         return Promise.all(promises).then(values => {
             var linkedCards = []
