@@ -113,7 +113,7 @@ function getBoardsFromMember(memberID, apiKey, token){
     });
 }
 
-function getCardsFromBoard(boardID, apiKey, token, fetchChecklist = false){
+function getCardsFromBoard(boardID, apiKey, token, fetchChecklist = false, fetchLabels = false){
     return fetchButApiSafe(`https://api.trello.com/1/boards/${boardID}/cards?key=${apiKey}&token=${token}`, {
         method: 'GET',
         headers: {
@@ -147,6 +147,26 @@ function getCardsFromBoard(boardID, apiKey, token, fetchChecklist = false){
             Promise.all(checklistPromises).then(values => {
                 return values;
             })
+        }
+        return cards;
+    })
+    .then(cards => {
+        if(fetchLabels){
+            return getLabelsFromBoard(boardID,apiKey,token)
+            .then(labels => {
+                for(var card of cards){
+                    if(card.idLabels){
+                        var cardLabels = [];
+                        for(let it of labels){
+                            if(card.idLabels.includes(it.id)){
+                                cardLabels.push(it);
+                            }
+                        }
+                        card.labels = cardLabels;
+                    }
+                }
+                return cards;
+            })     
         }
         return cards;
     });
@@ -224,7 +244,7 @@ function getList(listID, apiKey, token){
     });
 }
 
-function getCard(cardID, apiKey, token, fetchChecklist = false){
+function getCard(cardID, apiKey, token, fetchChecklist = false, fetchLabels = false){
     return fetchButApiSafe(`https://api.trello.com/1/cards/${cardID}?key=${apiKey}&token=${token}`, {
         method: 'GET',
         headers: {
@@ -252,6 +272,40 @@ function getCard(cardID, apiKey, token, fetchChecklist = false){
             });
         }
         return card;
+    })
+    .then(card => {
+        if(card.idLabels && fetchLabels){
+            return getLabelsFromBoard(card.idBoard,apiKey,token)
+            .then(labels => {
+                var cardLabels = [];
+                for(let it of labels){
+                    if(card.idLabels.includes(it.id)){
+                        cardLabels.push(it);
+                    }
+                }
+                card.labels = cardLabels;
+                return card;
+            });
+        }
+        return card;
+    });
+}
+
+function getLabel(labelID, apiKey, token){
+    return fetchButApiSafe(`https://api.trello.com/1/labels/${labelID}?key=${apiKey}&token=${token}`, {
+        method: 'GET',
+        headers: {
+        'Accept': 'application/json'
+        }
+    })
+    .then(response => {
+        if(response.status == 404){return undefined;}
+        return response.text();
+    })
+    .then(text => {
+        if(!text){return text}
+        var label = JSON.parse(text);
+        return label;
     });
 }
 
@@ -294,4 +348,5 @@ function getCardsFromList(listID, apiKey, token){
 
 const key = "6f2af19073479657e48933387208eecd"
 
-export {key,addList,addCard,deleteCard,copyCard,getBoardsFromMember,getCardsFromBoard,getListsFromBoard,getMembersFromBoard,getLabelsFromBoard,getList,getCard,getBoard,getCardsFromList,getChecklist}
+export {key,addList,addCard,deleteCard,copyCard,getBoardsFromMember,getCardsFromBoard,getListsFromBoard
+    ,getMembersFromBoard,getLabelsFromBoard,getList,getCard,getLabel,getBoard,getCardsFromList,getChecklist}
