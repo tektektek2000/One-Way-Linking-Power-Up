@@ -139,7 +139,7 @@ function syncChanges(t,links,token,linkedCard){
     if(newAcceptedState.changed){
         saveChangesToCard(first, newAcceptedState.state, token)
     }
-    linkedCard.link.lastAcceptedValue = newAcceptedState;
+    linkedCard.link.lastAcceptedValue = newAcceptedState.state;
     t.set(linkedCard.card.id, 'shared', 'link', linkedCard.link);
 }
 
