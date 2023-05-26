@@ -90,8 +90,24 @@ function commaSeparatedList(strings){
     return ret
 }
 
-function updateCard(cardID, cardName, cardDesc, listID, closed, idMembers, idAttachmentCover, due, start, dueComplete, address, locationName, coordinates, cover, apiKey, token){
-    return fetchButApiSafe(`https://api.trello.com/1/cards/${cardID}?idList=${listID}&name=${cardName}&desc=${cardDesc}&closed=${closed}&idMembers=${commaSeparatedList(idMembers)}${idAttachmentCover ? `&idAttachmentCover=${idAttachmentCover}` : ""}&due=${due}&start=${start}&dueComplete=${dueComplete}${address ? `&address=${address}` : ""}${locationName ? `&locationName=${locationName}` : ""}${coordinates ? `&coordinates=${coordinates}` : ""}&key=${apiKey}&token=${token}&cover=${JSON.stringify(cover)}`, {
+function updateCard(cardID, cardName, cardDesc, listID, closed, idMembers, idAttachmentCover, due, start, dueComplete, address, locationName, coordinates, apiKey, token){
+    return fetchButApiSafe(`https://api.trello.com/1/cards/${cardID}?idList=${listID}&name=${cardName}&desc=${cardDesc}&closed=${closed}&idMembers=${commaSeparatedList(idMembers)}${idAttachmentCover ? `&idAttachmentCover=${idAttachmentCover}` : ""}&due=${due}&start=${start}&dueComplete=${dueComplete}${address ? `&address=${address}` : ""}${locationName ? `&locationName=${locationName}` : ""}${coordinates ? `&coordinates=${coordinates}` : ""}&key=${apiKey}&token=${token}`, {
+        method: 'PUT',
+        headers: {
+            'Accept': 'application/json'
+        }
+    })
+    .then(response => {
+        return response.text();
+    })
+    .then(text => {
+        var card = JSON.parse(text);
+        return card;
+    });
+}
+
+function updateCover(cardID, cover, apiKey, token){
+    return fetchButApiSafe(`https://api.trello.com/1/cards/${cardID}?cover=${JSON.stringify(cover)}&key=${apiKey}&token=${token}`, {
         method: 'PUT',
         headers: {
             'Accept': 'application/json'
@@ -375,5 +391,5 @@ function getCardsFromList(listID, apiKey, token){
 
 const key = "6f2af19073479657e48933387208eecd"
 
-export {key,addList,updateCard,addCard,deleteCard,copyCard,getBoardsFromMember,getCardsFromBoard,getListsFromBoard
+export {key,addList,updateCard,updateCover,addCard,deleteCard,copyCard,getBoardsFromMember,getCardsFromBoard,getListsFromBoard
     ,getMembersFromBoard,getLabelsFromBoard,getList,getCard,getLabel,getBoard,getCardsFromList,getChecklist}
