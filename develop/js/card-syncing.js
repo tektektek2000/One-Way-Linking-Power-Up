@@ -32,7 +32,7 @@ function saveChangesToCard(changed, newState, token){
                                     ,newState.checklists[i].checkItems[checklists[i].checkItems.length + promises.length].state === "complete",api.key, token))
                             }
                             while(checklists[i].checkItems.length + promises.length > newState.checklists[i].checkItems.length){
-                                promises.push(api.deleteCheckItem(checklists[i].checkItems.id,checklists[i].checkItems[checklists[i].checkItems.length - promises.length -1].id
+                                promises.push(api.deleteCheckItem(checklists[i].id,checklists[i].checkItems[checklists[i].checkItems.length - promises.length -1].id
                                     ,api.key, token))
                             }
                             for(var j in checklists[i].checkItems){
