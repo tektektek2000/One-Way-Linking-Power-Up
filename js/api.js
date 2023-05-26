@@ -448,8 +448,8 @@ function addCheckItem(checklistID, name, checked, apiKey, token){
     });
 }
 
-function updateCheckItem(cardID, checkitemID, name, pos, apiKey, token){
-    return fetchButApiSafe(`https://api.trello.com/1/cards/${cardID}/checkItem/${checkitemID}?name=${name}&pos=${pos}&key=${apiKey}&token=${token}`, {
+function updateCheckItem(cardID, checklistID, checkitemID, name, pos, apiKey, token){
+    return fetchButApiSafe(`https://api.trello.com/1/cards/${cardID}/checklist/${checklistID}/checkItem/${checkitemID}?name=${name}&pos=${pos}&key=${apiKey}&token=${token}`, {
         method: 'PUT',
         headers: {
         'Accept': 'application/json'
