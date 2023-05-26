@@ -156,8 +156,8 @@ function syncChanges(t,links,token,linkedCard){
     }
     else if(linkedCard.card.idList !== linkedCard.link.lastAcceptedValue.cardListId){
         for(var it of links){
-            if(it.type === "list" && it.link.targetID === linkedCard.card.idList){
-                linkedCard.originalCard.idList = it.id;
+            if(it.type === "list" && it.targetID === linkedCard.card.idList){
+                linkedCard.originalCard.idList = it.linkTarget.id;
                 break;
             }
         }
