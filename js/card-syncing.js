@@ -1,3 +1,5 @@
+import * as api from "./api.js"
+
 var Promise = TrelloPowerUp.Promise;
 
 function saveChangesToCard(changed, newState, token){
@@ -83,7 +85,8 @@ function modifyWithNewActions(modified, modifyWith, lastAcceptedValue){
     if(lastAcceptedValue.cover.size !== modifyWith.cover.size){newAcceptedValue.cover.size = modifyWith.cover.size; stateChanged = true;}
     return {
         state: newAcceptedValue,
-        changed: stateChanged
+        changed: stateChanged,
+        checklistChanged: checklistStateChanged
     }
 }
 
