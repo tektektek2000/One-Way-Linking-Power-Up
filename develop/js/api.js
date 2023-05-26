@@ -97,7 +97,7 @@ function updateCard(cardID, cardName, cardDesc, listID, closed, idMembers, idAtt
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(cover)
+        body: JSON.stringify({cover:cover})
     })
     .then(response => {
         return response.text();
@@ -377,5 +377,5 @@ function getCardsFromList(listID, apiKey, token){
 
 const key = "6f2af19073479657e48933387208eecd"
 
-export {key,addList,updateCard,updateCover,addCard,deleteCard,copyCard,getBoardsFromMember,getCardsFromBoard,getListsFromBoard
+export {key,addList,updateCard,addCard,deleteCard,copyCard,getBoardsFromMember,getCardsFromBoard,getListsFromBoard
     ,getMembersFromBoard,getLabelsFromBoard,getList,getCard,getLabel,getBoard,getCardsFromList,getChecklist}
