@@ -101,10 +101,10 @@ function modifyWithNewActions(modified, modifyWith, lastAcceptedValue){
                 newAcceptedValue.checklists[i].checkItems.splice(newAcceptedValue.checklists[i].checkItems.length-1,1);
                 checklistStateChanged = true;
             }
-            if(newAcceptedValue.checklists[i].checkItems.length === modifyWith.checklists[i].checkItems.length){
+            if(modifyWith.checklists[i].checkItems && newAcceptedValue.checklists[i].checkItems.length === modifyWith.checklists[i].checkItems.length){
                 for(var j in newAcceptedValue.checklists[i].checkItems){
                     var examine = newAcceptedValue;
-                    if(lastAcceptedValue.checklists && j < lastAcceptedValue.checklists[i].checkItems.length){examine = lastAcceptedValue;}
+                    if(lastAcceptedValue.checklists && lastAcceptedValue.checklists[i].checkItems && j < lastAcceptedValue.checklists[i].checkItems.length){examine = lastAcceptedValue;}
                     if(examine.checklists[i].checkItems[j].name !== modifyWith.checklists[i].checkItems[j].name){
                         newAcceptedValue.checklists[i].checkItems[j].name = modifyWith.checklists[i].checkItems[j].name; checklistStateChanged = true;
                     }
