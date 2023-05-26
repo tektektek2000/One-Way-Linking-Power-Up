@@ -296,7 +296,7 @@ function copyNewCards(t,links,token){
                     var cardAddPromises = []
                     for(let it of cardsToAdd){
                         cardAddPromises.push(api.copyCard(it.link.targetID,it.card.id,api.key,token).then( card => {
-                            sleep(300)
+                            api.sleep(300)
                             .then(() => {
                                 return api.getLabelsFromBoard(it.card.idBoard,api.key,token)
                                 .then(labels => {
