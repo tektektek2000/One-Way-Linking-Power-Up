@@ -91,7 +91,7 @@ function commaSeparatedList(strings){
 }
 
 function updateCard(cardID, cardName, cardDesc, listID, closed, idMembers, idAttachmentCover, due, start, dueComplete, address, locationName, coordinates, cover, apiKey, token){
-    return fetchButApiSafe(`https://api.trello.com/1/cards/${cardID}?idList=${listID}&name=${cardName}&desc=${cardDesc}&closed=${closed}&idMembers=${commaSeparatedList(idMembers)}${idAttachmentCover ? `&idAttachmentCover=${idAttachmentCover}` : ""}&due=${due}&start=${start}&dueComplete=${dueComplete}${address ? `&address=${address}` : ""}${locationName ? `&locationName=${locationName}` : ""}${coordinates ? `&coordinates=${coordinates}` : ""}&cover=${JSON.stringify(cover)}&key=${apiKey}&token=${token}`, {
+    return fetchButApiSafe(`https://api.trello.com/1/cards/${cardID}?idList=${listID}&name=${cardName}&desc=${cardDesc}&closed=${closed}&idMembers=${commaSeparatedList(idMembers)}${idAttachmentCover ? `&idAttachmentCover=${idAttachmentCover}` : ""}&due=${due}&start=${start}&dueComplete=${dueComplete}${address ? `&address=${address}` : ""}${locationName ? `&locationName=${locationName}` : ""}${coordinates ? `&coordinates=${coordinates}` : ""}&key=${apiKey}&token=${token}&cover=${JSON.stringify(cover)}`, {
         method: 'PUT',
         headers: {
             'Accept': 'application/json'

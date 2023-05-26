@@ -88,8 +88,7 @@ function modifyWithNewActions(modified, modifyWith, lastAcceptedValue){
     if(lastAcceptedValue.cover.sharedSourceUrl !== modifyWith.cover.sharedSourceUrl){newAcceptedValue.cover.sharedSourceUrl = modifyWith.cover.sharedSourceUrl; stateChanged = true;}
     return {
         state: newAcceptedValue,
-        changed: stateChanged,
-        checklistChanged: checklistStateChanged
+        changed: stateChanged || checklistStateChanged,
     }
 }
 
