@@ -13,7 +13,7 @@ function saveChangesToCard(changed, newState, token){
                     ,newState.checklists[changed.checklists.length + promises.length].pos,api.key, token))
             }
             while(changed.checklists.length - promises.length > newState.checklists.length){
-                promises.push(api.deleteCheckListFromCard(card.id,changed.checklists[changed.checklists.length - promises.length].id
+                promises.push(api.deleteCheckListFromCard(card.id,changed.checklists[changed.checklists.length - promises.length - 1].id
                     ,api.key, token))
             }
             for(var i in changed.checklists){
@@ -32,7 +32,7 @@ function saveChangesToCard(changed, newState, token){
                                     ,newState.checklists[i].checkItems[checklists[i].checkItems.length + promises.length].state === "complete",api.key, token))
                             }
                             while(checklists[i].checkItems.length + promises.length > newState.checklists[i].checkItems.length){
-                                promises.push(api.deleteCheckItem(checklists[i].checkItems.id,checklists[i].checkItems[checklists[i].checkItems.length - promises.length].id
+                                promises.push(api.deleteCheckItem(checklists[i].checkItems.id,checklists[i].checkItems[checklists[i].checkItems.length - promises.length -1].id
                                     ,api.key, token))
                             }
                             for(var j in checklists[i].checkItems){
