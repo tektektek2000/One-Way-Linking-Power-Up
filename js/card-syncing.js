@@ -121,7 +121,6 @@ function modifyWithNewActions(modified, modifyWith, lastAcceptedValue){
         }
     }
     if(lastAcceptedValue.idAttachmentCover !== modifyWith.idAttachmentCover){newAcceptedValue.idAttachmentCover = modifyWith.idAttachmentCover; stateChanged = true;}
-    //Lists are currently fucked, and will not be dealt with here
     if(lastAcceptedValue.due !== modifyWith.due){newAcceptedValue.due = modifyWith.due; stateChanged = true;}
     if(lastAcceptedValue.start !== modifyWith.start){newAcceptedValue.start = modifyWith.start; stateChanged = true;}
     if(lastAcceptedValue.dueComplete !== modifyWith.dueComplete){newAcceptedValue.dueComplete = modifyWith.dueComplete; stateChanged = true;}
@@ -145,11 +144,14 @@ function modifyWithNewActions(modified, modifyWith, lastAcceptedValue){
 function syncChanges(t,links,token,linkedCard){
     var first;
     var second;
+    var listchanged = false;
 
+    //Checking if the card was moved to another list, and if that list is linked
     if(linkedCard.originalCard.idList !== linkedCard.link.lastAcceptedValue.originalCardListId){
         for(var it of links){
             if(it.type === "list" && it.linkTarget.id === linkedCard.originalCard.idList){
                 linkedCard.card.idList = it.targetID;
+                listchanged = true;
                 break;
             }
         }
@@ -158,6 +160,7 @@ function syncChanges(t,links,token,linkedCard){
         for(var it of links){
             if(it.type === "list" && it.targetID === linkedCard.card.idList){
                 linkedCard.originalCard.idList = it.linkTarget.id;
+                listchanged = true;
                 break;
             }
         }
@@ -177,10 +180,10 @@ function syncChanges(t,links,token,linkedCard){
     //console.log({firstHasChanges: firstHasChanges, secondHasChanges: newAcceptedState.changed, newState: newAcceptedState.state});
     newAcceptedState.originalCardListId = linkedCard.originalCard.idList;
     newAcceptedState.cardListId = linkedCard.card.idList;
-    if(firstHasChanges){
+    if(firstHasChanges || listchanged){
         saveChangesToCard(second, newAcceptedState.state, token)
     }
-    if(newAcceptedState.changed){
+    if(newAcceptedState.changed || listchanged){
         saveChangesToCard(first, newAcceptedState.state, token)
     }
     linkedCard.link.lastAcceptedValue = newAcceptedState.state;
