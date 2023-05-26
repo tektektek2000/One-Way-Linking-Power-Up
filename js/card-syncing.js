@@ -37,7 +37,9 @@ function saveChangesToCard(changed, newState, token){
                             }
                             for(var j in checklists[i].checkItems){
                                 if(j < newState.checklists[i].checkItems.length){
-                                    promises.push(api.updateCheckItem(card.id,checklists[i].id,checklists[i].checkItems[j].id, newState.checklists[i].checkItems[j].name, newState.checklists[i].checkItems[j].state, api.key, token));
+                                    promises.push(api.updateCheckItem(card.id,checklists[i].id,checklists[i].checkItems[j].id
+                                        , newState.checklists[i].checkItems[j].name, newState.checklists[i].checkItems[j].pos
+                                        , newState.checklists[i].checkItems[j].state, api.key, token));
                                 }
                             }
                         }
@@ -108,6 +110,9 @@ function modifyWithNewActions(modified, modifyWith, lastAcceptedValue){
                     }
                     if(examine.checklists[i].checkItems[j].state !== modifyWith.checklists[i].checkItems[j].state){
                         newAcceptedValue.checklists[i].checkItems[j].state = modifyWith.checklists[i].checkItems[j].state; checklistStateChanged = true;
+                    }
+                    if(examine.checklists[i].checkItems[j].pos !== modifyWith.checklists[i].checkItems[j].pos){
+                        newAcceptedValue.checklists[i].checkItems[j].pos = modifyWith.checklists[i].checkItems[j].pos; checklistStateChanged = true;
                     }
                 }
             }
