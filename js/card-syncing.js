@@ -4,10 +4,7 @@ var Promise = TrelloPowerUp.Promise;
 
 function saveChangesToCard(changed, newState, token){
     api.updateCard(changed.id, newState.name, newState.desc, changed.idList, newState.closed, newState.idMembers, newState.idAttachmentCover, newState.due
-        ,newState.start, newState.dueComplete, newState.address, newState.locationName, newState.coordinates, api.key, token)
-        .then(card => {
-            api.updateCover(changed.id, newState.cover,api.key,token);
-        })
+        ,newState.start, newState.dueComplete, newState.address, newState.locationName, newState.coordinates, cover, api.key, token)
     //TODO Implement checklist, labels syncing
 }
 

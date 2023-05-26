@@ -90,28 +90,14 @@ function commaSeparatedList(strings){
     return ret
 }
 
-function updateCard(cardID, cardName, cardDesc, listID, closed, idMembers, idAttachmentCover, due, start, dueComplete, address, locationName, coordinates, apiKey, token){
+function updateCard(cardID, cardName, cardDesc, listID, closed, idMembers, idAttachmentCover, due, start, dueComplete, address, locationName, coordinates, cover, apiKey, token){
     return fetchButApiSafe(`https://api.trello.com/1/cards/${cardID}?idList=${listID}&name=${cardName}&desc=${cardDesc}&closed=${closed}&idMembers=${commaSeparatedList(idMembers)}${idAttachmentCover ? `&idAttachmentCover=${idAttachmentCover}` : ""}&due=${due}&start=${start}&dueComplete=${dueComplete}${address ? `&address=${address}` : ""}${locationName ? `&locationName=${locationName}` : ""}${coordinates ? `&coordinates=${coordinates}` : ""}&key=${apiKey}&token=${token}`, {
         method: 'PUT',
         headers: {
-            'Accept': 'application/json'
-        }
-    })
-    .then(response => {
-        return response.text();
-    })
-    .then(text => {
-        var card = JSON.parse(text);
-        return card;
-    });
-}
-
-function updateCover(cardID, cover, apiKey, token){
-    return fetchButApiSafe(`https://api.trello.com/1/cards/${cardID}?cover=${JSON.stringify(cover)}&key=${apiKey}&token=${token}`, {
-        method: 'PUT',
-        headers: {
-            'Accept': 'application/json'
-        }
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(cover)
     })
     .then(response => {
         return response.text();
