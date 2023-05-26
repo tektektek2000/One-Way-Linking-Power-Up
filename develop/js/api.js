@@ -430,24 +430,6 @@ function deleteCheckListFromCard(cardID, checklistID, apiKey, token){
     })
 }
 
-function getChecklistsOnCard(cardID, apiKey, token){
-    return fetchButApiSafe(`https://api.trello.com/1/cards/${cardID}/checklists?key=${apiKey}&token=${token}`, {
-        method: 'GET',
-        headers: {
-        'Accept': 'application/json'
-        }
-    })
-    .then(response => {
-        if(response.status == 404){return undefined;}
-        return response.text();
-    })
-    .then(text => {
-        if(!text){return text}
-        var checklist = JSON.parse(text);
-        return checklist;
-    });
-}
-
 function addCheckItem(checklistID, name, checked, apiKey, token){
     return fetchButApiSafe(`https://api.trello.com/1/checklists/${checklistID}/checkItems?name=${name}&checked=${checked}key=${apiKey}&token=${token}`, {
         method: 'POST',
