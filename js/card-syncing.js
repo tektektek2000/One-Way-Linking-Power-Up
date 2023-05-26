@@ -146,7 +146,22 @@ function syncChanges(t,links,token,linkedCard){
     var first;
     var second;
 
-
+    if(linkedCard.originalCard.idList == linkedCard.link.lastAcceptedValue.originalCardListId){
+        for(var it of links){
+            if(it.type === "list" && it.linkTarget.id === linkedCard.originalCard.idList){
+                linkedCard.card.idList = it.link.targetID;
+                break;
+            }
+        }
+    }
+    else if(linkedCard.card.idList == linkedCard.link.lastAcceptedValue.cardListId){
+        for(var it of links){
+            if(it.type === "list" && it.link.targetID === linkedCard.card.idList){
+                linkedCard.originalCard.idList = it.linkTarget.id;
+                break;
+            }
+        }
+    }
 
     if(Date.parse(linkedCard.card.dateLastActivity) > Date.parse(linkedCard.originalCard.dateLastActivity)){
         first = linkedCard.originalCard;
