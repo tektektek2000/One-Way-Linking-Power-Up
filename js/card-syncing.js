@@ -58,6 +58,9 @@ function modifyWithNewActions(modified, modifyWith, lastAcceptedValue){
                 newAcceptedValue.checklists[i].checkItems.splice(newAcceptedValue.checklists[i].checkItems.length-1,1);
                 checklistStateChanged = true;
             }
+            console.log(newAcceptedValue.checklists[i]);
+            console.log(lastAcceptedValue.checklists[i]);
+            console.log(modifyWith.checklists[i]);
             for(var j in newAcceptedValue.checklists[i].checkItems){
                 var examine = newAcceptedValue;
                 if(j < lastAcceptedValue.checklists[i].checkItems.length){examine = lastAcceptedValue;}
