@@ -149,7 +149,7 @@ function syncChanges(t,links,token,linkedCard){
     if(linkedCard.originalCard.idList !== linkedCard.link.lastAcceptedValue.originalCardListId){
         for(var it of links){
             if(it.type === "list" && it.linkTarget.id === linkedCard.originalCard.idList){
-                linkedCard.card.idList = it.link.targetID;
+                linkedCard.card.idList = it.targetID;
                 break;
             }
         }
@@ -157,7 +157,7 @@ function syncChanges(t,links,token,linkedCard){
     else if(linkedCard.card.idList !== linkedCard.link.lastAcceptedValue.cardListId){
         for(var it of links){
             if(it.type === "list" && it.link.targetID === linkedCard.card.idList){
-                linkedCard.originalCard.idList = it.linkTarget.id;
+                linkedCard.originalCard.idList = it.id;
                 break;
             }
         }
