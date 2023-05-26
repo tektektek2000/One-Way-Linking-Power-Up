@@ -314,6 +314,8 @@ function copyNewCards(t,links,token){
                                         }
                                         it.card.labels = cardLabels;
                                     }
+                                    it.card.originalCardListId = it.card.idList;
+                                    it.card.cardListId = card.idList;
                                     if(it.card.idChecklists){
                                         return api.getChecklistsOnCard(it.card.id, api.key, token).then(values => {
                                             it.card.checklists = values;
