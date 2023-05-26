@@ -107,8 +107,6 @@ function updateCard(cardID, cardName, cardDesc, listID, closed, idMembers, idAtt
 }
 
 function updateCover(cardID, cover, apiKey, token){
-    console.log(`https://api.trello.com/1/cards/${cardID}?cover=${JSON.stringify(cover)}&key=${apiKey}&token=${token}`);
-    console.log(JSON.stringify(cover));
     return fetchButApiSafe(`https://api.trello.com/1/cards/${cardID}?cover=${JSON.stringify(cover)}&key=${apiKey}&token=${token}`, {
         method: 'PUT',
         headers: {
