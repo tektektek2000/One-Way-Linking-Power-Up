@@ -58,17 +58,16 @@ function modifyWithNewActions(modified, modifyWith, lastAcceptedValue){
                 newAcceptedValue.checklists[i].checkItems.splice(newAcceptedValue.checklists[i].checkItems.length-1,1);
                 checklistStateChanged = true;
             }
-            console.log(newAcceptedValue.checklists[i]);
-            console.log(lastAcceptedValue.checklists[i]);
-            console.log(modifyWith.checklists[i]);
-            for(var j in newAcceptedValue.checklists[i].checkItems){
-                var examine = newAcceptedValue;
-                if(j < lastAcceptedValue.checklists[i].checkItems.length){examine = lastAcceptedValue;}
-                if(examine.checklists[i].checkItems[j].name !== modifyWith.checklists[i].checkItems[j].name){
-                    newAcceptedValue.checklists[i].checkItems[j].name = modifyWith.checklists[i].checkItems[j].name; checklistStateChanged = true;
-                }
-                if(examine.checklists[i].checkItems[j].state !== modifyWith.checklists[i].checkItems[j].state){
-                    newAcceptedValue.checklists[i].checkItems[j].state = modifyWith.checklists[i].checkItems[j].state; checklistStateChanged = true;
+            if(newAcceptedValue.checklists[i].checkItems.length === modifyWith.checklists[i].checkItems.length){
+                for(var j in newAcceptedValue.checklists[i].checkItems){
+                    var examine = newAcceptedValue;
+                    if(j < lastAcceptedValue.checklists[i].checkItems.length){examine = lastAcceptedValue;}
+                    if(examine.checklists[i].checkItems[j].name !== modifyWith.checklists[i].checkItems[j].name){
+                        newAcceptedValue.checklists[i].checkItems[j].name = modifyWith.checklists[i].checkItems[j].name; checklistStateChanged = true;
+                    }
+                    if(examine.checklists[i].checkItems[j].state !== modifyWith.checklists[i].checkItems[j].state){
+                        newAcceptedValue.checklists[i].checkItems[j].state = modifyWith.checklists[i].checkItems[j].state; checklistStateChanged = true;
+                    }
                 }
             }
         }
