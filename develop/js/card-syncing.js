@@ -145,6 +145,9 @@ function modifyWithNewActions(modified, modifyWith, lastAcceptedValue){
 function syncChanges(t,links,token,linkedCard){
     var first;
     var second;
+
+
+
     if(Date.parse(linkedCard.card.dateLastActivity) > Date.parse(linkedCard.originalCard.dateLastActivity)){
         first = linkedCard.originalCard;
         second = linkedCard.card;
@@ -157,6 +160,8 @@ function syncChanges(t,links,token,linkedCard){
     var firstHasChanges = newAcceptedState.changed;
     newAcceptedState = modifyWithNewActions(newAcceptedState.state,second,linkedCard.link.lastAcceptedValue);
     //console.log({firstHasChanges: firstHasChanges, secondHasChanges: newAcceptedState.changed, newState: newAcceptedState.state});
+    newAcceptedState.originalCardListId = linkedCard.originalCard.idList;
+    newAcceptedState.cardListId = linkedCard.card.idList;
     if(firstHasChanges){
         saveChangesToCard(second, newAcceptedState.state, token)
     }
