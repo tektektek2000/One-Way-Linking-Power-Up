@@ -18,7 +18,7 @@ function saveChangesToCard(changed, newState, token){
             }
             for(var i in changed.checklists){
                 if(i < newState.checklists.length){
-                    promises.push(api.updateCheckList(changed.checklists[i], newState.checklists[i].name, newState.checklists[i].pos, api.key, token));
+                    promises.push(api.updateCheckList(changed.checklists[i].id, newState.checklists[i].name, newState.checklists[i].pos, api.key, token));
                 }
             }
             Promise.all(promises).then(() => {
@@ -37,7 +37,7 @@ function saveChangesToCard(changed, newState, token){
                             }
                             for(var j in checklists[i].checkItems){
                                 if(j < newState.checklists[i].checkItems.length){
-                                    promises.push(api.updateCheckList(checklists[i].checkItems[j], newState.checklists[i].checkItems[j].name, newState.checklists[i].checkItems[j].state, api.key, token));
+                                    promises.push(api.updateCheckItem(card.id,checklists[i].checkItems[j].id, newState.checklists[i].checkItems[j].name, newState.checklists[i].checkItems[j].state, api.key, token));
                                 }
                             }
                         }
