@@ -5,6 +5,46 @@ var Promise = TrelloPowerUp.Promise;
 function saveChangesToCard(changed, newState, token){
     api.updateCard(changed.id, newState.name, newState.desc, changed.idList, newState.closed, newState.idMembers, newState.idAttachmentCover, newState.due
         ,newState.start, newState.dueComplete, newState.address, newState.locationName, newState.coordinates, newState.cover, api.key, token)
+        .then(card => {
+            //Checklists syncing
+            var promises = [];
+            while(changed.checklists.length + promises.length < newState.checklists.length){
+                promises.push(api.addCheckListToCard(card.id,newState.checklists[changed.checklists.length + promises.length].name
+                    ,newState.checklists[changed.checklists.length + promises.length].pos,api.key, token))
+            }
+            while(changed.checklists.length - promises.length > newState.checklists.length){
+                promises.push(api.deleteCheckListFromCard(card.id,changed.checklists[changed.checklists.length - promises.length].id
+                    ,api.key, token))
+            }
+            for(var i in changed.checklists){
+                if(i < newState.checklists.length){
+                    promises.push(api.updateCheckList(changed.checklists[i], newState.checklists[i].name, newState.checklists[i].pos, api.key, token));
+                }
+            }
+            Promise.all(promises).then(() => {
+                api.sleep(500).then(() => {
+                    api.getChecklistsOnCard(card.id, api.key, token)
+                    .then(checklists => {
+                        for(var i in checklists){
+                            var promises = []
+                            while(checklists[i].checkItems.length + promises.length < newState.checklists[i].checkItems.length){
+                                promises.push(api.addCheckItem(checklists[i].id,newState.checklists[i].checkItems[checklists[i].checkItems.length + promises.length].name
+                                    ,newState.checklists[i].checkItems[checklists[i].checkItems.length + promises.length].state === "complete",api.key, token))
+                            }
+                            while(checklists[i].checkItems.length + promises.length > newState.checklists[i].checkItems.length){
+                                promises.push(api.deleteCheckItem(checklists[i].checkItems.id,checklists[i].checkItems[checklists[i].checkItems.length - promises.length].id
+                                    ,api.key, token))
+                            }
+                            for(var j in checklists[i].checkItems){
+                                if(j < newState.checklists[i].checkItems.length){
+                                    promises.push(api.updateCheckList(checklists[i].checkItems[j], newState.checklists[i].checkItems[j].name, newState.checklists[i].checkItems[j].state, api.key, token));
+                                }
+                            }
+                        }
+                    })
+                })
+            })
+        })
     //TODO Implement checklist, labels syncing
 }
 
@@ -48,6 +88,7 @@ function modifyWithNewActions(modified, modifyWith, lastAcceptedValue){
             var examine = newAcceptedValue;
             if(i < lastAcceptedValue.checklists.length){examine = lastAcceptedValue;}
             if(examine.checklists[i].name !== modifyWith.checklists[i].name){newAcceptedValue.checklists[i].name = modifyWith.checklists[i].name; checklistStateChanged = true;}
+            if(examine.checklists[i].pos !== modifyWith.checklists[i].pos){newAcceptedValue.checklists[i].pos = modifyWith.checklists[i].pos; checklistStateChanged = true;}
             //Checking if checklist was added
             while(examine.checklists[i].checkItems.length < modifyWith.checklists[i].checkItems.length && newAcceptedValue.checklists[i].checkItems.length < modifyWith.checklists[i].checkItems.length){
                 newAcceptedValue.checklists[i].checkItems.push(JSON.parse(JSON.stringify(modifyWith.checklists[i].checkItems[modifyWith.checklists[i].checkItems.length-1])));
@@ -85,7 +126,7 @@ function modifyWithNewActions(modified, modifyWith, lastAcceptedValue){
     if(lastAcceptedValue.cover.url !== modifyWith.cover.url){newAcceptedValue.cover.url = modifyWith.cover.url; stateChanged = true;}
     if(lastAcceptedValue.cover.idAttachment !== modifyWith.cover.idAttachment){newAcceptedValue.cover.idAttachment = modifyWith.cover.idAttachment; stateChanged = true;}
     if(lastAcceptedValue.cover.size !== modifyWith.cover.size){newAcceptedValue.cover.size = modifyWith.cover.size; stateChanged = true;}
-    //if(lastAcceptedValue.cover.edgeColor !== modifyWith.cover.edgeColor){newAcceptedValue.cover.edgeColor = modifyWith.cover.edgeColor; stateChanged = true;}
+    if(lastAcceptedValue.cover.edgeColor !== modifyWith.cover.edgeColor){newAcceptedValue.cover.edgeColor = modifyWith.cover.edgeColor; stateChanged = true;}
     if(lastAcceptedValue.cover.idUploadedBackground !== modifyWith.cover.idUploadedBackground){newAcceptedValue.cover.idUploadedBackground = modifyWith.cover.idUploadedBackground; stateChanged = true;}
     if(lastAcceptedValue.cover.sharedSourceUrl !== modifyWith.cover.sharedSourceUrl){newAcceptedValue.cover.sharedSourceUrl = modifyWith.cover.sharedSourceUrl; stateChanged = true;}
     return {
@@ -262,11 +303,7 @@ function copyNewCards(t,links,token){
                                         it.card.labels = cardLabels;
                                     }
                                     if(it.card.idChecklists){
-                                        var checklistPromises = [];
-                                        for(let checklist of it.card.idChecklists){
-                                            checklistPromises.push(api.getChecklist(checklist,api.key,token))
-                                        }
-                                        return Promise.all(checklistPromises).then(values => {
+                                        return api.getChecklistsOnCard(it.card.id, api.key, token).then(values => {
                                             it.card.checklists = values;
                                             return t.set(card.id, 'shared', 'link', {
                                                 sourceID: it.card.id,

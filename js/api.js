@@ -5,24 +5,6 @@ function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-function getChecklist(checkListId, apiKey, token){
-    return fetchButApiSafe(`https://api.trello.com/1/checklists/${checkListId}?key=${apiKey}&token=${token}`, {
-        method: 'GET',
-        headers: {
-        'Accept': 'application/json'
-        }
-    })
-    .then(response => {
-        if(response.status == 404){return undefined;}
-        return response.text();
-    })
-    .then(text => {
-        if(!text){return text}
-        var checklist = JSON.parse(text);
-        return checklist;
-    });
-}
-
 function waitForApiCapacity(){
     if(!resetCalls){
         resetCalls = setInterval(function(){
@@ -163,11 +145,7 @@ function getCardsFromBoard(boardID, apiKey, token, fetchChecklist = false, fetch
             var promises = []
             for(let card of cards){
                 if(card.idChecklists){
-                    var checklistPromises = [];
-                    for(let checklist of card.idChecklists){
-                        checklistPromises.push(getChecklist(checklist,key,token))
-                    }
-                    promises.push(Promise.all(checklistPromises).then(values => {
+                    promises.push(getChecklistsOnCard(card.id,apiKey,token).then(values => {
                         card.checklists = values;
                         return card;
                     }));
@@ -291,11 +269,7 @@ function getCard(cardID, apiKey, token, fetchChecklist = false, fetchLabels = fa
     })
     .then(card => {
         if(card.idChecklists && fetchChecklist){
-            var checklistPromises = [];
-            for(let checklist of card.idChecklists){
-                checklistPromises.push(getChecklist(checklist,key,token))
-            }
-            return Promise.all(checklistPromises).then(values => {
+            return getChecklistsOnCard(cardID, apiKey, token).then(values => {
                 card.checklists = values;
                 return card;
             });
@@ -375,7 +349,152 @@ function getCardsFromList(listID, apiKey, token){
     });
 }
 
+function getChecklist(checkListId, apiKey, token){
+    return fetchButApiSafe(`https://api.trello.com/1/checklists/${checkListId}?key=${apiKey}&token=${token}`, {
+        method: 'GET',
+        headers: {
+        'Accept': 'application/json'
+        }
+    })
+    .then(response => {
+        if(response.status == 404){return undefined;}
+        return response.text();
+    })
+    .then(text => {
+        if(!text){return text}
+        var checklist = JSON.parse(text);
+        return checklist;
+    });
+}
+
+function getChecklistsOnCard(cardID, apiKey, token){
+    return fetchButApiSafe(`https://api.trello.com/1/cards/${cardID}/checklists?key=${apiKey}&token=${token}`, {
+        method: 'GET',
+        headers: {
+        'Accept': 'application/json'
+        }
+    })
+    .then(response => {
+        if(response.status == 404){return undefined;}
+        return response.text();
+    })
+    .then(text => {
+        if(!text){return text}
+        var checklist = JSON.parse(text);
+        return checklist;
+    });
+}
+
+function addCheckListToCard(cardID, name, pos, apiKey, token){
+    return fetchButApiSafe(`https://api.trello.com/1/cards/${cardID}/checklists?name=${name}&pos=${pos}key=${apiKey}&token=${token}`, {
+        method: 'POST',
+        headers: {
+        'Accept': 'application/json'
+        }
+    })
+    .then(response => {
+        if(response.status == 404){return undefined;}
+        return response.text();
+    })
+    .then(text => {
+        if(!text){return text}
+        var cards = JSON.parse(text);
+        return cards;
+    });
+}
+
+function updateCheckList(checklistID, name, pos, apiKey, token){
+    return fetchButApiSafe(`https://api.trello.com/1/checklists/${checklistID}?name=${name}&pos=${pos}key=${apiKey}&token=${token}`, {
+        method: 'POST',
+        headers: {
+        'Accept': 'application/json'
+        }
+    })
+    .then(response => {
+        if(response.status == 404){return undefined;}
+        return response.text();
+    })
+    .then(text => {
+        if(!text){return text}
+        var cards = JSON.parse(text);
+        return cards;
+    });
+}
+
+function deleteCheckListFromCard(cardID, checklistID, apiKey, token){
+    return fetchButApiSafe(`https://api.trello.com/1/cards/${cardID}/checklists/${checklistID}?key=${apiKey}&token=${token}`, {
+        method: 'DELETE',
+        headers: {
+        'Accept': 'application/json'
+        }
+    })
+}
+
+function getChecklistsOnCard(cardID, apiKey, token){
+    return fetchButApiSafe(`https://api.trello.com/1/cards/${cardID}/checklists?key=${apiKey}&token=${token}`, {
+        method: 'GET',
+        headers: {
+        'Accept': 'application/json'
+        }
+    })
+    .then(response => {
+        if(response.status == 404){return undefined;}
+        return response.text();
+    })
+    .then(text => {
+        if(!text){return text}
+        var checklist = JSON.parse(text);
+        return checklist;
+    });
+}
+
+function addCheckItem(checklistID, name, checked, apiKey, token){
+    return fetchButApiSafe(`https://api.trello.com/1/checklists/${checklistID}/checkItems?name=${name}&checked=${checked}key=${apiKey}&token=${token}`, {
+        method: 'POST',
+        headers: {
+        'Accept': 'application/json'
+        }
+    })
+    .then(response => {
+        if(response.status == 404){return undefined;}
+        return response.text();
+    })
+    .then(text => {
+        if(!text){return text}
+        var cards = JSON.parse(text);
+        return cards;
+    });
+}
+
+function updateCheckItem(cardID, checkitemID, name, pos, apiKey, token){
+    return fetchButApiSafe(`https://api.trello.com/1/cards/${cardID}/checkItem/${checkitemID}?name=${name}&pos=${pos}key=${apiKey}&token=${token}`, {
+        method: 'POST',
+        headers: {
+        'Accept': 'application/json'
+        }
+    })
+    .then(response => {
+        if(response.status == 404){return undefined;}
+        return response.text();
+    })
+    .then(text => {
+        if(!text){return text}
+        var cards = JSON.parse(text);
+        return cards;
+    });
+}
+
+function deleteCheckItem(checklistID, checkitemID, apiKey, token){
+    return fetchButApiSafe(`https://api.trello.com/1/checklists/${checklistID}/checkItems/${checkitemID}?key=${apiKey}&token=${token}`, {
+        method: 'DELETE',
+        headers: {
+        'Accept': 'application/json'
+        }
+    })
+}
+
 const key = "6f2af19073479657e48933387208eecd"
 
-export {key,addList,updateCard,addCard,deleteCard,copyCard,getBoardsFromMember,getCardsFromBoard,getListsFromBoard
-    ,getMembersFromBoard,getLabelsFromBoard,getList,getCard,getLabel,getBoard,getCardsFromList,getChecklist}
+export {key,sleep,addList,updateCard,addCard,deleteCard,copyCard,getBoardsFromMember,getCardsFromBoard,getListsFromBoard
+    ,getMembersFromBoard,getLabelsFromBoard,getList,getCard,getLabel,getBoard,getCardsFromList,getChecklist,getChecklistsOnCard
+    ,addCheckListToCard,updateCheckList,deleteCheckListFromCard,addCheckItem,updateCheckItem,deleteCheckItem}
