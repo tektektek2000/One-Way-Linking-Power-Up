@@ -386,7 +386,7 @@ function getChecklistsOnCard(cardID, apiKey, token){
 }
 
 function addCheckListToCard(cardID, name, pos, apiKey, token){
-    return fetchButApiSafe(`https://api.trello.com/1/cards/${cardID}/checklists?name=${name}&pos=${pos}key=${apiKey}&token=${token}`, {
+    return fetchButApiSafe(`https://api.trello.com/1/cards/${cardID}/checklists?name=${name}&pos=${pos}&key=${apiKey}&token=${token}`, {
         method: 'POST',
         headers: {
         'Accept': 'application/json'
@@ -404,7 +404,7 @@ function addCheckListToCard(cardID, name, pos, apiKey, token){
 }
 
 function updateCheckList(checklistID, name, pos, apiKey, token){
-    return fetchButApiSafe(`https://api.trello.com/1/checklists/${checklistID}?name=${name}&pos=${pos}key=${apiKey}&token=${token}`, {
+    return fetchButApiSafe(`https://api.trello.com/1/checklists/${checklistID}?name=${name}&pos=${pos}&key=${apiKey}&token=${token}`, {
         method: 'PUT',
         headers: {
         'Accept': 'application/json'
@@ -431,7 +431,7 @@ function deleteCheckListFromCard(cardID, checklistID, apiKey, token){
 }
 
 function addCheckItem(checklistID, name, checked, apiKey, token){
-    return fetchButApiSafe(`https://api.trello.com/1/checklists/${checklistID}/checkItems?name=${name}&checked=${checked}key=${apiKey}&token=${token}`, {
+    return fetchButApiSafe(`https://api.trello.com/1/checklists/${checklistID}/checkItems?name=${name}&checked=${checked}&key=${apiKey}&token=${token}`, {
         method: 'POST',
         headers: {
         'Accept': 'application/json'
@@ -449,7 +449,7 @@ function addCheckItem(checklistID, name, checked, apiKey, token){
 }
 
 function updateCheckItem(cardID, checkitemID, name, pos, apiKey, token){
-    return fetchButApiSafe(`https://api.trello.com/1/cards/${cardID}/checkItem/${checkitemID}?name=${name}&pos=${pos}key=${apiKey}&token=${token}`, {
+    return fetchButApiSafe(`https://api.trello.com/1/cards/${cardID}/checkItem/${checkitemID}?name=${name}&pos=${pos}&key=${apiKey}&token=${token}`, {
         method: 'PUT',
         headers: {
         'Accept': 'application/json'
