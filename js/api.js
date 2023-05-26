@@ -151,7 +151,7 @@ function getCardsFromBoard(boardID, apiKey, token, fetchChecklist = false, fetch
                     }));
                 }
             }
-            Promise.all(checklistPromises).then(values => {
+            Promise.all(promises).then(values => {
                 return values;
             })
         }
