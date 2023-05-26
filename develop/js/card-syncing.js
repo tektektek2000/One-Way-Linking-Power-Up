@@ -86,7 +86,7 @@ function modifyWithNewActions(modified, modifyWith, lastAcceptedValue){
     if(lastAcceptedValue.cover.url !== modifyWith.cover.url){newAcceptedValue.cover.url = modifyWith.cover.url; stateChanged = true;}
     if(lastAcceptedValue.cover.idAttachment !== modifyWith.cover.idAttachment){newAcceptedValue.cover.idAttachment = modifyWith.cover.idAttachment; stateChanged = true;}
     if(lastAcceptedValue.cover.size !== modifyWith.cover.size){newAcceptedValue.cover.size = modifyWith.cover.size; stateChanged = true;}
-    if(lastAcceptedValue.cover.edgeColor !== modifyWith.cover.edgeColor){newAcceptedValue.cover.edgeColor = modifyWith.cover.edgeColor; stateChanged = true;}
+    //if(lastAcceptedValue.cover.edgeColor !== modifyWith.cover.edgeColor){newAcceptedValue.cover.edgeColor = modifyWith.cover.edgeColor; stateChanged = true;}
     if(lastAcceptedValue.cover.idUploadedBackground !== modifyWith.cover.idUploadedBackground){newAcceptedValue.cover.idUploadedBackground = modifyWith.cover.idUploadedBackground; stateChanged = true;}
     if(lastAcceptedValue.cover.sharedSourceUrl !== modifyWith.cover.sharedSourceUrl){newAcceptedValue.cover.sharedSourceUrl = modifyWith.cover.sharedSourceUrl; stateChanged = true;}
     return {
