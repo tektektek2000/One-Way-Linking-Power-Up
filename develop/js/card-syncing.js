@@ -177,9 +177,9 @@ function syncChanges(t,links,token,linkedCard){
     var newAcceptedState = modifyWithNewActions(linkedCard.link.lastAcceptedValue,first,linkedCard.link.lastAcceptedValue);
     var firstHasChanges = newAcceptedState.changed;
     newAcceptedState = modifyWithNewActions(newAcceptedState.state,second,linkedCard.link.lastAcceptedValue);
-    //console.log({firstHasChanges: firstHasChanges, secondHasChanges: newAcceptedState.changed, newState: newAcceptedState.state});
-    newAcceptedState.originalCardListId = linkedCard.originalCard.idList;
-    newAcceptedState.cardListId = linkedCard.card.idList;
+    newAcceptedState.state.originalCardListId = linkedCard.originalCard.idList;
+    newAcceptedState.state.cardListId = linkedCard.card.idList;
+    console.log({firstHasChanges: firstHasChanges, secondHasChanges: newAcceptedState.changed, listChanged: listchanged, newState: newAcceptedState.state});
     if(firstHasChanges || listchanged){
         saveChangesToCard(second, newAcceptedState.state, token)
     }
