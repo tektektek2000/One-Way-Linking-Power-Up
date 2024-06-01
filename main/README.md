@@ -4,6 +4,8 @@ This power up allows you to create one way links between lists and boards. This 
 
 All cards show a tag, that show which board it was copied from, and maintain a two  way link to the original card. This means that changes made to either the original or the copy card will be synced witch eachother.
 
+This project is not published as a power up so, if you want to try it out, the recommended way is to fork it.
+
 ## **Capabilities:** ##
 
 * ### **One way linking** ###
