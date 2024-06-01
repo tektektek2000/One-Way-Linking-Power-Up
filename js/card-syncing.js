@@ -191,10 +191,10 @@ function syncChanges(t,links,token,linkedCard){
                 listchanged = true;
                 break;
             }
-            if(linkedCard.link.listCoupled && !listchanged){
-                linkedCard.card.idList = linkedCard.link.lastAcceptedValue.cardListId // Move linked card back if the original card cannot be moved to a list that has a link
-                listchanged = true;
-            }
+        }
+        if(linkedCard.link.listCoupled && !listchanged){
+            linkedCard.card.idList = linkedCard.link.lastAcceptedValue.cardListId // Move linked card back if the original card cannot be moved to a list that has a link
+            listchanged = true;
         }
     }
 
