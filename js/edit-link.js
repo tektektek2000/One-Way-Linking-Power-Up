@@ -70,11 +70,12 @@ function saveCurrent(t){
         }
         else{
             var id = JSON.parse($("#targetListSelectorDropdown")[0].value).id          
-            var type = "list";
-            var _linkTarget = _lists[$('#listSelectorDropdown')[0].value];
-            if($('#targetSelectorDropdown')[0].value === "Board"){
-                type = "board";
-                _linkTarget = $('#boardSelectorDropdown')[0].value;
+            var type = "board";
+            var _linkTarget = $('#boardSelectorDropdown')[0].value;
+            var _sourceBoard = $('#boardSelectorDropdown')[0].value;
+            if($('#targetSelectorDropdown')[0].value === "List"){
+                type = "list";
+                _linkTarget = _lists[$('#listSelectorDropdown')[0].value];;
             }
             var _condtype = "none";
             var _condTarget = "";
@@ -92,6 +93,7 @@ function saveCurrent(t){
             _links[selectedIndex].condtype = _condtype;
             _links[selectedIndex].condTarget = _condTarget;
             _links[selectedIndex].targetID = JSON.parse($("#targetListSelectorDropdown")[0].value).id;
+            _links[selectedIndex].sourceBoard = _sourceBoard
             t.set('board', 'shared', 'link', _links)
             .catch(err => {
                 console.error(err)

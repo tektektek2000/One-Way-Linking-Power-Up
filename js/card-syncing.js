@@ -186,7 +186,7 @@ function syncChanges(t,links,token,linkedCard){
     }
     else if(linkedCard.card.idList !== linkedCard.link.lastAcceptedValue.cardListId){
         for(var it of links){
-            if(it.type === "list" && it.targetID === linkedCard.card.idList){
+            if(it.type === "list" && it.targetID === linkedCard.card.idList && it.sourceBoard == linkedCard.originalCard.idBoard && checkCondition(linkedCard.originalCard, it.condtype, it.condTarget)){
                 linkedCard.originalCard.idList = it.linkTarget.id;
                 listchanged = true;
                 break;
@@ -356,7 +356,8 @@ function copyNewCards(t,links,token){
                                                 listCoupled: it.link.type === 'list',
                                                 lastAcceptedValue: it.card,
                                                 condtype: it.link.condtype,
-                                                condTarget: it.link.condTarget
+                                                condTarget: it.link.condTarget,
+                                                sourceBoard: it.link.sourceBoard
                                             })
                                         });
                                     }
@@ -366,7 +367,8 @@ function copyNewCards(t,links,token){
                                             listCoupled: it.link.type === 'list',
                                             lastAcceptedValue: it.card,
                                             condtype: it.link.condtype,
-                                            condTarget: it.link.condTarget
+                                            condTarget: it.link.condTarget,
+                                            sourceBoard: it.link.sourceBoard
                                         });
                                     }
                                 })
