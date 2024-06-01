@@ -181,7 +181,7 @@ function syncChanges(t,links,token,linkedCard){
         }
         if(linkedCard.link.listCoupled && !listchanged)
         {
-            return false;
+            return false; //Delete linked card if it cannot be moved to an existing linked list
         }
     }
     else if(linkedCard.card.idList !== linkedCard.link.lastAcceptedValue.cardListId){
@@ -190,6 +190,10 @@ function syncChanges(t,links,token,linkedCard){
                 linkedCard.originalCard.idList = it.linkTarget.id;
                 listchanged = true;
                 break;
+            }
+            if(linkedCard.link.listCoupled && !listchanged){
+                linkedCard.card.idList = linkedCard.link.lastAcceptedValue.cardListId // Move linked card back if the original card cannot be moved to a list that has a link
+                listchanged = true;
             }
         }
     }
