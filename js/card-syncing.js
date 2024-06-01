@@ -2,6 +2,28 @@ import * as api from "./api.js"
 
 var Promise = TrelloPowerUp.Promise;
 
+function checkCondition(card, condtype, condTarget){
+    let ret = false;
+    if(condtype === "none"){
+        ret = true;
+    }
+    else if(condtype === "member"){
+        for(let member of card.idMembers){
+            if(member === condTarget.id){
+                ret = true;
+            }
+        }
+    }
+    else if(condtype === "label"){
+        for(let label of card.labels){
+            if(label.id === condTarget.id){
+                ret = true;
+            }
+        }
+    }
+    return ret;
+}
+
 function saveChangesToCard(changed, newState, token){
     api.updateCard(changed.id, newState.name, newState.desc, changed.idList, newState.closed, newState.idMembers, newState.idAttachmentCover, newState.due
         ,newState.start, newState.dueComplete, newState.address, newState.locationName, newState.coordinates, newState.cover, api.key, token)
@@ -149,9 +171,11 @@ function syncChanges(t,links,token,linkedCard){
     //Checking if the card was moved to another list, and if that list is linked
     if(linkedCard.originalCard.idList !== linkedCard.link.lastAcceptedValue.originalCardListId){
         for(var it of links){
-            if(it.type === "list" && it.linkTarget.id === linkedCard.originalCard.idList){
+            if(it.type === "list" && it.linkTarget.id === linkedCard.originalCard.idList && checkCondition(linkedCard.originalCard, it.condtype, it.condTarget)){
                 linkedCard.card.idList = it.targetID;
                 listchanged = true;
+                linkedCard.link.condtype = it.condtype;
+                linkedCard.link.condTarget = it.condTarget;
                 break;
             }
         }
@@ -223,7 +247,7 @@ function refreshCards(t,links,token){
             var linkedCards = []
             for(let it of values){
                 if(it.link){
-                    if(it.originalCard){
+                    if(it.originalCard && checkCondition(it.originalCard, it.link.condtype, it.link.condTarget)){
                         linkedCards.push(it);
                     }
                     else{
@@ -286,24 +310,7 @@ function copyNewCards(t,links,token){
                 var cardsToAdd = [];
                 for(let it of values){
                     for(let card of it.cards){
-                        let shouldAdd = false;
-                        if(it.link.condtype === "none"){
-                            shouldAdd = true;
-                        }
-                        else if(it.link.condtype === "member"){
-                            for(let member of card.idMembers){
-                                if(member === it.link.condTarget.id){
-                                    shouldAdd = true;
-                                }
-                            }
-                        }
-                        else if(it.link.condtype === "label"){
-                            for(let label of card.labels){
-                                if(label.id === it.link.condTarget.id){
-                                    shouldAdd = true;
-                                }
-                            }
-                        }
+                        let shouldAdd = checkCondition(card, it.link.condtype, it.link.condTarget);
                         for(let linkedCard of linkedCards){
                             if(linkedCard.link.sourceID === card.id){
                                 shouldAdd = false;
@@ -347,7 +354,9 @@ function copyNewCards(t,links,token){
                                             return t.set(card.id, 'shared', 'link', {
                                                 sourceID: it.card.id,
                                                 listCoupled: it.link.type === 'list',
-                                                lastAcceptedValue: it.card
+                                                lastAcceptedValue: it.card,
+                                                condtype: it.link.condtype,
+                                                condTarget: it.link.condTarget
                                             })
                                         });
                                     }
@@ -355,7 +364,9 @@ function copyNewCards(t,links,token){
                                         return t.set(card.id, 'shared', 'link', {
                                             sourceID: it.card.id,
                                             listCoupled: it.link.type === 'list',
-                                            lastAcceptedValue: it.card
+                                            lastAcceptedValue: it.card,
+                                            condtype: it.link.condtype,
+                                            condTarget: it.link.condTarget
                                         });
                                     }
                                 })
