@@ -219,7 +219,7 @@ function linkSelected(t){
                                         element.appendChild(option);
                                     }
                                     if(link.condtype === "label"){
-                                        for (var it in members){
+                                        for (var it in labels){
                                             if (labels[it].id === link.condTarget.id){
                                                 $('#labelConditionSelectorDropdown')[0].selectedIndex = it;
                                             }
