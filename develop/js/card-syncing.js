@@ -155,7 +155,7 @@ function syncChanges(t,links,token,linkedCard){
                 break;
             }
         }
-        if(linkedCard.link.type == "list" && !listchanged)
+        if(linkedCard.link.listCoupled && !listchanged)
         {
             return false;
         }
