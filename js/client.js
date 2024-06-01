@@ -145,6 +145,6 @@ TrelloPowerUp.initialize({
             })
       }
 }, {
-    appKey: '6f2af19073479657e48933387208eecd',
+    appKey: 'e3ca454861c7c91659b30789e0f2c3d8',
     appName: 'Test'
 });
